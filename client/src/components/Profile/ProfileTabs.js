@@ -22,16 +22,16 @@ const ProfileTabs = () => {
                         onClick={handleItemClick}
                     />
                     <Menu.Item
-                        name='Account Details'
-                        active={activeItem === 'Account Details'}
+                        name='Account Updates'
+                        active={activeItem === 'Account Updates'}
                         onClick={handleItemClick}
                     />
                 </Menu>
             </Grid.Column>
             <Grid.Column stretched width={12}>
 
-                {activeItem === 'Saved Restaurants' && <ProfileTabFavorites />}
-                {activeItem === 'Account Details' && <ProfileTabAccountDetails />}
+                {activeItem === 'Favorite Threads' && <ProfileTabFavorites />}
+                {activeItem === 'Account Updates' && <ProfileTabAccountDetails />}
             </Grid.Column>
         </Grid>
     )

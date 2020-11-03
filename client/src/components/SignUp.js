@@ -3,8 +3,8 @@ import { signup } from '../store/authentication';
 import { useDispatch, useSelector } from 'react-redux';
 import { Redirect } from 'react-router-dom';
 import styled from "styled-components";
-import back_img from "../foodie-apps.jpg";
-import {specialtyDict} from "./Profile/specialties"
+import signup_img from "../signup-image.jpg";
+import {specialtyArr} from "./Profile/specialties"
 import './LoginPanel.css';
 
 
@@ -113,7 +113,8 @@ function SignUp() {
     const [password, setPassword]= useState('');
     const [city, setCity]= useState('');
     const [state, setState]= useState('')
-    const [tags, setTags]= useState('')
+    const [tags, setTags]= useState(specialtyArr)
+    const [reputation, setReputation]= useState(0)
     const [submitted, setSubmitted] = useState(false);
 
     const dispatch = useDispatch();
@@ -140,7 +141,15 @@ function SignUp() {
                 setState(value);
                 return;
             case "tags":
-                setTags(value);
+                const selected=[];
+                let selectedOption=(e.target.selectedOptions);
+                for (let i = 0; i < selectedOption.length; i++){
+                    selected.push(selectedOption.item(i).value)
+                }
+                setTags(selected);
+                return;
+            case "reputation":
+                setReputation(value);
                 return;
             default:
                 return;
@@ -148,10 +157,10 @@ function SignUp() {
     }
 
     const handleSubmit = async (e) => {
-        let points = 200;
+        //let points = 200;
         e.preventDefault();
         setSubmitted(true);
-        dispatch(signup(user_name, email, password, city, state, tags, points));
+        dispatch(signup(user_name, email, password, city, state, tags, reputation));
     }
 
     if (currentUserId) {
@@ -169,9 +178,9 @@ function SignUp() {
 
     return (
         <div  className="loginandsignup">
-            <img className='login__image' src={back_img} alt="" />
+            <img className='login__image' src={signup_img} alt="" />
             <SignUpFormWrapper>
-            <h2>Learn from Experts!</h2>
+            <h2>Seek Help from Peers!</h2>
             <form name='form' onSubmit={handleSubmit}>
                 <fieldset>
                      <div className="input-fields">
@@ -218,8 +227,8 @@ function SignUp() {
                     </div>
                     <div className="input-fields">
                         <label htmlFor="tags">Specialty</label>
-                        <select value={tags} id="tags" placeholder="Select Specialty" onChange={handleChange}>
-                            {specialtyDict.map((value, i) => <option key={`${value}-${i}`} tags={value}>{value}</option>)}
+                        <select multiple value={tags} id="tags" placeholder="Select Specialty" onChange={handleChange}>
+                            {specialtyArr.map((item, index) => <option key={`${item}-${index}`} tags={item}>{item}</option>)}
                         </select>
                     </div>
                     <br />

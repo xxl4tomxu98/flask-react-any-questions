@@ -1,4 +1,4 @@
-export const specialtyDict = [
+export const specialtyArr = [
   "Algorithm", "Data Structure",
    "Dev Ops",  "Database",
    "Frontend",  "Backend",

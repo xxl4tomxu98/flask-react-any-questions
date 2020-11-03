@@ -6,11 +6,10 @@ import { useSelector } from 'react-redux'
 
 
 const Profile = () => {
-    const authSelector = useSelector(state => state.authentication)    
-
+    const authSelector = useSelector(state => state.authentication)
     return (
         <>
-            <ProfileLayout username={authSelector.name} points={authSelector.points} />
+            <ProfileLayout username={authSelector.user_name} points={authSelector.reputation} />
             <Container>
                 <ProfileTabs />
             </Container>

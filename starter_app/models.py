@@ -23,11 +23,11 @@ class User(db.Model, UserMixin):
     email = db.Column(db.String(255), nullable=False, unique=True)
     city = db.Column(db.String(40), nullable=False)
     state = db.Column(db.String(40), nullable=False)
-    tags = db.Column(db.String(100), nullable=False)
+    tags = db.Column(db.ARRAY(db.String(100)), nullable=False)
     member_since = db.Column(db.DateTime(timezone=True),
                              default=datetime.utcnow)
     last_seen = db.Column(db.DateTime(timezone=True), default=datetime.utcnow)
-    points = db.Column(db.Integer, nullable=True)
+    reputation = db.Column(db.Integer, nullable=True)
     hashed_password = db.Column(db.String(100), nullable=False)
 
     questions = db.relationship('Question', backref='user', lazy=True)
@@ -57,7 +57,7 @@ class User(db.Model, UserMixin):
           "tags": self.tags,
           "member_since": self.member_since,
           "last_seen": self.last_seen,
-          "points": self.points,
+          "reputation": self.reputation,
           "hashed_password": self.hashed_password,
         }
 

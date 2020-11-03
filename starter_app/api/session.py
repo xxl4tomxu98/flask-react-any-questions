@@ -43,9 +43,9 @@ def signup():
     tags = request.json.get("tags", None)
     city = request.json.get("city", None)
     state = request.json.get("state", None)
-    points = request.json.get("point", None)
+    reputation = request.json.get("reputation", None)
     newUser = User(user_name=user_name, email=email, password=password,
-                   tags=tags, city=city, state=state, points=points)
+                   tags=tags, city=city, state=state, reputation=reputation)
     db.session.add(newUser)
     db.session.commit()
     return {"user": newUser.to_dict()}

@@ -79,13 +79,13 @@ export const login = (email, password) => {
 
 
 
-export const signup = (user_name, email, password, city, state, tags, points) => {
+export const signup = (user_name, email, password, city, state, tags, reputation) => {
     return async (dispatch, getState) => {
         const fetchWithCSRF = getState().authentication.csrf;
         const res = await fetchWithCSRF('/api/session/signup', {
             method: "POST",
             headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ user_name, email, password, city, state, tags, points })
+            body: JSON.stringify({ user_name, email, password, city, state, tags, reputation })
         })
 
         if (res.status === 400) {

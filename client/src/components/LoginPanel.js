@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Redirect } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import { login } from '../store/authentication';
+import login_img from "../login-image.jpg";
 import styled from "styled-components";
 import './LoginPanel.css'
 
@@ -149,10 +150,10 @@ const Login = () => {
     return (
 
         <div className="loginandsignup">
-            <img className='login__image' src='https://images.unsplash.com/photo-1508213824875-83a3d36e72a1?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=634&q=80' alt='' />
+            <img className='login__image' src={login_img} alt='' />
             <LoginFormWrapper>
                 <div className="login">
-                    <h1>Sign in</h1>
+                    <h2>Give Expert Answers</h2>
                     <form onSubmit={handleLogIn}>
                         <fieldset>
                             <div className="input-fields">

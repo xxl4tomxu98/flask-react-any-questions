@@ -9,40 +9,48 @@ load_dotenv()
 with app.app_context():
     db.drop_all()
     db.create_all()
-    ian = User(user_name='Ian', email='ian@aa.io', tags='python',
+    ian = User(user_name='Ian', email='ian@aa.io',
+               tags=['Python', 'Javascript'],
                city='Philadelphia', state="PA",
                member_since=date(2020, 6, 28),
-               last_seen=date(2020, 9, 8), password='password', points=300)
+               last_seen=date(2020, 9, 8),
+               password='password', reputation=300)
     javier = User(user_name='Javier', email='javier@aa.io',
-                  tags='javascript',
+                  tags=['Javascript', 'Html', 'Css'],
                   city='Las Vegas', state="NV",
                   member_since=date(2017, 2, 28),
-                  last_seen=date(2019, 6, 28), password='password', points=400)
+                  last_seen=date(2019, 6, 28),
+                  password='password', reputation=400)
     dean = User(user_name='Dean', email='dean@aa.io',
-                tags='binary_search',
+                tags=['Binary Search'],
                 city='Baltimore', state="MD",
                 member_since=date(2010, 1, 28),
-                last_seen=date(2020, 6, 28), password='password', points=500)
+                last_seen=date(2020, 6, 28),
+                password='password', reputation=500)
     angela = User(user_name='Angela', email='angela@aa.io',
-                  tags='data_structure',
+                  tags=['Data Structure', 'Algorithm'],
                   city='Birmingham', state="AL",
                   member_since=date(1998, 5, 28),
-                  last_seen=date(2020, 2, 18), password='password', points=800)
+                  last_seen=date(2020, 2, 18),
+                  password='password', reputation=800)
     soonmi = User(user_name='Soon-Mi', email='soonmi@aa.io',
-                  tags='sqlAlchemy',
+                  tags=['SqlAlchemy'],
                   city='Houston', state="TX",
                   member_since=date(2014, 10, 28),
-                  last_seen=date(2018, 8, 22), password='password', points=500)
+                  last_seen=date(2018, 8, 22),
+                  password='password', reputation=500)
     alissa = User(user_name='Alissa', email='alissa@aa.io',
-                  tags='postgresql',
+                  tags=['Postgresql', 'Express', 'Sequelize'],
                   city='New York', state="NY",
                   member_since=date(2000, 6, 28),
-                  last_seen=date(2010, 6, 28), password='password', points=600)
+                  last_seen=date(2010, 6, 28),
+                  password='password', reputation=600)
     demo = User(user_name='demo', email='demo@example.com',
-                tags='redux',
+                tags=['Redux', 'React', 'Hooks', 'Bootstrap'],
                 city='Boise', state="ID",
                 member_since=date(2001, 12, 28),
-                last_seen=date(2013, 6, 20), password='password', points=745)
+                last_seen=date(2013, 6, 20),
+                password='password', reputation=745)
 
     db.session.add(ian)
     db.session.add(javier)
