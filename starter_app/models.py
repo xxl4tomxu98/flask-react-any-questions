@@ -5,8 +5,8 @@ from datetime import datetime
 
 db = SQLAlchemy()
 
-favorites = db.Table(
-    'favorites',
+bookmarks = db.Table(
+    'bookmarks',
     db.Model.metadata,
     db.Column(
         'user_id', db.Integer, db.ForeignKey('users.id'), primary_key=True
@@ -30,7 +30,7 @@ class User(db.Model, UserMixin):
     reputation = db.Column(db.Integer, nullable=True)
     hashed_password = db.Column(db.String(100), nullable=False)
 
-    questions = db.relationship('Question', backref='user', lazy=True)
+    questions = db.relationship('Question', secondary='bookmarks')
     answers = db.relationship('Answer', backref='user', lazy=True)
     comments = db.relationship('Comment', backref='user', lazy=True)
     votes = db.relationship('Vote', lazy='dynamic',
@@ -67,14 +67,16 @@ class Question(db.Model):
     __tablename__ = 'questions'
 
     id = db.Column(db.Integer, primary_key=True)
-    tags = db.Column(db.String(100), nullable=False)
+    tags = db.Column(db.ARRAY(db.String(100)), nullable=False)
     title = db.Column(db.String(100))
     user_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
     ask_time = db.Column(db.DateTime(timezone=True), default=datetime.utcnow)
-    detail = db.Column(db.Text, nullable=False)
+    body = db.Column(db.Text, nullable=False)
     answer_count = db.Column(db.Integer, nullable=True)
+    comment_count = db.Column(db.Integer, nullable=True)
     accepted_answer_id = db.Column(db.Integer, nullable=True)
-    catagory = db.Column(db.String(50), nullable=False)
+    upvote_count = db.Column(db.Integer, nullable=True)
+    downvote_count = db.Column(db.Integer, nullable=True)
 
     answers = db.relationship('Answer', backref='question', lazy=True)
     comments = db.relationship('Comment',
@@ -87,10 +89,12 @@ class Question(db.Model):
             "title": self.title,
             "user_id": self.user_id,
             "ask_time": self.ask_time,
-            "detail": self.detail,
+            "body": self.body,
             "answer_count": self.answer_count,
+            "comment_count": self.comment_count,
             "accepted_answer_id": self.accepted_answer_id,
-            'catagory': self.catagory,
+            "upvote_count": self.upvote_count,
+            "downvote_count": self.downvote_count,
         }
 
 

@@ -4,7 +4,7 @@ from sqlalchemy import or_
 from starter_app.models import db, User, Question
 from sqlalchemy.orm import joinedload
 
-bp = Blueprint("home", __name__)
+bp = Blueprint("main", __name__)
 
 
 @bp.route('/', methods=["POST"])
@@ -13,11 +13,16 @@ def search():
     search_args = [col.ilike('%%%s%%' % key) for col in
                    [Restaurant.name, Restaurant.address,
                     Restaurant.city, Restaurant.state]]
-    restaurants = Restaurant.query.filter(or_(*search_args)).order_by(
+    questions = Restaurant.query.filter(or_(*search_args)).order_by(
                     Restaurant.avg_rating.desc()).all()
-    return {'restaurants': [rest.to_dict() for rest in restaurants]}
+    return {'questions': [qust.to_dict() for qust in questions]}
 
 
+@bp.route('/posts')
+@login_required
+def index():
+    response = Question.query.all()
+    return {'list': [ques.to_dict() for ques in response]}
 
 
 
@@ -30,13 +35,14 @@ def ask_question(qust_id):
     if request.method == "POST":
         if not request.is_json:
             return jsonify({"msg": "Missing JSON in request"}), 400
-        content = request.json.get("content", None)
-        tag = request.json.get("tag", None)
-        time = request.json.get("time", None)
+        title = request.json.get("title", None)
+        detail = request.json.get("detail", None)
+        tags = request.json.get("tags", None)
+        ask_time = request.json.get("ask_time", None)
         if not content or not tag:
             return {"errors": ["Please fill out question and tag"]}, 400
         new_question = Question(ques_id=qust_id, user_id=current_user.id,
-                                content=content, tag=tag, time=time)
+                                detail=detail, tags=tags, ask_time=ask_time)
         db.session.add(new_question)
         db.session.commit()
     response = Question.query.filter_by(id=qust_id).all()
@@ -61,7 +67,6 @@ def reserveRes():
 
 @bp.route('/restaurant/reservationlist/<int:user_id>')
 def reservationlist(user_id):
-
     response = db.session.query(Reservation) \
                       .options(joinedload(Reservation.restaurant)) \
                       .filter(Reservation.user_id == user_id)

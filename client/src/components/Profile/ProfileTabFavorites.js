@@ -12,13 +12,16 @@ const ProfileTabFavorites = () => {
 
     useEffect(() => {
         async function fetchFavorites() {
-            const res = await fetch(`/api/users/${id}/favorites`)
+            const res = await fetch(`/api/users/${id}/bookmarks`)
             const data = await res.json()
-            setMyFavorites(data.favorites)
+            setMyFavorites(data.bookmarked)
         }
         fetchFavorites()
     }, [id])
 
+    if (!myFavorites) {
+      return null;
+    }
     return (
         <>
             <Header as='h2' attached='top'>Favorites</Header>

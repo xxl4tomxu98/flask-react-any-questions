@@ -4,6 +4,7 @@ import { useLocation, Switch, Route, Redirect } from 'react-router-dom';
 import LoginPanel from './components/LoginPanel';
 import SignUp from './components/SignUp';
 import NavBar from './components/NavBar';
+import HomePage from './components/HomePage/HomePage';
 import Profile from './components/Profile';
 import UsersList from './components/UsersList'
 import { setCsrfFunc } from './store/authentication';
@@ -20,12 +21,9 @@ const PrivateRoute = ({ component: Component, ...rest }) => {
 }
 
 function App() {
-    //let currentUserId = useSelector(state => state.authentication.id);
+
     let location = useLocation();
     let dispatch = useDispatch();
-    // useEffect(() => {
-    //     dispatch(getUserInfo(currentUserId));
-    // }, [currentUserId, dispatch])
     const [fetchWithCSRF, setFetchWithCSRF] = useState(() => fetch);
 
     useEffect(() => {
@@ -66,7 +64,7 @@ function App() {
             <Switch>
                 <Route path="/login" component={LoginPanel} />
                 <PrivateRoute
-                    path="/profile"
+                    path="/users/:id"
                     exact={true}
                     component={Profile}
                 />
@@ -75,12 +73,17 @@ function App() {
                     exact={true}
                     component={SignUp}
                 />
-
                 <Route
                     path="/users"
                     exact={true}
                     component={UsersList}
                 />
+                <Route exact path='/' component={HomePage} />
+                {/* <Route exact path='/questions' component={QuestionsPage} />
+                <Route exact path='/tags' component={TagsPage} />
+                <Route exact path='/questions/:id' component={Post} />
+                <Route exact path='/tags/:tagname' component={TagPage} />
+                <Route exact path='/add/question' component={PostForm} /> */}
             </Switch>
         </>
     );

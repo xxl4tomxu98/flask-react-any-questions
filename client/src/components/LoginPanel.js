@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Redirect } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import { login } from '../store/authentication';
-import login_img from "../login-image.jpg";
+import login_img from "../assets/login-image.jpg";
 import styled from "styled-components";
 import './LoginPanel.css'
 

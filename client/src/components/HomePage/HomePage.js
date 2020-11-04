@@ -1,67 +1,52 @@
 
-import React, { useState } from 'react';
+import React, { useEffect, Fragment } from 'react';
 import './HomePage.css'
-import Footer from '../Footer';
-import 'semantic-ui-css/semantic.min.css'
-import HomeBody from './HomeBody';
-import { useSelector } from 'react-redux';
-import './SearchInput.css'
-import SearchSharpIcon from '@material-ui/icons/SearchSharp';
+//import Footer from '../Footer';
+//import SideBar from './SideBar';
+import PostItem from '../PostItem';
+//import RightSideBar from './RightSideBar';
+import { getPosts } from '../../store/posts';
+import Spinner from '../Spinner';
+import { Link } from 'react-router-dom';
+import { useSelector, useDispatch } from 'react-redux';
 
 
-function HomePage() {
-
-    const fetchWithCSRF = useSelector(state => state.authentication.csrf);
-
-    const [term, setTerm] = useState([]);
-    const [restData, setRestData] = useState([])
-
-    const updateTerm = (e) => {
-        setTerm(e.target.value);
-    }
 
 
-    const handleSubmit = (e) => {
-        e.preventDefault();
-        searchRestaurants();
-    }
+const HomePage = () => {
+  const posts = useSelector(state => state.posts.list);
 
-    async function searchRestaurants() {
+  const dispatch = useDispatch();
+  useEffect(() => {
+      dispatch(getPosts());
+  }, [dispatch]);
 
-        const res = await fetchWithCSRF("/api/home/", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ term }),
-        });
-        if (res.ok) {
-            const data = await res.json()
-            setRestData(data.restaurants)
-            return
-        }
-    }
+  return posts === [] ? <Spinner type='page' width='75px' height='200px'/> : <Fragment>
+      <div className='page'>
+          {/* <SideBar/> */}
+          <div id="content">
+              <div id='mainbar' className='homepage fc-black-800'>
+                  <div className='questions-grid'>
+                      <h3 className='questions-headline'>Top Questions</h3>
+                      <div className='questions-btn'>
+                          <Link to='/add/question'>
+                              <button className = 's-btn s-btn__primary'>Ask Question</button>
+                          </Link>
+                      </div>
+                  </div>
+                  <div className='questions-tabs'>
+                      <span>19,204,360 questions</span>
+                  </div>
+                  <div className='questions'>
+                      {posts.map(post => (
+                          <PostItem key={post.id} post={post}/>))}
+                  </div>
+              </div>
+              {/* <RightSideBar/> */}
+          </div>
+      </div>
+  </Fragment>
+};
 
-    return (
-        <>
-            <div className='home'>
-                <div className='home-search'>
-                    <form onSubmit={handleSubmit} className='home-search__form'>
-                        <input onChange={updateTerm} type='text' name="search" value={term} placeholder='Name, Address, City, State' />
-                        <button className='home__button' type='submit'>Let's Go!</button>
-                    </form>
-                    <span className='home-search__icon'>
-                        <SearchSharpIcon />
-                    </span>
-                </div>
-                <div className='home__img'>
-                    <img src='https://images.unsplash.com/photo-1574936145840-28808d77a0b6?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=675&q=80' alt='' />
-                </div>
-                <div className='home__body'>
-                    <HomeBody data={restData} />
-                </div>
-                <Footer />
-            </div>
-        </>
-    )
-}
 
 export default HomePage

@@ -1,5 +1,5 @@
 from dotenv import load_dotenv
-from starter_app.models import User, Question, Answer, Comment, Vote, favorites
+from starter_app.models import User, Question, Answer, Comment, Vote
 from starter_app import app, db
 from datetime import date
 
@@ -59,5 +59,18 @@ with app.app_context():
     db.session.add(soonmi)
     db.session.add(alissa)
     db.session.add(demo)
+
+
+    q1 = Question(title='want_to_ask_you', tags=['Linear Algebra'],
+                  user_id=1, ask_time=date(2019, 7, 20), body='balabala',
+                  answer_count=0, comment_count=0, accepted_answer_id=0,
+                  upvote_count=0, downvote_count=0)
+
+    q2 = Question(title='do_you_know_how', tags=['Sequelize', "Express"],
+                  user_id=6, ask_time=date(2011, 7, 20), body='balabala',
+                  answer_count=0, comment_count=0, accepted_answer_id=0,
+                  upvote_count=0, downvote_count=0)
+    db.session.add(q1)
+    db.session.add(q2)
 
     db.session.commit()

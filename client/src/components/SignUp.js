@@ -3,7 +3,7 @@ import { signup } from '../store/authentication';
 import { useDispatch, useSelector } from 'react-redux';
 import { Redirect } from 'react-router-dom';
 import styled from "styled-components";
-import signup_img from "../signup-image.jpg";
+import signup_img from "../assets/signup-image.jpg";
 import {specialtyArr} from "./Profile/specialties"
 import './LoginPanel.css';
 
