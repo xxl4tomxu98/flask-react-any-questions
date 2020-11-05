@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { useLocation, Switch, Route, Redirect } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
+import { useLocation, Switch, Route } from 'react-router-dom';
 import LoginPanel from './components/LoginPanel';
 import SignUp from './components/SignUp';
 import NavBar from './components/NavBar';
@@ -9,16 +9,7 @@ import Profile from './components/Profile';
 import UsersList from './components/UsersList'
 import { setCsrfFunc } from './store/authentication';
 
-const PrivateRoute = ({ component: Component, ...rest }) => {
-    let needLogin = useSelector(state => !state.authentication.id);
-    return (
-        <Route {...rest} render={(props) => (
-            needLogin
-                ? <Redirect to='/login' />
-                : <Component {...props} />
-        )} />
-    )
-}
+
 
 function App() {
 
@@ -63,7 +54,7 @@ function App() {
                 : null}
             <Switch>
                 <Route path="/login" component={LoginPanel} />
-                <PrivateRoute
+                <Route
                     path="/users/:id"
                     exact={true}
                     component={Profile}

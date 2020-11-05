@@ -60,15 +60,15 @@ def bookmarks(user_id):
         user = User.query.get_or_404(user_id)
         question_id = request.json.get("question_id", None)
         question = Question.query.get(question_id)
-        user.questions.append(question)
+        user.bookmarked_questions.append(question)
         db.session.add(user)
         db.session.commit()
         return 'Question bookmarked', 200
     else:
         response = db.session.query(Question).order_by(
                       Question.title).options(
-                      joinedload(Question.users)
-                      ).filter(Question.users.any(id=user_id)).all()
+                      joinedload(Question.bookmarked_users)
+                      ).filter(Question.bookmarked_users.any(id=user_id)).all()
         return {'bookmarked': [resp.to_dict() for resp in response]}
 
 

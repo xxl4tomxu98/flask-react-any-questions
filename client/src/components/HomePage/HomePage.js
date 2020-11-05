@@ -1,10 +1,10 @@
 
 import React, { useEffect, Fragment } from 'react';
 import './HomePage.css'
-//import Footer from '../Footer';
-//import SideBar from './SideBar';
+import Footer from '../Footer';
+import SideBar from './SideBar';
 import PostItem from '../PostItem';
-//import RightSideBar from './RightSideBar';
+import RightSideBar from './RightSideBar';
 import { getPosts } from '../../store/posts';
 import Spinner from '../Spinner';
 import { Link } from 'react-router-dom';
@@ -23,7 +23,7 @@ const HomePage = () => {
 
   return posts === [] ? <Spinner type='page' width='75px' height='200px'/> : <Fragment>
       <div className='page'>
-          {/* <SideBar/> */}
+          <SideBar/>
           <div id="content">
               <div id='mainbar' className='homepage fc-black-800'>
                   <div className='questions-grid'>
@@ -42,9 +42,10 @@ const HomePage = () => {
                           <PostItem key={post.id} post={post}/>))}
                   </div>
               </div>
-              {/* <RightSideBar/> */}
+              <RightSideBar/>
           </div>
       </div>
+      <Footer />
   </Fragment>
 };
 

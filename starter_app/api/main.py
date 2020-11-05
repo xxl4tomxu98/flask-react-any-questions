@@ -1,7 +1,7 @@
 from flask import Blueprint, request, jsonify
 from flask_login import current_user, login_required
 from sqlalchemy import or_
-from starter_app.models import db, User, Question
+from starter_app.models import db, User, Question, Tag
 from sqlalchemy.orm import joinedload
 
 bp = Blueprint("main", __name__)
@@ -20,10 +20,16 @@ def search():
 
 @bp.route('/posts')
 @login_required
-def index():
+def get_questions():
     response = Question.query.all()
     return {'list': [ques.to_dict() for ques in response]}
 
+
+@bp.route('/tags')
+@login_required
+def get_tags():
+    response = Tag.query.all()
+    return {'list': [tag.to_dict() for tag in response]}
 
 
 @login_required

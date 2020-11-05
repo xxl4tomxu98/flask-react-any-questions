@@ -3,7 +3,7 @@ import thunk from 'redux-thunk';
 import logger from 'redux-logger';
 import authentication from './authentication';
 import posts from './posts';
-
+import tags from './tags';
 
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__
 
@@ -11,6 +11,7 @@ const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__
 const reducer = combineReducers({
     authentication,
     posts,
+    tags,
 });
 
 //store

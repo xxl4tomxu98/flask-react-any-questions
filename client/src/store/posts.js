@@ -6,7 +6,7 @@ import { removeUser } from './authentication';
  const POST_ERROR = 'POST_ERROR';
  const DELETE_POST = 'DELETE_POST';
 
- const load = posts => {
+const load = posts => {
   return {
     type: GET_POSTS,
     posts
@@ -171,7 +171,7 @@ export default function (state = initialState, action) {
       case DELETE_POST:
           return {
               ...state,
-              list: state.posts.filter(post => post.id !== action.postId),
+              ...state.posts.filter(post => post.id !== action.postId),
           };
       case POST_ERROR:
           return {

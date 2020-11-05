@@ -30,7 +30,7 @@ class User(db.Model, UserMixin):
     reputation = db.Column(db.Integer, nullable=True)
     hashed_password = db.Column(db.String(100), nullable=False)
 
-    questions = db.relationship('Question', secondary='bookmarks')
+    bookmarked_questions = db.relationship('Question', secondary='bookmarks')
     answers = db.relationship('Answer', backref='user', lazy=True)
     comments = db.relationship('Comment', backref='user', lazy=True)
     votes = db.relationship('Vote', lazy='dynamic',
@@ -81,6 +81,7 @@ class Question(db.Model):
     answers = db.relationship('Answer', backref='question', lazy=True)
     comments = db.relationship('Comment',
                                backref='question', lazy=True)
+    bookmarked_users = db.relationship('User', secondary='bookmarks')
 
     def to_dict(self):
         return {
@@ -171,6 +172,24 @@ class Comment(db.Model):
             "user_id": self.user_id,
             "answer_id": self.answer_id,
             "description": self.description
+        }
+
+
+class Tag(db.Model):
+
+    __tablename__ = 'tags'
+
+    id = db.Column(db.Integer, primary_key=True)
+    tagname = db.Column(db.String(30), nullable=False)
+    created_at = db.Column(db.DateTime(timezone=True), default=datetime.utcnow)
+    description = db.Column(db.Text, nullable=False)
+
+    def to_dict(self):
+        return {
+            "id": self.id,
+            "tagname": self.tagname,
+            "created_at": self.created_at,
+            "description": self.description,
         }
 
 

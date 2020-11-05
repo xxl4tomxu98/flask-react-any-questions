@@ -1,27 +1,16 @@
-import React from 'react';
-import styled from 'styled-components';
-import { Container, Dropdown, Image, Menu } from 'semantic-ui-react';
+import React, { Fragment } from 'react';
 import { useSelector, useDispatch } from 'react-redux'
 import { logout } from '../store/authentication';
-import { useHistory, Redirect } from 'react-router-dom';
+import { useHistory, Link } from 'react-router-dom';
+import { ReactComponent as Logo } from '../assets/LogoMd.svg';
+import { ReactComponent as Search } from '../assets/Search.svg';
 import './NavBar.css';
 
-const NavBarWrapper = styled.div`
-  margin: 0;
-  background-color: #da3743;
-  padding: 0;
-  box-shadow: 0 1px 2px rgba(0,0,0,0.15);
-  display: flex;
-  .nav-bar-content {
-    margin: 0 auto;
-    display: flex;
-    height: 50px;
-  }
-`;
+
 
 const NavBar = () => {
-    const authSelector = useSelector(state => state.authentication)
-    const loggedOut = authSelector.id;
+
+    const isAuthenticated = useSelector(state => state.authentication.id);
     const dispatch = useDispatch();
 
     const handleLogout = async () => {
@@ -41,32 +30,62 @@ const NavBar = () => {
 
     const history = useHistory()
 
-    if (!loggedOut) {
-        return <Redirect to="/login" />;
-    }
+
+    const authLinks = (
+      <div className='btns'>
+          <Link onClick={ handleLogout } to='/login'>
+              <button type='button' className='s-btn s-btn__filled'>Log out</button>
+          </Link>
+      </div>
+    );
+
+    const authTabs = (
+        <div className="s-navigation">
+            <Link to='/' className="s-navigation--item is-selected">Products</Link>
+        </div>
+    );
+
+    const guestTabs = (
+        <div className="s-navigation">
+            <Link to='/' className="s-navigation--item is-selected">Products</Link>
+            <Link to='/' className="s-navigation--item not-selected">Customers</Link>
+            <Link to='/' className="s-navigation--item not-selected">Use cases</Link>
+        </div>
+    );
+
+    const guestLinks = (
+        <div className='btns'>
+            <Link to='/login'>
+                <button type='button' className="s-btn s-btn__primary">Log in</button>
+            </Link>
+            <Link to='/signup'>
+                <button type='button' className='s-btn s-btn__filled'>Sign up</button>
+            </Link>
+        </div>
+
+    );
+
 
     return (
-        <NavBarWrapper>
-            <Menu fixed='top' inverted >
-                <Container className="nav-bar-content">
-                    <Menu.Item onClick={handleClickUser}>
-                        Users</Menu.Item>
-                    <Menu.Item onClick={handleClickHome} header>
-                        <Image size='mini' src='https://cdn2.iconfinder.com/data/icons/flat-pro-word-processing-set-5/32/table-512.png' style={{ marginRight: '1.5em' }} />
-                        Any Questions?
-                    </Menu.Item>
-                    {authSelector.user_name && <Dropdown item simple text={`Hi ${authSelector.user_name}`}>
-                        <Dropdown.Menu>
-                            <Dropdown.Header>Your Reputation Score: {authSelector.points}/2000 !</Dropdown.Header>
-                            <Dropdown.Item onClick={handleLogout}>Logout</Dropdown.Item>
-                            <Dropdown.Divider />
-                            <Dropdown.Item onClick={handleProfile}>Profile</Dropdown.Item>
-                        </Dropdown.Menu>
-                    </Dropdown>}
-                    {!authSelector.user_name && <Menu.Item>Login</Menu.Item>}
-                </Container>
-            </Menu>
-        </NavBarWrapper>
+      <nav className='navbar fixed-top navbar-expand-lg navbar-light bs-md'>
+          <Link className='navbar-brand' to='/'>
+              <Logo/>
+          </Link>
+          <Fragment>{isAuthenticated ? authTabs : guestTabs}</Fragment>
+          <form id="search" role="search" method="get"
+                className="grid--cell fl-grow1 searchbar px12 js-searchbar " autoComplete="off">
+              <div className="ps-relative">
+                  <input name="q"
+                        type="text"
+                        placeholder="Search&#x2026;"
+                        maxLength="240"
+                        className="s-input s-input__search js-search-field "/>
+                        <Search/>
+              </div>
+          </form>
+          <Fragment>{isAuthenticated ? authLinks : guestLinks}</Fragment>
+
+      </nav>
     )
 }
 
