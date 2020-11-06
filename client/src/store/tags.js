@@ -21,7 +21,7 @@ export const getTags = () => async dispatch => {
     const res = await fetch('/api/tags');
     if(res.ok){
       const tags = await res.json();
-      dispatch(loadTags(tags));
+      return dispatch(loadTags(tags));
     } else if (res.status === 401) {
       return dispatch(removeUser());
     }

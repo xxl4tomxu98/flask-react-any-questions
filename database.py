@@ -9,6 +9,7 @@ load_dotenv()
 with app.app_context():
     db.drop_all()
     db.create_all()
+
     ian = User(user_name='Ian', email='ian@aa.io',
                tags=['python', 'javascript'],
                city='Philadelphia', state="PA",
@@ -59,7 +60,7 @@ with app.app_context():
     db.session.add(soonmi)
     db.session.add(alissa)
     db.session.add(demo)
-
+    db.session.commit()
 
     q1 = Question(title='want_to_ask_you', tags=['linear-algebra'],
                   user_id=1, ask_time=date(2019, 7, 20), body='balabala',
@@ -72,6 +73,8 @@ with app.app_context():
                   upvote_count=0, downvote_count=0)
     db.session.add(q1)
     db.session.add(q2)
+    alissa.bookmarked_questions.append(q1)
+    db.session.add(alissa)
 
     t1 = Tag(tagname='javascript', created_at=date(2012, 8, 20),
              description='For questions regarding programming in ECMAScript (JavaScript/JS) and its various dialects/implementations (excluding ActionScript). This tag is rarely used alone but is most often associated with the tags [node.js], [jquery],[json], and [html].'
@@ -101,6 +104,8 @@ with app.app_context():
              description='A data structure is a way of organizing data in a fashion that allows particular properties of that data to be queried and/or updated efficiently.'
             )
 
+    t2.tagged_questions.append(q2)
+
     db.session.add(t1)
     db.session.add(t2)
     db.session.add(t3)
@@ -108,5 +113,8 @@ with app.app_context():
     db.session.add(t5)
     db.session.add(t6)
     db.session.add(t7)
+
+
+
 
     db.session.commit()

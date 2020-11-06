@@ -1,21 +1,8 @@
 .page {
-  /* max-width: 1264px; */
-  width: 100%;
-  background: none;
   display: flex;
-  justify-content: space-evenly;
-  margin: 14px auto 0 auto;
 }
 
-#content {
-  padding: 0;
-}
-
-#mainbar {
-  padding-top: 14px;
-}
-
-.homepage {
+.questions-page {
   width: calc(100% - 300px - 24px);
   padding: 24px 0 24px 0;
   float: left;
@@ -55,16 +42,11 @@
     margin-bottom: 20px;
     border-top: 1px solid #4a4e51;
   }
+
 }
 
-@media (max-width: 1100px) {
-  #content {
-    margin-left: 0;
-  }
-
-  .homepage {
-    width: 82%;
-    float: none;
-    margin: 0;
+@media(max-width: 1100px) {
+  .questions-page {
+    width: 80%;
   }
 }

@@ -14,7 +14,7 @@ const SideBar = () => (
                 <NavLink activeClassName='active' className='icon-link nav_link' to='/questions' >
                     <p>
                         <GlobalIcon className='icon' />
-                        Any Qustions ?
+                        All Qustions Browsing
                     </p>
                 </NavLink>
                 <NavLink activeClassName='active' className='link nav_link' to='/tags' >

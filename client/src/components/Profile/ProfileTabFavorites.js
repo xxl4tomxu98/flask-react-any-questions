@@ -1,63 +1,49 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState, Fragment } from 'react'
 import { useSelector } from 'react-redux';
-import { Icon, Item, Header, Segment } from 'semantic-ui-react'
-import { useHistory } from 'react-router-dom';
-import './ProfileTabFavorites.css';
-
+import { Link } from 'react-router-dom';
+import '../HomePage/HomePage.css';
+import Spinner from '../Spinner';
+import PostItem from '../PostItem.js';
 
 const ProfileTabFavorites = () => {
     const id = useSelector(state => state.authentication.id);
     const [myFavorites, setMyFavorites] = useState([])
-    const history = useHistory()
 
     useEffect(() => {
         async function fetchFavorites() {
             const res = await fetch(`/api/users/${id}/bookmarks`)
             const data = await res.json()
-            setMyFavorites(data.bookmarked)
+            return setMyFavorites(data.bookmarked)
         }
         fetchFavorites()
     }, [id])
 
-    if (!myFavorites) {
-      return null;
-    }
-    return (
-        <>
-            <Header as='h2' attached='top'>Favorites</Header>
-            <Segment attached>
-                <Item.Group divided>
-                    {myFavorites.map((myFavorite, index) =>
-                        <div key={`${index}-${myFavorite.id}`}>
-                            <div className='profile-favs'>
-                                <div className='profile-favs__img'>
-                                    <img src={myFavorite.img} alt='' />
-                                </div>
-                                <div className='profile-favs__stuff'>
-                                    <div className='profile-favs__info'>
-                                        <div className='profile-favs__name'>
-                                            {myFavorite.name}
-                                        </div>
-                                        <div className='profile-favs__address'>
-                                            {myFavorite.address}
-                                        </div>
-                                    </div>
-                                    <div className='profile-favs__btn'>
-                                        <button className='reserve-btn' primary floated='right' onClick={() => {
-                                            let path = `restaurant/profile/${myFavorite.id}`
-                                            history.push(path)
-                                        }}>
-                                            Make Revervation<Icon name='right chevron' />
-                                        </button>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    )}
-                </Item.Group>
-            </Segment>
-        </>
-    )
+
+    return myFavorites === null ? <Spinner type='page' width='75px' height='200px'/> : <Fragment>
+      <div className='page'>
+
+          <div id="content">
+              <div id='mainbar' className='questions-page fc-black-800'>
+                  <div className='questions-grid'>
+                      <h3 className='questions-headline'>Your Bookmarked Questions</h3>
+                      <div className='questions-btn'>
+                          <Link to='/add/question'>
+                              <button className = 's-btn s-btn__primary'>Ask Question</button>
+                          </Link>
+                      </div>
+                  </div>
+                  <div className='questions-tabs'>
+                      <span>19,204,360 questions</span>
+                  </div>
+                  <div className='questions'>
+                      {myFavorites.map(post => (
+                          <PostItem key={post.id} post={post} />))}
+                  </div>
+              </div>
+
+          </div>
+      </div>
+    </Fragment>
 }
 
 

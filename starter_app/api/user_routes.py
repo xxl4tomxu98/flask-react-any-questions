@@ -54,10 +54,10 @@ def user_profile(id):
 @bp.route("/<int:user_id>/bookmarks", methods=["GET", "POST"])
 @login_required
 def bookmarks(user_id):
+    user = User.query.get_or_404(user_id)
     if request.method == "POST":
         if not request.is_json:
             return jsonify({"msg": "Missing JSON in request"}), 400
-        user = User.query.get_or_404(user_id)
         question_id = request.json.get("question_id", None)
         question = Question.query.get(question_id)
         user.bookmarked_questions.append(question)
@@ -65,10 +65,11 @@ def bookmarks(user_id):
         db.session.commit()
         return 'Question bookmarked', 200
     else:
-        response = db.session.query(Question).order_by(
-                      Question.title).options(
-                      joinedload(Question.bookmarked_users)
-                      ).filter(Question.bookmarked_users.any(id=user_id)).all()
+        # response = db.session.query(Question).order_by(
+        #               Question.title).options(
+        #               joinedload(Question.bookmarked_users)
+        #               ).filter(Question.bookmarked_users.any(id=user_id)).all()
+        response = user.bookmarked_questions
         return {'bookmarked': [resp.to_dict() for resp in response]}
 
 

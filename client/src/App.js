@@ -5,7 +5,10 @@ import LoginPanel from './components/LoginPanel';
 import SignUp from './components/SignUp';
 import NavBar from './components/NavBar';
 import HomePage from './components/HomePage/HomePage';
+import TagsPage from './components/TagsPage';
+import TagPage from './components/TagPage';
 import Profile from './components/Profile';
+import QuestionsPage from './components/QuestionsPage';
 import UsersList from './components/UsersList'
 import { setCsrfFunc } from './store/authentication';
 
@@ -69,11 +72,14 @@ function App() {
                     exact={true}
                     component={UsersList}
                 />
+
                 <Route exact path='/' component={HomePage} />
-                {/* <Route exact path='/questions' component={QuestionsPage} />
                 <Route exact path='/tags' component={TagsPage} />
-                <Route exact path='/questions/:id' component={Post} />
                 <Route exact path='/tags/:tagname' component={TagPage} />
+                <Route exact path='/questions' component={QuestionsPage} />
+
+                {/*
+                <Route exact path='/questions/:id' component={Post} />
                 <Route exact path='/add/question' component={PostForm} /> */}
             </Switch>
         </>

@@ -32,6 +32,16 @@ def get_tags():
     return {'list': [tag.to_dict() for tag in response]}
 
 
+@bp.route('posts/tag/<tagname>')
+@login_required
+def get_tagPosts(tagname):
+    tag = Tag.query.filter_by(tagname=tagname).first()
+    print(tag.posts_count)
+    response = tag.tagged_questions
+    print(response)
+    return {'tagPosts': [post.to_dict() for post in response]}
+
+
 @login_required
 @bp.route('/questions/<int:ques_id>', methods=["GET", "POST"])
 def ask_question(qust_id):
@@ -89,7 +99,8 @@ def reviewlist(restaurant_id):
 
 
 @login_required
-@bp.route('/restaurant/reservationcancel/<int:reserv_id>', methods=["DELETE", "GET"])
+@bp.route('/restaurant/reservationcancel/<int:reserv_id>',
+          methods=["DELETE", "GET"])
 def reservationcancel(reserv_id):
     reserv = Reservation.query.filter(Reservation.id == reserv_id).first()
     if reserv:
@@ -109,7 +120,6 @@ def earnpoint(user_id):
         db.session.commit()
         return {"user": user.to_dict()}, 200
     return {}, 404
-
 
 
 @bp.route('/reviews/<int:rev_id>')

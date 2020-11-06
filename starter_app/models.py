@@ -15,6 +15,16 @@ bookmarks = db.Table(
 )
 
 
+poststags = db.Table(
+    'poststags',
+    db.Model.metadata,
+    db.Column(
+        'tag_id', db.Integer, db.ForeignKey('tags.id'), primary_key=True
+    ), db.Column('question_id', db.Integer,
+                 db.ForeignKey('questions.id'), primary_key=True)
+)
+
+
 class User(db.Model, UserMixin):
     __tablename__ = 'users'
 
@@ -24,17 +34,23 @@ class User(db.Model, UserMixin):
     city = db.Column(db.String(40), nullable=False)
     state = db.Column(db.String(40), nullable=False)
     tags = db.Column(db.ARRAY(db.String(100)), nullable=False)
+    posts_count = db.Column(db.Integer, nullable=True, default=0)
     member_since = db.Column(db.DateTime(timezone=True),
                              default=datetime.utcnow)
     last_seen = db.Column(db.DateTime(timezone=True), default=datetime.utcnow)
     reputation = db.Column(db.Integer, nullable=True)
     hashed_password = db.Column(db.String(100), nullable=False)
 
+    questions = db.relationship("Question", backref='user', lazy=True)
     bookmarked_questions = db.relationship('Question', secondary='bookmarks')
     answers = db.relationship('Answer', backref='user', lazy=True)
     comments = db.relationship('Comment', backref='user', lazy=True)
     votes = db.relationship('Vote', lazy='dynamic',
                             cascade='all, delete-orphan')
+
+    @property
+    def posts_count(self):
+        return len(self.questions)
 
     @property
     def password(self):
@@ -55,6 +71,7 @@ class User(db.Model, UserMixin):
           "city": self.city,
           "state": self.state,
           "tags": self.tags,
+          "posts_count": self.posts_count,
           "member_since": self.member_since,
           "last_seen": self.last_seen,
           "reputation": self.reputation,
@@ -81,7 +98,8 @@ class Question(db.Model):
     answers = db.relationship('Answer', backref='question', lazy=True)
     comments = db.relationship('Comment',
                                backref='question', lazy=True)
-    bookmarked_users = db.relationship('User', secondary='bookmarks')
+    question_tags = db.relationship('Tag', back_populates="tagged_questions",
+                                    secondary='poststags')
 
     def to_dict(self):
         return {
@@ -183,6 +201,14 @@ class Tag(db.Model):
     tagname = db.Column(db.String(30), nullable=False)
     created_at = db.Column(db.DateTime(timezone=True), default=datetime.utcnow)
     description = db.Column(db.Text, nullable=False)
+    posts_count = db.Column(db.Integer, nullable=True)
+    tagged_questions = db.relationship('Question',
+                                       back_populates='question_tags',
+                                       secondary='poststags')
+
+    @property
+    def posts_count(self):
+        return len(self.tagged_questions)
 
     def to_dict(self):
         return {
@@ -190,6 +216,7 @@ class Tag(db.Model):
             "tagname": self.tagname,
             "created_at": self.created_at,
             "description": self.description,
+            "posts_count": self.posts_count,
         }
 
 

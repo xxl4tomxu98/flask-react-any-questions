@@ -90,8 +90,8 @@ export const getTopPosts = () => async dispatch => {
 };
 
 //GET TAG POSTS
-export const getTagPosts = tagName => async dispatch => {
-    const res = await fetch(`/api/posts/tag/${tagName}`);
+export const getTagPosts = tagname => async dispatch => {
+    const res = await fetch(`/api/posts/tag/${tagname}`);
     if (res.ok) {
       const tagPosts = await res.json()
       dispatch(loadTagPosts(tagPosts));
@@ -148,6 +148,8 @@ export const deletePost = id => async dispatch => {
 
 const initialState = {
   list: [],
+  tagPosts: [],
+  topPosts: [],
   detail: null,
   errors: [],
 };
@@ -157,12 +159,9 @@ export default function (state = initialState, action) {
       case GET_POSTS:
           return { ...state, ...action.posts };
       case GET_TOP_POSTS:
-          return { ...state, topPosts: action.topPosts };
+          return { ...state, ...action.topPosts };
       case GET_TAG_POSTS:
-          return {
-              ...state,
-              tagPosts: action.tagPosts,
-          };
+          return { ...state, ...action.tagPosts };
       case GET_POST:
           return {
               ...state,
