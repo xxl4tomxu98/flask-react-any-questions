@@ -10,7 +10,7 @@ bp = Blueprint('users', __name__)
 @bp.route('/')
 def index():
     response = User.query.all()
-    return {"users": [user.to_dict() for user in response]}
+    return {"list": [user.to_dict() for user in response]}
 
 
 @bp.route("/<int:user_id>/patch", methods=["GET", "PATCH"])
@@ -45,10 +45,10 @@ def update(user_id):
         return {'errors': errors, "user": user.to_dict()}
 
 
-@bp.route('/<int:id>', methods=["GET", "POST"])
-@login_required
+@bp.route('/<int:id>')
 def user_profile(id):
-    return {}
+    user = User.query.get_or_404(id)
+    return {"user":  user.to_dict()}
 
 
 @bp.route("/<int:user_id>/bookmarks", methods=["GET", "POST"])

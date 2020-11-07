@@ -35,6 +35,8 @@ class User(db.Model, UserMixin):
     state = db.Column(db.String(40), nullable=False)
     tags = db.Column(db.ARRAY(db.String(100)), nullable=False)
     posts_count = db.Column(db.Integer, nullable=True, default=0)
+    answer_count = db.Column(db.Integer, nullable=True, default=0)
+    comment_count = db.Column(db.Integer, nullable=True, default=0)
     member_since = db.Column(db.DateTime(timezone=True),
                              default=datetime.utcnow)
     last_seen = db.Column(db.DateTime(timezone=True), default=datetime.utcnow)
@@ -51,6 +53,14 @@ class User(db.Model, UserMixin):
     @property
     def posts_count(self):
         return len(self.questions)
+
+    @property
+    def answer_count(self):
+        return len(self.answers)
+
+    @property
+    def comment_count(self):
+        return len(self.comments)
 
     @property
     def password(self):
@@ -72,6 +82,8 @@ class User(db.Model, UserMixin):
           "state": self.state,
           "tags": self.tags,
           "posts_count": self.posts_count,
+          "answer_count": self.answer_count,
+          "comment_count": self.comment_count,
           "member_since": self.member_since,
           "last_seen": self.last_seen,
           "reputation": self.reputation,
@@ -89,17 +101,25 @@ class Question(db.Model):
     user_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
     ask_time = db.Column(db.DateTime(timezone=True), default=datetime.utcnow)
     body = db.Column(db.Text, nullable=False)
-    answer_count = db.Column(db.Integer, nullable=True)
-    comment_count = db.Column(db.Integer, nullable=True)
+    answer_count = db.Column(db.Integer, nullable=True, default=0)
+    comment_count = db.Column(db.Integer, nullable=True, default=0)
     accepted_answer_id = db.Column(db.Integer, nullable=True)
-    upvote_count = db.Column(db.Integer, nullable=True)
-    downvote_count = db.Column(db.Integer, nullable=True)
+    upvote_count = db.Column(db.Integer, nullable=True, default=0)
+    downvote_count = db.Column(db.Integer, nullable=True, default=0)
 
     answers = db.relationship('Answer', backref='question', lazy=True)
     comments = db.relationship('Comment',
                                backref='question', lazy=True)
     question_tags = db.relationship('Tag', back_populates="tagged_questions",
                                     secondary='poststags')
+
+    @property
+    def answer_count(self):
+        return len(self.answers)
+
+    @property
+    def comment_count(self):
+        return len(self.comments)
 
     def to_dict(self):
         return {
@@ -128,11 +148,9 @@ class Answer(db.Model):
     answer_time = db.Column(db.DateTime(timezone=True),
                             default=datetime.utcnow)
     content = db.Column(db.Text, nullable=False)
-    upvote_count = db.Column(db.Integer, nullable=True)
-    downvote_count = db.Column(db.Integer, nullable=True)
+    upvote_count = db.Column(db.Integer, nullable=True, default=0)
+    downvote_count = db.Column(db.Integer, nullable=True, default=0)
     ranking = db.Column(db.Float, index=True, default=0)
-
-    comments = db.relationship('Comment', backref='answer', lazy='dynamic')
 
     def to_dict(self):
         return {
@@ -178,8 +196,6 @@ class Comment(db.Model):
     question_id = db.Column(db.Integer,
                             db.ForeignKey('questions.id'), nullable=False)
     user_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
-    answer_id = db.Column(db.Integer,
-                          db.ForeignKey('answers.id'), nullable=False)
     description = db.Column(db.Text, nullable=False)
 
     def to_dict(self):
@@ -188,7 +204,6 @@ class Comment(db.Model):
             "comment_time": self.comment_time,
             "question_id": self.question_id,
             "user_id": self.user_id,
-            "answer_id": self.answer_id,
             "description": self.description
         }
 
@@ -201,7 +216,7 @@ class Tag(db.Model):
     tagname = db.Column(db.String(30), nullable=False)
     created_at = db.Column(db.DateTime(timezone=True), default=datetime.utcnow)
     description = db.Column(db.Text, nullable=False)
-    posts_count = db.Column(db.Integer, nullable=True)
+    posts_count = db.Column(db.Integer, nullable=True, default=0)
     tagged_questions = db.relationship('Question',
                                        back_populates='question_tags',
                                        secondary='poststags')

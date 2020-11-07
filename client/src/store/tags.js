@@ -1,6 +1,6 @@
 import { removeUser } from './authentication';
 export const GET_TAGS = 'GET_TAGS';
-export const TAG_ERROR = 'TAG_ERROR';
+
 
 const loadTags = tags => {
   return {
@@ -9,12 +9,6 @@ const loadTags = tags => {
   }
 }
 
-const tagErrors = (errors) => {
-  return {
-    type: TAG_ERROR,
-    errors
-  };
-};
 
 
 export const getTags = () => async dispatch => {
@@ -41,11 +35,7 @@ export default function(state = initialState, action) {
               ...state,
               ...action.tags,
           };
-      case TAG_ERROR:
-          return{
-              ...state,
-              ...action.errors,
-          };
+
       default:
           return state;
   }

@@ -43,11 +43,13 @@ const PostItem = ({ post: { id, title, body, tags, user_id, answer_count, commen
                 <div className='brief'>
                     {body.substring(0, 200)}...
                 </div>
-                {/* <div className='question-tags'>
-                    <Link className='s-tag' to={`/tags/${tagname}`}>
-                        {tagname}
-                    </Link>
-                </div> */}
+                <div className='question-tags'>
+                    {tags.map((tag, idx) => (
+                        <Link className='s-tag' key={`${tag}-${idx}`} to={`/tags/${tag}`}>
+                            {tag}
+                        </Link>
+                    ))}
+                </div>
                 <div className='question-user'>
                     <div className='user-info'>
                         <div className='user-action-time'>asked { moment(ask_time).fromNow(true) } ago</div>

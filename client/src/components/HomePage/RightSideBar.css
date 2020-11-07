@@ -1,9 +1,9 @@
 .side-bar {
   float: right;
   width: 300px;
-  margin: 0 0 15px;
+  margin: 15px 0 15px;
   padding-left: 5px;
-  background-color: #3d3d3d;
+  background-color: none;
   height: 100%;
 
   .s-sidebarwidget__yellow {

@@ -9,12 +9,11 @@ import Spinner from "./Spinner";
 
 const TagPage = () => {
     const posts = useSelector(state => state.posts.tagPosts);
-    const tags = useSelector(state => state.tags.list);
     const { tagname } = useParams();
     const dispatch = useDispatch();
     useEffect(() => {
         dispatch(getTagPosts(tagname));
-    }, [dispatch]);
+    }, [dispatch, tagname]);
 
     return posts === null ? <Spinner type='page' width='75px' height='200px'/> : <Fragment>
         <div className='page'>

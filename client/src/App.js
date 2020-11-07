@@ -4,12 +4,15 @@ import { useLocation, Switch, Route } from 'react-router-dom';
 import LoginPanel from './components/LoginPanel';
 import SignUp from './components/SignUp';
 import NavBar from './components/NavBar';
+import Post from './components/Post';
+import PostForm from './components/PostForm';
 import HomePage from './components/HomePage/HomePage';
 import TagsPage from './components/TagsPage';
 import TagPage from './components/TagPage';
 import Profile from './components/Profile';
 import QuestionsPage from './components/QuestionsPage';
-import UsersList from './components/UsersList'
+import UsersList from './components/UsersList';
+import UserPage from './components/UserPage'
 import { setCsrfFunc } from './store/authentication';
 
 
@@ -58,7 +61,12 @@ function App() {
             <Switch>
                 <Route path="/login" component={LoginPanel} />
                 <Route
-                    path="/users/:id"
+                    path="/users/:userId"
+                    exact={true}
+                    component={UserPage}
+                />
+                <Route
+                    path="/currentUser"
                     exact={true}
                     component={Profile}
                 />
@@ -78,9 +86,8 @@ function App() {
                 <Route exact path='/tags/:tagname' component={TagPage} />
                 <Route exact path='/questions' component={QuestionsPage} />
 
-                {/*
                 <Route exact path='/questions/:id' component={Post} />
-                <Route exact path='/add/question' component={PostForm} /> */}
+                <Route exact path='/add/question' component={PostForm} />
             </Switch>
         </>
     );

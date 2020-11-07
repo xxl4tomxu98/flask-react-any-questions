@@ -18,93 +18,110 @@ def search():
     return {'questions': [qust.to_dict() for qust in questions]}
 
 
-@bp.route('/posts')
+@bp.route('/posts', methods=["GET", "POST"])
 @login_required
 def get_questions():
-    response = Question.query.all()
-    return {'list': [ques.to_dict() for ques in response]}
+    if request.method == "POST":
+        if not request.is_json:
+            return jsonify({"msg": "Missing JSON in request"}), 400
+        user_id = current_user.id
+        title = request.json.get("title", None)
+        body = request.json.get("body", None)
+        tags = request.json.get("tags", None)
+        if not body or not tags:
+            return {"errors": ["Please write question body and tags"]}, 400
+        new_question = Question(user_id=user_id, title=title,
+                                body=body, tags=tags)
+        db.session.add(new_question)
+        db.session.commit()
+        return {'question': new_question.to_dict()}, 200
+    else:
+        response = Question.query.all()
+        return {'list': [ques.to_dict() for ques in response]}
 
 
 @bp.route('/tags')
-@login_required
 def get_tags():
     response = Tag.query.all()
     return {'list': [tag.to_dict() for tag in response]}
 
 
 @bp.route('posts/tag/<tagname>')
-@login_required
 def get_tagPosts(tagname):
     tag = Tag.query.filter_by(tagname=tagname).first()
-    print(tag.posts_count)
     response = tag.tagged_questions
-    print(response)
     return {'tagPosts': [post.to_dict() for post in response]}
 
 
-@login_required
-@bp.route('/questions/<int:ques_id>', methods=["GET", "POST"])
-def ask_question(qust_id):
-    qust = Question.query.get(qust_id)
-    if not qust:
+@bp.route('/posts/<int:id>')
+def get_question(id):
+    quest = Question.query.get_or_404(id)
+    if not quest:
         return {"errors": ["Invalid question requested"]}, 401
+    return {'question': question.to_dict()}
+
+
+@bp.route('/posts/<int:id>/comments', methods=["GET", "POST"])
+@login_required
+def get_comments(id):
     if request.method == "POST":
         if not request.is_json:
             return jsonify({"msg": "Missing JSON in request"}), 400
-        title = request.json.get("title", None)
-        detail = request.json.get("detail", None)
-        tags = request.json.get("tags", None)
-        ask_time = request.json.get("ask_time", None)
-        if not content or not tag:
-            return {"errors": ["Please fill out question and tag"]}, 400
-        new_question = Question(ques_id=qust_id, user_id=current_user.id,
-                                detail=detail, tags=tags, ask_time=ask_time)
-        db.session.add(new_question)
+        user_id = current_user.id
+        question_id = id
+        description = request.json.get("description", None)
+        if not description:
+            return {"errors": ["Please write comment body."]}, 400
+        new_comment = Comment(user_id=user_id, description=description,
+                              question_id=question_id)
+        db.session.add(new_comment)
         db.session.commit()
-    response = Question.query.filter_by(id=qust_id).all()
-    return {'questions': [question.to_dict() for question in response]}
+        return {'comment': new_comment.to_dict()}, 200
+    else:
+        response = Comment.query.filter_by(question_id=question_id).all()
+        return {'list': [comm.to_dict() for comm in response]}
+
+
+@bp.route('/posts/<int:id>/answers', methods=["GET", "POST"])
+@login_required
+def get_answers(id):
+    if request.method == "POST":
+        if not request.is_json:
+            return jsonify({"msg": "Missing JSON in request"}), 400
+        user_id = current_user.id
+        question_id = id
+        content = request.json.get("content", None)
+        if not content:
+            return {"errors": ["Please write answer body."]}, 400
+        new_answer = Answer(user_id=user_id, content=content,
+                            question_id=question_id)
+        db.session.add(new_answer)
+        db.session.commit()
+        return {'answer': new_answer.to_dict()}, 200
+    else:
+        response = Answer.query.filter_by(question_id=question_id).all()
+        return {'list': [answ.to_dict() for answ in response]}
 
 
 @login_required
-@bp.route('/restaurant/reserve', methods=["GET", "POST"])
-def reserveRes():
-    if not request.is_json:
-        return jsonify({"msg": "Missing JSON in request"}), 400
-    user_id = request.json.get("user_id", None)
-    restaurant_id = request.json.get("restaurant_id", None)
-    group_num = request.json.get("group_num", None)
-    start_time = request.json.get("start_time", None)
-    newReserve = Reservation(user_id=user_id, restaurant_id=restaurant_id,
-                             group_num=group_num, start_time=start_time)
-    db.session.add(newReserve)
-    db.session.commit()
-    return {'reservation': newReserve.to_dict()}, 200
-
-
-@bp.route('/restaurant/reservationlist/<int:user_id>')
-def reservationlist(user_id):
-    response = db.session.query(Reservation) \
-                      .options(joinedload(Reservation.restaurant)) \
-                      .filter(Reservation.user_id == user_id)
-    return {'reservation': [reservation.to_dict() for reservation in response]}
-
-
-@bp.route('/restaurant/review/<int:restaurant_id>')
-def reviewlist(restaurant_id):
-
-    response = db.session.query(Review) \
-                      .options(joinedload(Review.user)) \
-                      .filter(Review.restaurant_id == restaurant_id)
-    return {'reservation': [reservation.to_dict() for reservation in response]}
+@bp.route('/posts/<int:postId>/comments/<int:commentId>',
+          methods=["DELETE"])
+def del_comment(postId, commentId):
+    comment = Comment.query.filter(question_id=postId, id=commentId).first()
+    if comment:
+        db.session.delete(comment)
+        db.session.commit()
+        return {}, 200
+    return {}, 404
 
 
 @login_required
-@bp.route('/restaurant/reservationcancel/<int:reserv_id>',
-          methods=["DELETE", "GET"])
-def reservationcancel(reserv_id):
-    reserv = Reservation.query.filter(Reservation.id == reserv_id).first()
-    if reserv:
-        db.session.delete(reserv)
+@bp.route('/posts/<int:postId>/answers/<int:answerId>',
+          methods=["DELETE"])
+def del_answer(postId, answerId):
+    answer = Answer.query.filter(question_id=postId, id=answerId).first()
+    if comment:
+        db.session.delete(answer)
         db.session.commit()
         return {}, 200
     return {}, 404

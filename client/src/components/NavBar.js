@@ -1,7 +1,7 @@
 import React, { Fragment } from 'react';
 import { useSelector, useDispatch } from 'react-redux'
 import { logout } from '../store/authentication';
-import { useHistory, Link } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { ReactComponent as Logo } from '../assets/LogoMd.svg';
 import { ReactComponent as Search } from '../assets/Search.svg';
 import './NavBar.css';
@@ -16,25 +16,14 @@ const NavBar = () => {
     const handleLogout = async () => {
         dispatch(logout());
     }
-    const handleClickHome = () => {
-        history.push('/')
-    }
-
-    const handleClickUser = () => {
-      history.push('/users')
-    }
-
-    const handleProfile = (e, { name }) => {
-        history.push('/profile')
-    }
-
-    const history = useHistory()
-
 
     const authLinks = (
       <div className='btns'>
           <Link onClick={ handleLogout } to='/login'>
               <button type='button' className='s-btn s-btn__filled'>Log out</button>
+          </Link>
+          <Link to='/currentUser'>
+              <button type='button' className='s-btn s-btn__filled'>Profile</button>
           </Link>
       </div>
     );

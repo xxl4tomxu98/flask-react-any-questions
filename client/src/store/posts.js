@@ -1,10 +1,10 @@
 import { removeUser } from './authentication';
- const GET_POSTS = 'GET_POSTS';
- const GET_POST = 'GET_POST';
- const GET_TOP_POSTS = 'GET_TOP_POSTS';
- const GET_TAG_POSTS = 'GET_TAG_POSTS';
- const POST_ERROR = 'POST_ERROR';
- const DELETE_POST = 'DELETE_POST';
+const GET_POSTS = 'GET_POSTS';
+const GET_POST = 'GET_POST';
+const GET_TOP_POSTS = 'GET_TOP_POSTS';
+const GET_TAG_POSTS = 'GET_TAG_POSTS';
+const POST_ERROR = 'POST_ERROR';
+const DELETE_POST = 'DELETE_POST';
 
 const load = posts => {
   return {
@@ -103,8 +103,9 @@ export const getTagPosts = tagname => async dispatch => {
 };
 
 // Add post
-export const addPost = formData => async dispatch => {
-    const res = await fetch('/api/posts/', {
+export const addPost = formData => async (dispatch, getState) => {
+    const fetchWithCSRF = getState().authentication.csrf;
+    const res = await fetchWithCSRF('/api/posts/', {
       method: "post",
       headers: {
         "Content-Type": "application/json"
@@ -165,7 +166,7 @@ export default function (state = initialState, action) {
       case GET_POST:
           return {
               ...state,
-              detail: action.post,
+              ...action.post,
           };
       case DELETE_POST:
           return {

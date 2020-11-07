@@ -2,8 +2,7 @@ import React, {useEffect} from 'react';
 import { Link } from 'react-router-dom';
 import { getTags } from '../../store/tags';
 import { useSelector, useDispatch } from 'react-redux';
-import { ReactComponent as Stackoverflow } from '../../assets/q_and_a.svg';
-import { ReactComponent as Stackoverflowhite } from '../../assets/quiz.svg';
+import { ReactComponent as Anyquestions } from '../../assets/quiz.svg';
 import './RightSideBar.css';
 
 const RightSideBar = () => {
@@ -61,7 +60,7 @@ const RightSideBar = () => {
                     <li className="s-sidebarwidget--item grid px16">
                         <div className="grid--cell1 fl-shrink0">
                             <div className="favicon favicon-stackoverflow" title="Stack Overflow">
-                                <Stackoverflow />
+                                <Anyquestions />
                             </div>
                         </div>
                         <div className="grid--cell">
@@ -108,7 +107,7 @@ const RightSideBar = () => {
                     <li className="s-sidebarwidget--item grid px16">
                         <div className="grid--cell1 fl-shrink0">
                             <div className="favicon favicon-stackoverflowmeta" title="Meta Stack Overflow">
-                                <Stackoverflowhite />
+                                <Anyquestions />
                             </div>
                         </div>
                         <div className="grid--cell">
@@ -122,7 +121,7 @@ const RightSideBar = () => {
                     <li className="s-sidebarwidget--item grid px16">
                         <div className="grid--cell1 fl-shrink0">
                             <div className="favicon favicon-stackoverflowmeta" title="Meta Stack Overflow">
-                                <Stackoverflowhite />
+                                <Anyquestions />
                             </div>
                         </div>
                         <div className="grid--cell">

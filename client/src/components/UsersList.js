@@ -1,20 +1,18 @@
-import React, { useEffect, useState, Fragment } from 'react';
+import React, { useEffect, Fragment } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
 import './UsersPage.css'
 import SideBar from './HomePage/SideBar';
 import RightSideBar from './HomePage/RightSideBar';
 import Spinner from "./Spinner";
 import User from './User';
+import { getUsers } from '../store/users';
 
-function UsersList(props) {
-    const [users, setUsers] = useState([]);
+function UsersList() {
+    const users = useSelector(state => state.users.list);
+    const dispatch = useDispatch();
     useEffect(() => {
-        async function fetchData() {
-            const response = await fetch('/api/users');
-            const responseData = await response.json();
-            setUsers(responseData.users);
-        }
-        fetchData();
-    }, []);
+        dispatch(getUsers());
+    }, [dispatch]);
 
 
     return users === null ? <Spinner type='page' width='75px' height='200px'/> : <Fragment>
