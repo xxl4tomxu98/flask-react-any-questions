@@ -10,13 +10,26 @@ const PostForm = () => {
     const currentUserId = useSelector(state => state.authentication.id);
     const dispatch = useDispatch();
     const [ formData, setFormData ] = useState({
-        user_id: currentUserId,
         title: '',
         body: '',
         tags:[],
     });
     const { title, body, tags } = formData;
-    const onChange = e => setFormData({ ...formData, [e.target.name]: e.target.value });
+
+    function onChange(e){
+      const { name, value } = e.target;
+      if(name!=="tags"){
+          return setFormData({ ...formData, [name]: value });
+      } else{
+          const selected=[];
+          let selectedOption=(e.target.selectedOptions);
+          for (let i = 0; i < selectedOption.length; i++){
+              selected.push(selectedOption.item(i).value)
+          }
+          return setFormData({ ...formData, [name]: selected})
+      }
+    }
+
 
     const onSubmit = async e => {
         e.preventDefault();
@@ -42,9 +55,9 @@ const PostForm = () => {
                                 <div className='question-layout'>
                                     <div className='title-grid'>
                                         <label className='form-label s-label'>
-                                            Title
+                                            Question Title
                                             <p className='title-desc fw-normal fs-caption'>
-                                                Be specific and imagine you’re asking a question to another person
+                                                Be specific and polite to your community members
                                             </p>
                                         </label>
                                         <input
@@ -59,9 +72,8 @@ const PostForm = () => {
                                     </div>
                                     <div className='body-grid'>
                                         <label className='form-label s-label fc-black-800'>
-                                            Body
-                                            <p className='body-desc fw-normal fs-caption fc-black-800'>Include all the information someone would
-                                                need to answer your question</p>
+                                            Question Body
+                                            <p className='body-desc fw-normal fs-caption fc-black-800'>Include all the information someone would need to answer your question</p>
                                         </label>
                                         <textarea
                                             className='s-textarea'
@@ -77,12 +89,12 @@ const PostForm = () => {
                                     </div>
                                     <div className='tag-grid'>
                                         <label className='form-label s-label'>
-                                            Tag Name
+                                            Question Tag Names
                                             <p className='tag-desc fw-normal fs-caption'>
                                                 Add up to 5 tags to describe what your question is about
                                             </p>
                                         </label>
-                                        <select multiple value={tags} id="tags" placeholder="e.g. (ajax flask string)" onChange=   {e => onChange(e)} className='tag-input s-input'>
+                                        <select multiple value={tags} name="tags" placeholder="e.g. (ajax flask string)" onChange={e => onChange(e)} className='tag-input s-input'>
                                         {specialtyArr.map((item, index) => <option key={`${item}-${index}`} tags={item}>{item}</option>)}
                                         </select>
                                     </div>
@@ -115,7 +127,7 @@ const PostForm = () => {
                                                     <div>
                                                         <img src='https://cdn.sstatic.net/Img/list-1.svg?v=e8dd475ba207' width='16' height='16' alt='1.' />
                                                     </div>
-                                                    <span>Summarize the problem</span>
+                                                    <span>Summarize the Problem</span>
                                                 </div>
                                             </button>
                                             <div className='inst'>
@@ -134,7 +146,7 @@ const PostForm = () => {
                                                     <div>
                                                         <img src='https://cdn.sstatic.net/Img/list-2.svg?v=9382fc2c3631' width='16' height='16' alt='2.' />
                                                     </div>
-                                                    <span>Summarize the problem</span>
+                                                    <span>Explain Steps Explored</span>
                                                 </div>
                                             </button>
                                             <div className='inst'>
@@ -151,7 +163,7 @@ const PostForm = () => {
                                                     <div>
                                                         <img src='https://cdn.sstatic.net/Img/list-3.svg?v=323a95564232' width='16' height='16' alt='3.' />
                                                     </div>
-                                                    <span>Summarize the problem</span>
+                                                    <span>Provide Code Snippets</span>
                                                 </div>
                                             </button>
                                             <div className='inst'>

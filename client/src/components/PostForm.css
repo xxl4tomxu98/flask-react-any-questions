@@ -236,13 +236,11 @@ body {
                   margin-bottom: 13px;
                 }
               }
-
               .step-section {
                 margin-left: -16px;
                 margin-right: -16px;
                 margin-bottom: 0;
                 border-radius: 3px;
-
                 .step {
                   border-bottom: 1px solid #404345;
                   list-style: none;

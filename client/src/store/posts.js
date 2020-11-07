@@ -106,13 +106,12 @@ export const getTagPosts = tagname => async dispatch => {
 export const addPost = formData => async (dispatch, getState) => {
     const fetchWithCSRF = getState().authentication.csrf;
     const res = await fetchWithCSRF('/api/posts/', {
-      method: "post",
+      method: "POST",
       headers: {
         "Content-Type": "application/json"
       },
       body: JSON.stringify(formData)
     });
-
     if (res.ok) {
       dispatch(getPosts());
       return res;
@@ -151,7 +150,7 @@ const initialState = {
   list: [],
   tagPosts: [],
   topPosts: [],
-  detail: null,
+  post: null,
   errors: [],
 };
 

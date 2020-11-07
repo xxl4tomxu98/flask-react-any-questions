@@ -20,7 +20,7 @@ def search():
 
 @bp.route('/posts', methods=["GET", "POST"])
 @login_required
-def get_questions():
+def questions():
     if request.method == "POST":
         if not request.is_json:
             return jsonify({"msg": "Missing JSON in request"}), 400
