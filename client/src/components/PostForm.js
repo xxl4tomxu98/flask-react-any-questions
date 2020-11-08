@@ -31,9 +31,9 @@ const PostForm = () => {
     }
 
 
-    const onSubmit = async e => {
+    const onSubmit = e => {
         e.preventDefault();
-        await dispatch(addPost(formData));
+        dispatch(addPost(formData));
     };
 
     if (!currentUserId) {

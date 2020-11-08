@@ -111,7 +111,7 @@ const Post = () => {
                                                     <Link className='post-links' title='Follow this question to receive notifications' to='/'>
                                                         follow
                                                     </Link>
-                                                    {auth.id && parseInt(post.user_id) === auth.user.id && (
+                                                    {auth.id && parseInt(post.user_id) === auth.id && (
                                                         <Link
                                                             className='s-link s-link__danger'
                                                             style={{paddingLeft: '4px'}}
@@ -162,7 +162,7 @@ const Post = () => {
                                                                 { moment(comment.comment_time).fromNow(true) } ago
                                                             </span>
                                                         </div>
-                                                        {auth.id && parseInt(comment.user_id) === auth.user.id && (
+                                                        {auth.id && parseInt(comment.user_id) === auth.id && (
                                                             <Link
                                                                 className='s-tag s-tag__moderator'
                                                                 style={{marginTop: '4px'}}
@@ -269,7 +269,7 @@ const Post = () => {
                                                         <Link className='answer-links' title='Follow this question to receive notifications' to='/'>
                                                             follow
                                                         </Link>
-                                                        {auth.id && parseInt(answer.user_id) === auth.user.id && (
+                                                        {auth.id && parseInt(answer.user_id) === auth.id && (
                                                             <Link
                                                                 className='s-link s-link__danger'
                                                                 style={{paddingLeft: '4px'}}

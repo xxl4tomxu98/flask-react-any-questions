@@ -97,7 +97,7 @@ class Question(db.Model):
 
     id = db.Column(db.Integer, primary_key=True)
     tags = db.Column(db.ARRAY(db.String(100)), nullable=False)
-    title = db.Column(db.String(100))
+    title = db.Column(db.String(100), nullable=False)
     user_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
     ask_time = db.Column(db.DateTime(timezone=True), default=datetime.utcnow)
     body = db.Column(db.Text, nullable=False)

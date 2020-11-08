@@ -1,7 +1,7 @@
 from flask import Blueprint, request, jsonify
 from flask_login import current_user, login_required
 from sqlalchemy import or_
-from starter_app.models import db, User, Question, Tag
+from starter_app.models import db, User, Question, Tag, Comment, Answer
 from sqlalchemy.orm import joinedload
 
 bp = Blueprint("main", __name__)
@@ -58,17 +58,17 @@ def get_question(id):
     quest = Question.query.get_or_404(id)
     if not quest:
         return {"errors": ["Invalid question requested"]}, 401
-    return {'question': question.to_dict()}
+    return {'post': quest.to_dict()}
 
 
 @bp.route('/posts/<int:id>/comments', methods=["GET", "POST"])
 @login_required
-def get_comments(id):
+def comments(id):
+    question_id = id
     if request.method == "POST":
         if not request.is_json:
             return jsonify({"msg": "Missing JSON in request"}), 400
         user_id = current_user.id
-        question_id = id
         description = request.json.get("description", None)
         if not description:
             return {"errors": ["Please write comment body."]}, 400
@@ -84,12 +84,12 @@ def get_comments(id):
 
 @bp.route('/posts/<int:id>/answers', methods=["GET", "POST"])
 @login_required
-def get_answers(id):
+def answers(id):
+    question_id = id
     if request.method == "POST":
         if not request.is_json:
             return jsonify({"msg": "Missing JSON in request"}), 400
         user_id = current_user.id
-        question_id = id
         content = request.json.get("content", None)
         if not content:
             return {"errors": ["Please write answer body."]}, 400
