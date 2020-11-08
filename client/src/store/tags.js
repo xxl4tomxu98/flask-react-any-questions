@@ -1,6 +1,5 @@
 import { removeUser } from './authentication';
-export const GET_TAGS = 'GET_TAGS';
-
+const GET_TAGS = 'GET_TAGS';
 
 const loadTags = tags => {
   return {
@@ -8,7 +7,6 @@ const loadTags = tags => {
     tags
   }
 }
-
 
 
 export const getTags = () => async dispatch => {
@@ -22,6 +20,8 @@ export const getTags = () => async dispatch => {
     throw res;
 };
 
+
+
 const initialState = {
   list: [],
   tag: null,
@@ -29,14 +29,13 @@ const initialState = {
 };
 
 export default function(state = initialState, action) {
-  switch (action.type) {
-      case GET_TAGS:
-          return{
-              ...state,
-              ...action.tags,
-          };
-
-      default:
-          return state;
-  }
+    switch (action.type) {
+        case GET_TAGS:
+            return{
+                ...state,
+                ...action.tags,
+            };
+        default:
+            return state;
+    }
 }

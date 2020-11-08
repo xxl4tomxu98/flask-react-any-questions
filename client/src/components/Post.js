@@ -15,7 +15,7 @@ import Spinner from "./Spinner";
 
 const Post = () => {
     const auth = useSelector(state => state.authentication);
-    const post = useSelector(state => state.posts);
+    const post = useSelector(state => state.posts.post);
     const comments = useSelector(state => state.comments.list);
     const answers = useSelector(state => state.answers.list);
     const dispatch = useDispatch();
@@ -94,11 +94,13 @@ const Post = () => {
                                 </div>
                                 <div className='post-cell'>
                                     <div className='post-text fc-black-800'>
-                                        {post.post_body}
+                                        {post.body}
                                     </div>
                                     <div className='post-tags fc-black-800'>
                                         <div className='tag-cell'>
-                                            <Link className='s-tag' to={`/tags/${post.tagname}`}>{post.tagname}</Link>
+                                          {post.tags.map((tag,idx) => (
+                                            <Link className='s-tag' key={`${tag}-${idx}`} to={`/tags/${tag}`}>{tag}</Link>
+                                          ))}
                                         </div>
                                     </div>
                                     <div className='post-actions fc-black-800'>
@@ -150,7 +152,7 @@ const Post = () => {
                                                     <div className='comment-text fc-black-800'>
                                                         <div className='comment-body'>
                                                                 <span className='body'>
-                                                                    {comment.body}
+                                                                    {comment.description}
                                                                 </span>
                                                             &nbsp;&ndash;&nbsp;
                                                             <Link className='s-tag' to={`/users/${comment.user_id}`}>
