@@ -99,6 +99,8 @@ class Question(db.Model):
     tags = db.Column(db.ARRAY(db.String(100)), nullable=False)
     title = db.Column(db.String(100), nullable=False)
     user_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
+    username = db.Column(db.String(40), nullable=False,
+                         default='demo')
     ask_time = db.Column(db.DateTime(timezone=True), default=datetime.utcnow)
     body = db.Column(db.Text, nullable=False)
     answer_count = db.Column(db.Integer, nullable=True, default=0)
@@ -127,6 +129,7 @@ class Question(db.Model):
             "tags": self.tags,
             "title": self.title,
             "user_id": self.user_id,
+            "username": self.username,
             "ask_time": self.ask_time,
             "body": self.body,
             "answer_count": self.answer_count,
@@ -143,6 +146,8 @@ class Answer(db.Model):
 
     id = db.Column(db.Integer, primary_key=True)
     user_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
+    username = db.Column(db.String(40), nullable=False,
+                         default='demo')
     question_id = db.Column(db.Integer,
                             db.ForeignKey('questions.id'), nullable=False)
     answer_time = db.Column(db.DateTime(timezone=True),
@@ -156,6 +161,7 @@ class Answer(db.Model):
         return {
             "id": self.id,
             "user_id": self.user_id,
+            "username": self.username,
             "question_id": self.question_id,
             "answer_time": self.answer_time,
             "content": self.content,
@@ -196,6 +202,8 @@ class Comment(db.Model):
     question_id = db.Column(db.Integer,
                             db.ForeignKey('questions.id'), nullable=False)
     user_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
+    username = db.Column(db.String(40), nullable=False,
+                         default='demo')
     description = db.Column(db.Text, nullable=False)
 
     def to_dict(self):
@@ -204,6 +212,7 @@ class Comment(db.Model):
             "comment_time": self.comment_time,
             "question_id": self.question_id,
             "user_id": self.user_id,
+            "username": self.username,
             "description": self.description
         }
 

@@ -1,12 +1,11 @@
 import React from 'react';
 import moment from 'moment';
-import { useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 
 import './PostItem.css';
 
-const PostItem = ({ post: { id, title, body, tags, user_id, answer_count, comment_count, ask_time } }) => {
-    const username = useSelector(state => state.authentication.user_name);
+const PostItem = ({ post: { id, title, body, tags, user_id, username, answer_count, comment_count, ask_time } }) => {
+
     const answerVoteUp = (
         <div className='vote answer'>
             <span className='vote-count fc-green-500'>{answer_count}</span>

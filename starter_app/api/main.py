@@ -18,26 +18,30 @@ def search():
     return {'questions': [qust.to_dict() for qust in questions]}
 
 
-@bp.route('/posts', methods=["GET", "POST"])
+@bp.route('/posts', methods=["POST"])
 @login_required
-def questions():
-    if request.method == "POST":
-        if not request.is_json:
-            return jsonify({"msg": "Missing JSON in request"}), 400
-        user_id = current_user.id
-        title = request.json.get("title", None)
-        body = request.json.get("body", None)
-        tags = request.json.get("tags", None)
-        if not body or not tags:
-            return {"errors": ["Please write question body and tags"]}, 400
-        new_question = Question(user_id=user_id, title=title,
-                                body=body, tags=tags)
-        db.session.add(new_question)
-        db.session.commit()
-        return {'question': new_question.to_dict()}, 200
-    else:
-        response = Question.query.all()
-        return {'list': [ques.to_dict() for ques in response]}
+def post_question():
+    if not request.is_json:
+        return jsonify({"msg": "Missing JSON in request"}), 400
+    user_id = current_user.id
+    title = request.json.get("title", None)
+    body = request.json.get("body", None)
+    tags = request.json.get("tags", None)
+    user = User.query.get_or_404(user_id)
+    username = user.user_name
+    if not body or not tags:
+        return {"errors": ["Please write question body and tags"]}, 400
+    new_question = Question(user_id=user_id, username=username,
+                            title=title, body=body, tags=tags)
+    db.session.add(new_question)
+    db.session.commit()
+    return {'question': new_question.to_dict()}, 200
+
+
+@bp.route('/posts')
+def get_questions():
+    response = Question.query.all()
+    return {'list': [ques.to_dict() for ques in response]}
 
 
 @bp.route('/tags')
@@ -61,46 +65,54 @@ def get_question(id):
     return {'post': quest.to_dict()}
 
 
-@bp.route('/posts/<int:id>/comments', methods=["GET", "POST"])
+@bp.route('/posts/<int:id>/comments', methods=["POST"])
 @login_required
-def comments(id):
+def create_comment(id):
     question_id = id
-    if request.method == "POST":
-        if not request.is_json:
-            return jsonify({"msg": "Missing JSON in request"}), 400
-        user_id = current_user.id
-        description = request.json.get("description", None)
-        if not description:
-            return {"errors": ["Please write comment body."]}, 400
-        new_comment = Comment(user_id=user_id, description=description,
-                              question_id=question_id)
-        db.session.add(new_comment)
-        db.session.commit()
-        return {'comment': new_comment.to_dict()}, 200
-    else:
-        response = Comment.query.filter_by(question_id=question_id).all()
-        return {'list': [comm.to_dict() for comm in response]}
+    if not request.is_json:
+        return jsonify({"msg": "Missing JSON in request"}), 400
+    user_id = current_user.id
+    username = User.query.get_or_404(user_id).user_name
+    description = request.json.get("description", None)
+    if not description:
+        return {"errors": ["Please write comment body."]}, 400
+    new_comment = Comment(user_id=user_id, description=description,
+                          username=username, question_id=question_id)
+    db.session.add(new_comment)
+    db.session.commit()
+    return {'comment': new_comment.to_dict()}, 200
 
 
-@bp.route('/posts/<int:id>/answers', methods=["GET", "POST"])
+@bp.route('/posts/<int:id>/comments')
+def get_comments(id):
+    question_id = id
+    response = Comment.query.filter_by(question_id=question_id).all()
+    return {'list': [comm.to_dict() for comm in response]}
+
+
+@bp.route('/posts/<int:id>/answers', methods=["POST"])
 @login_required
 def answers(id):
     question_id = id
-    if request.method == "POST":
-        if not request.is_json:
-            return jsonify({"msg": "Missing JSON in request"}), 400
-        user_id = current_user.id
-        content = request.json.get("content", None)
-        if not content:
-            return {"errors": ["Please write answer body."]}, 400
-        new_answer = Answer(user_id=user_id, content=content,
-                            question_id=question_id)
-        db.session.add(new_answer)
-        db.session.commit()
-        return {'answer': new_answer.to_dict()}, 200
-    else:
-        response = Answer.query.filter_by(question_id=question_id).all()
-        return {'list': [answ.to_dict() for answ in response]}
+    if not request.is_json:
+        return jsonify({"msg": "Missing JSON in request"}), 400
+    user_id = current_user.id
+    username = User.query.get_or_404(user_id).user_name
+    content = request.json.get("content", None)
+    if not content:
+        return {"errors": ["Please write answer body."]}, 400
+    new_answer = Answer(user_id=user_id, content=content,
+                        username=username, question_id=question_id)
+    db.session.add(new_answer)
+    db.session.commit()
+    return {'answer': new_answer.to_dict()}, 200
+
+
+@bp.route('/posts/<int:id>/answers')
+def get_answers(id):
+    question_id = id
+    response = Answer.query.filter_by(question_id=question_id).all()
+    return {'list': [answ.to_dict() for answ in response]}
 
 
 @login_required
