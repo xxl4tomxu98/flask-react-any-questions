@@ -3,6 +3,7 @@ const GET_POSTS = 'GET_POSTS';
 const GET_POST = 'GET_POST';
 const GET_TOP_POSTS = 'GET_TOP_POSTS';
 const GET_TAG_POSTS = 'GET_TAG_POSTS';
+const ADD_POST = 'ADD_POSTS';
 const POST_ERROR = 'POST_ERROR';
 const DELETE_POST = 'DELETE_POST';
 
@@ -34,6 +35,13 @@ const loadTagPosts = tagPosts => {
   }
 }
 
+const createPost = post => {
+  return {
+    type: ADD_POST,
+    post
+  }
+}
+
 const removePost = (postId) => {
   return {
       type: DELETE_POST,
@@ -54,11 +62,11 @@ const formErrors = (errors) => {
 export const getPosts = () => async dispatch => {
     const res = await fetch('/api/posts');
     if (res.ok) {
-      const posts = await res.json();
-      dispatch(load(posts));
-      return posts;
+        const posts = await res.json();
+        dispatch(load(posts));
+        return posts;
     } else if (res.status === 401) {
-      return dispatch(removeUser());
+        return dispatch(removeUser());
     }
     throw res;
 };
@@ -67,11 +75,11 @@ export const getPosts = () => async dispatch => {
 export const getPost = id => async dispatch => {
     const res = await fetch(`/api/posts/${id}`);
     if (res.ok) {
-      const post = await res.json()
-      dispatch(loadPost(post));
-      return post;
+        const post = await res.json()
+        dispatch(loadPost(post));
+        return post;
     } else if (res.status === 401) {
-      return dispatch(removeUser());
+        return dispatch(removeUser());
     }
     throw res;
 };
@@ -93,11 +101,11 @@ export const getTopPosts = () => async dispatch => {
 export const getTagPosts = tagname => async dispatch => {
     const res = await fetch(`/api/posts/tag/${tagname}`);
     if (res.ok) {
-      const tagPosts = await res.json()
-      dispatch(loadTagPosts(tagPosts));
-      return tagPosts;
+        const tagPosts = await res.json()
+        dispatch(loadTagPosts(tagPosts));
+        return tagPosts;
     } else if (res.status === 401) {
-      return dispatch(removeUser());
+        return dispatch(removeUser());
     }
     throw res;
 };
@@ -105,23 +113,25 @@ export const getTagPosts = tagname => async dispatch => {
 // Add post
 export const addPost = formData => async (dispatch, getState) => {
     const fetchWithCSRF = getState().authentication.csrf;
-    const res = await fetchWithCSRF('/api/posts/', {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify(formData)
+    const res = await fetchWithCSRF('/api/posts', {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify(formData)
     });
     if (res.ok) {
-      dispatch(getPosts());
-      return res;
+        const post = await res.json();
+        dispatch(createPost(post));
+        dispatch(getPosts());
+        return res;
     } else if (res.status === 401) {
-      dispatch(removeUser());
-      return res;
+        dispatch(removeUser());
+        return res;
     } else if (res.status === 422) {
-      const { errors } = await res.json();
-      dispatch(formErrors(errors));
-      return res;
+        const { errors } = await res.json();
+        dispatch(formErrors(errors));
+        return res;
     }
     throw res;
 };
@@ -129,29 +139,29 @@ export const addPost = formData => async (dispatch, getState) => {
 // Delete post
 export const deletePost = id => async dispatch => {
     const res = await fetch(`/api/posts/${id}`, {
-      method: 'delete'
+        method: 'delete'
     });
     if (res.ok) {
-      dispatch(removePost(id));
-      return res;
+        dispatch(removePost(id));
+        return res;
     } else if (res.status === 401) {
-      dispatch(removeUser());
-      return res;
+        dispatch(removeUser());
+        return res;
     } else if (res.status === 422) {
-      const { errors } = await res.json();
-      dispatch(formErrors(errors));
-      return res;
+        const { errors } = await res.json();
+        dispatch(formErrors(errors));
+        return res;
     }
     throw res;
 };
 
 
 const initialState = {
-  list: [],
-  tagPosts: [],
-  topPosts: [],
-  post: null,
-  errors: [],
+    list: [],
+    tagPosts: [],
+    topPosts: [],
+    post: null,
+    errors: [],
 };
 
 export default function (state = initialState, action) {
@@ -163,6 +173,11 @@ export default function (state = initialState, action) {
       case GET_TAG_POSTS:
           return { ...state, ...action.tagPosts };
       case GET_POST:
+          return {
+              ...state,
+              ...action.post,
+          };
+      case ADD_POST:
           return {
               ...state,
               ...action.post,

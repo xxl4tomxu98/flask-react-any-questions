@@ -69,7 +69,6 @@ const PostItem = ({ post: { id, title, body, tags, user_id, username, answer_cou
                 </div>
             </div>
         </div>
-
     )
 };
 

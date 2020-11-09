@@ -38,6 +38,11 @@ const Post = () => {
         await dispatch(addComment(id, formData));
     };
 
+    // const onSubmitDeleteComment = async e => {
+    //   e.preventDefault();
+    //   await dispatch(deleteComment(id, e.target.id));
+    // };
+
     const [ formDataAnswer, setFormDataAnswer ] = useState({
         content: ''
     });
@@ -169,7 +174,8 @@ const Post = () => {
                                                                 className='s-tag s-tag__moderator'
                                                                 style={{marginTop: '4px'}}
                                                                 title='Delete the comment'
-                                                                onClick={e => deleteComment(comment.id)}
+                                                                onClick={e => deleteComment(post.id, comment.id)}
+                                                                //onClick={onSubmitDeleteComment}
                                                                 to={`/questions/${post.id}`}
                                                             >
                                                                 delete
@@ -200,10 +206,8 @@ const Post = () => {
                                                 <button type='button' className="s-btn">You need to login to add a comment</button>
                                             </Link>
                                         </Fragment>}
-
                                     </div>
                                 </div>
-
                             </div>
                         </div>
                         <div className='answer'>

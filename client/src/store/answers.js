@@ -18,10 +18,10 @@ const formErrors = (errors) => {
 };
 
 const removeAnswer = (answerId) => {
-  return {
-      type: DELETE_ANSWER,
-      answerId,
-  }
+    return {
+        type: DELETE_ANSWER,
+        answerId,
+    }
 }
 
 
@@ -29,11 +29,11 @@ const removeAnswer = (answerId) => {
 export const getAnswers = id => async dispatch => {
     const res = await fetch(`/api/posts/${id}/answers`);
     if (res.ok) {
-      const answers = await res.json();
-      dispatch(loadAnswers(answers));
-      return answers;
+        const answers = await res.json();
+        dispatch(loadAnswers(answers));
+        return answers;
     } else if (res.status === 401) {
-      return dispatch(removeUser());
+        return dispatch(removeUser());
     }
     throw res;
 };

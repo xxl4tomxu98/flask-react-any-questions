@@ -17,17 +17,17 @@ const PostForm = () => {
     const { title, body, tags } = formData;
 
     function onChange(e){
-      const { name, value } = e.target;
-      if(name!=="tags"){
-          return setFormData({ ...formData, [name]: value });
-      } else{
-          const selected=[];
-          let selectedOption=(e.target.selectedOptions);
-          for (let i = 0; i < selectedOption.length; i++){
-              selected.push(selectedOption.item(i).value)
-          }
-          return setFormData({ ...formData, [name]: selected})
-      }
+        const { name, value } = e.target;
+        if(name!=="tags"){
+            return setFormData({ ...formData, [name]: value });
+        } else{
+            const selected=[];
+            let selectedOption=(e.target.selectedOptions);
+            for (let i = 0; i < selectedOption.length; i++){
+                selected.push(selectedOption.item(i).value)
+            }
+            return setFormData({ ...formData, [name]: selected})
+        }
     }
 
 
@@ -50,7 +50,7 @@ const PostForm = () => {
                 </div>
                 <div className='post-form-section'>
                     <div className='postform' style={{width: '100%'}}>
-                        <form onSubmit={e => onSubmit(e)}>
+                        <form onSubmit={onSubmit}>
                             <div className='question-form p16 s-card'>
                                 <div className='question-layout'>
                                     <div className='title-grid'>
@@ -65,7 +65,7 @@ const PostForm = () => {
                                             type='text'
                                             name='title'
                                             value={title}
-                                            onChange={e => onChange(e)}
+                                            onChange={onChange}
                                             id='title'
                                             placeholder='e.g. Is there an R function for finding the index of an element in a vector?'
                                         />
@@ -81,7 +81,7 @@ const PostForm = () => {
                                             cols='30'
                                             rows='12'
                                             value={body}
-                                            onChange={e => onChange(e)}
+                                            onChange={onChange}
                                             placeholder='Enter body with minimum 30 characters'
                                             id='body'
                                         >
@@ -94,7 +94,7 @@ const PostForm = () => {
                                                 Add up to 5 tags to describe what your question is about
                                             </p>
                                         </label>
-                                        <select multiple value={tags} name="tags" placeholder="e.g. (ajax flask string)" onChange={e => onChange(e)} className='tag-input s-input'>
+                                        <select multiple value={tags} name="tags" placeholder="e.g. (ajax flask string)" onChange={onChange} className='tag-input s-input'>
                                         {specialtyArr.map((item, index) => <option key={`${item}-${index}`} tags={item}>{item}</option>)}
                                         </select>
                                     </div>
