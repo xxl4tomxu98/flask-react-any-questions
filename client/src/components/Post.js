@@ -26,6 +26,11 @@ const Post = () => {
         dispatch(getComments(id));
     }, [ dispatch, id ]);
 
+    const onSubmitDeletePost = async e => {
+        e.preventDefault();
+        await dispatch(deletePost(id));
+    };
+
     const [ formData, setFormData ] = useState({
         description: ''
     });
@@ -38,10 +43,10 @@ const Post = () => {
         await dispatch(addComment(id, formData));
     };
 
-    // const onSubmitDeleteComment = async e => {
-    //   e.preventDefault();
-    //   await dispatch(deleteComment(id, e.target.id));
-    // };
+    const onSubmitDeleteComment = async e => {
+        e.preventDefault();
+        await dispatch(deleteComment(id, e.target.id));
+    };
 
     const [ formDataAnswer, setFormDataAnswer ] = useState({
         content: ''
@@ -123,7 +128,8 @@ const Post = () => {
                                                             className='s-link s-link__danger'
                                                             style={{paddingLeft: '4px'}}
                                                             title='Delete the post'
-                                                            onClick={e => deletePost(post.id)}
+                                                            onClick={onSubmitDeletePost}
+                                                            // onClick={e => deletePost(post.id)}
                                                             to='/questions'
                                                         >
                                                             delete
@@ -174,8 +180,8 @@ const Post = () => {
                                                                 className='s-tag s-tag__moderator'
                                                                 style={{marginTop: '4px'}}
                                                                 title='Delete the comment'
-                                                                onClick={e => deleteComment(post.id, comment.id)}
-                                                                //onClick={onSubmitDeleteComment}
+                                                                // onClick={e => deleteComment(post.id, comment.id)}
+                                                                onClick={onSubmitDeleteComment}
                                                                 to={`/questions/${post.id}`}
                                                             >
                                                                 delete

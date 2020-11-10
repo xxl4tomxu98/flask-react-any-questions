@@ -94,7 +94,7 @@ export default function(state = initialState, action) {
           return{...state, ...action.answers};
       case DELETE_ANSWER:
           return {...state,
-            ...state.answers.filter(ans => ans.id !== action.answerId),
+            ...state.answers.list.filter(ans => ans.id !== action.answerId),
           };
       case ANSWER_ERROR:
           return {

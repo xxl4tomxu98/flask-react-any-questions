@@ -137,8 +137,9 @@ export const addPost = formData => async (dispatch, getState) => {
 };
 
 // Delete post
-export const deletePost = id => async dispatch => {
-    const res = await fetch(`/api/posts/${id}`, {
+export const deletePost = id => async (dispatch, getState) => {
+    const fetchWithCSRF = getState().authentication.csrf;
+    const res = await fetchWithCSRF(`/api/posts/${id}`, {
         method: 'delete'
     });
     if (res.ok) {
@@ -183,10 +184,10 @@ export default function (state = initialState, action) {
               ...action.post,
           };
       case DELETE_POST:
-          return {
-              ...state,
-              ...state.posts.filter(post => post.id !== action.postId),
-          };
+          const nextState = { ...state };
+          nextState.list = nextState.list.filter(post => post.id !== action.postId);
+
+          return nextState;
       case POST_ERROR:
           return {
               ...state,

@@ -50,7 +50,6 @@ export const addComment = (postId, formData) => async (dispatch, getState) => {
       },
       body: JSON.stringify(formData)
     });
-
     if (res.ok) {
       dispatch(getComments(postId));
       return res;
@@ -68,7 +67,7 @@ export const addComment = (postId, formData) => async (dispatch, getState) => {
 // Delete Comment
 export const deleteComment = (postId, commentId) => async (dispatch, getState) => {
     const fetchWithCSRF = getState().authentication.csrf;
-    const res = await fetchWithCSRF(`/api/posts/${postId}/answers/${commentId}`, {
+    const res = await fetchWithCSRF(`/api/posts/${postId}/comments/${commentId}`, {
         method: 'delete'
     });
     if (res.ok) {
@@ -94,17 +93,17 @@ const initialState = {
 export default function(state = initialState, action) {
     switch (action.type){
         case GET_COMMENTS:
-          return{...state, ...action.comments};
+            return{...state, ...action.comments};
         case DELETE_COMMENT:
-          return {...state,
-            ...state.comments.filter(comm => comm.id !== action.commentId),
-          };
+            const nextState = { ...state };
+            nextState.list = nextState.list.filter(comm => comm.id !== action.commentId);
+            return nextState;
         case COMMENT_ERROR:
-          return {
-              ...state,
-              error: action.errors,
-          };
+            return {
+                ...state,
+                error: action.errors,
+            };
         default:
-          return state;
+            return state;
     }
 }

@@ -18,28 +18,30 @@ def search():
     return {'questions': [qust.to_dict() for qust in questions]}
 
 
-@bp.route('/posts', methods=["GET", "POST"])
+@bp.route('/posts', methods=["POST"])
 @login_required
 def post_question():
-    if request.method == "POST":
-        if not request.is_json:
-            return jsonify({"msg": "Missing JSON in request"}), 400
-        user_id = current_user.id
-        title = request.json.get("title", None)
-        body = request.json.get("body", None)
-        tags = request.json.get("tags", None)
-        user = User.query.get_or_404(user_id)
-        username = user.user_name
-        if not body or not tags:
-            return {"errors": ["Please write question body and tags"]}, 400
-        new_question = Question(user_id=user_id, username=username,
-                                title=title, body=body, tags=tags)
-        db.session.add(new_question)
-        db.session.commit()
-        return {'list': new_question.to_dict()}, 200
-    else:
-        response = Question.query.all()
-        return {'list': [ques.to_dict() for ques in response]}
+    if not request.is_json:
+        return jsonify({"msg": "Missing JSON in request"}), 400
+    user_id = current_user.id
+    title = request.json.get("title", None)
+    body = request.json.get("body", None)
+    tags = request.json.get("tags", None)
+    user = User.query.get_or_404(user_id)
+    username = user.user_name
+    if not body or not tags:
+        return {"errors": ["Please write question body and tags"]}, 400
+    new_question = Question(user_id=user_id, username=username,
+                            title=title, body=body, tags=tags)
+    db.session.add(new_question)
+    db.session.commit()
+    return {'list': new_question.to_dict()}, 200
+
+
+@bp.route('/posts')
+def get_questions():
+    response = Question.query.all()
+    return {'list': [ques.to_dict() for ques in response]}
 
 
 @bp.route('/tags')
@@ -114,10 +116,22 @@ def get_answers(id):
 
 
 @login_required
+@bp.route('/posts/<int:postId>', methods=["DELETE"])
+def del_post(postId):
+    post = Question.query.get_or_404(postId)
+    if post:
+        db.session.delete(post)
+        db.session.commit()
+        return {}, 200
+    return {}, 404
+
+
+@login_required
 @bp.route('/posts/<int:postId>/comments/<int:commentId>',
           methods=["DELETE"])
 def del_comment(postId, commentId):
-    comment = Comment.query.filter(question_id=postId, id=commentId).first()
+    comments = Comment.query.filter(question_id=postId).all()
+    comment = comments.query.get_or_404(id=commentId).first()
     if comment:
         db.session.delete(comment)
         db.session.commit()
