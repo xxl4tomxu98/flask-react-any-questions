@@ -3,7 +3,6 @@ const GET_POSTS = 'GET_POSTS';
 const GET_POST = 'GET_POST';
 const GET_TOP_POSTS = 'GET_TOP_POSTS';
 const GET_TAG_POSTS = 'GET_TAG_POSTS';
-const ADD_POST = 'ADD_POSTS';
 const POST_ERROR = 'POST_ERROR';
 const DELETE_POST = 'DELETE_POST';
 
@@ -35,12 +34,6 @@ const loadTagPosts = tagPosts => {
   }
 }
 
-const createPost = post => {
-  return {
-    type: ADD_POST,
-    post
-  }
-}
 
 const removePost = (postId) => {
   return {
@@ -121,8 +114,6 @@ export const addPost = formData => async (dispatch, getState) => {
         body: JSON.stringify(formData)
     });
     if (res.ok) {
-        const post = await res.json();
-        dispatch(createPost(post));
         dispatch(getPosts());
         return res;
     } else if (res.status === 401) {
@@ -178,15 +169,9 @@ export default function (state = initialState, action) {
               ...state,
               ...action.post,
           };
-      case ADD_POST:
-          return {
-              ...state,
-              ...action.post,
-          };
       case DELETE_POST:
           const nextState = { ...state };
           nextState.list = nextState.list.filter(post => post.id !== action.postId);
-
           return nextState;
       case POST_ERROR:
           return {

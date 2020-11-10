@@ -1,7 +1,7 @@
 import React, { useEffect, Fragment, useState } from 'react';
 import moment from 'moment';
 import { useDispatch, useSelector } from 'react-redux';
-import { Link, useParams } from 'react-router-dom';
+import { Link, useParams, useHistory } from 'react-router-dom';
 import { getPost, deletePost } from '../store/posts';
 import { getAnswers, deleteAnswer, addAnswer } from '../store/answers';
 import { getComments, deleteComment, addComment } from '../store/comments';
@@ -19,6 +19,7 @@ const Post = () => {
     const comments = useSelector(state => state.comments.list);
     const answers = useSelector(state => state.answers.list);
     const dispatch = useDispatch();
+    const history = useHistory();
     const { id } = useParams();
     useEffect(() => {
         dispatch(getPost(id));
@@ -29,6 +30,7 @@ const Post = () => {
     const onSubmitDeletePost = async e => {
         e.preventDefault();
         await dispatch(deletePost(id));
+        history.push('/');
     };
 
     const [ formData, setFormData ] = useState({

@@ -1,6 +1,6 @@
 import React, {Fragment, useState} from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { Redirect } from 'react-router-dom';
+import { Redirect, useHistory } from 'react-router-dom';
 import { addPost } from '../store/posts';
 import './PostForm.css';
 import {specialtyArr} from "./Profile/specialties";
@@ -9,6 +9,7 @@ import {specialtyArr} from "./Profile/specialties";
 const PostForm = () => {
     const currentUserId = useSelector(state => state.authentication.id);
     const dispatch = useDispatch();
+    const history = useHistory();
     const [ formData, setFormData ] = useState({
         title: '',
         body: '',
@@ -34,6 +35,7 @@ const PostForm = () => {
     const onSubmit = e => {
         e.preventDefault();
         dispatch(addPost(formData));
+        history.push('/');
     };
 
     if (!currentUserId) {
