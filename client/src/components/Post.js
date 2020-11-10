@@ -30,7 +30,7 @@ const Post = () => {
     const onSubmitDeletePost = async e => {
         e.preventDefault();
         await dispatch(deletePost(id));
-        history.push('/');
+        history.push('/questions');
     };
 
     const [ formData, setFormData ] = useState({
@@ -60,6 +60,11 @@ const Post = () => {
     const onSubmitAnswer = async e => {
         e.preventDefault();
         await dispatch(addAnswer(id, formDataAnswer));
+    };
+
+    const onSubmitDeleteAnswer = async e => {
+      e.preventDefault();
+      await dispatch(deleteAnswer(id, e.target.id));
     };
 
     return post === null ? <Spinner type='page' width='75px' height='200px'/> : <Fragment>
@@ -131,8 +136,8 @@ const Post = () => {
                                                             style={{paddingLeft: '4px'}}
                                                             title='Delete the post'
                                                             onClick={onSubmitDeletePost}
-                                                            // onClick={e => deletePost(post.id)}
-                                                            to='/questions'
+                                                            //onClick={e => deletePost(post.id)}
+                                                            //to='/questions'
                                                         >
                                                             delete
                                                         </Link>
@@ -182,6 +187,7 @@ const Post = () => {
                                                                 className='s-tag s-tag__moderator'
                                                                 style={{marginTop: '4px'}}
                                                                 title='Delete the comment'
+                                                                id={comment.id}
                                                                 // onClick={e => deleteComment(post.id, comment.id)}
                                                                 onClick={onSubmitDeleteComment}
                                                                 to={`/questions/${post.id}`}
@@ -288,7 +294,9 @@ const Post = () => {
                                                                 className='s-link s-link__danger'
                                                                 style={{paddingLeft: '4px'}}
                                                                 title='Delete the answer'
-                                                                onClick={e => deleteAnswer(answer.id)}
+                                                                id={answer.id}
+                                                                // onClick={e => deleteAnswer(answer.id)}
+                                                                onClick={onSubmitDeleteAnswer}
                                                                 to={`/questions/${post.id}`}
                                                             >
                                                                 delete

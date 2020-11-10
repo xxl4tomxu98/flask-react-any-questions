@@ -72,6 +72,7 @@ export const deleteComment = (postId, commentId) => async (dispatch, getState) =
     });
     if (res.ok) {
         dispatch(removeComment(commentId));
+        dispatch(getComments(postId));
         return res;
     } else if (res.status === 401) {
         dispatch(removeUser());

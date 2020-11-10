@@ -71,6 +71,7 @@ export const deleteAnswer = (postId, answerId) => async (dispatch, getState) => 
     });
     if (res.ok) {
         dispatch(removeAnswer(answerId));
+        dispatch(getAnswers(postId));
         return res;
     } else if (res.status === 401) {
         dispatch(removeUser());
@@ -93,9 +94,9 @@ export default function(state = initialState, action) {
       case GET_ANSWERS:
           return{...state, ...action.answers};
       case DELETE_ANSWER:
-          return {...state,
-            ...state.answers.list.filter(ans => ans.id !== action.answerId),
-          };
+          const nextState = { ...state };
+          nextState.list = nextState.list.filter(ans => ans.id !== action.answerId);
+          return nextState;
       case ANSWER_ERROR:
           return {
               ...state,

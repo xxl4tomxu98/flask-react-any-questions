@@ -130,8 +130,7 @@ def del_post(postId):
 @bp.route('/posts/<int:postId>/comments/<int:commentId>',
           methods=["DELETE"])
 def del_comment(postId, commentId):
-    comments = Comment.query.filter(question_id=postId).all()
-    comment = comments.query.get_or_404(id=commentId).first()
+    comment = Comment.query.filter_by(id=commentId, question_id=postId).first()
     if comment:
         db.session.delete(comment)
         db.session.commit()
@@ -143,8 +142,8 @@ def del_comment(postId, commentId):
 @bp.route('/posts/<int:postId>/answers/<int:answerId>',
           methods=["DELETE"])
 def del_answer(postId, answerId):
-    answer = Answer.query.filter(question_id=postId, id=answerId).first()
-    if comment:
+    answer = Answer.query.filter_by(id=answerId, question_id=postId).first()
+    if answer:
         db.session.delete(answer)
         db.session.commit()
         return {}, 200
