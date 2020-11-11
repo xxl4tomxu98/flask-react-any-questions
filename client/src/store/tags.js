@@ -1,5 +1,6 @@
 import { removeUser } from './authentication';
 const GET_TAGS = 'GET_TAGS';
+const GET_TAG = 'GET_TAG';
 
 const loadTags = tags => {
   return {
@@ -8,6 +9,12 @@ const loadTags = tags => {
   }
 }
 
+const loadTag = tag => {
+  return {
+    type: GET_TAG,
+    tag,
+  }
+}
 
 export const getTags = () => async dispatch => {
     const res = await fetch('/api/tags');
@@ -20,21 +27,30 @@ export const getTags = () => async dispatch => {
     throw res;
 };
 
-
+export const getTag = tagname => async dispatch => {
+    const res = await fetch(`/api/tags/${tagname}`);
+    if (res.ok) {
+        const tag = await res.json()
+        dispatch(loadTag(tag));
+        return tag;
+    } else if (res.status === 401) {
+        return dispatch(removeUser());
+    }
+    throw res;
+};
 
 const initialState = {
-  list: [],
-  tag: null,
-  error: [],
+    list: [],
+    detail: {},
+    error: [],
 };
 
 export default function(state = initialState, action) {
     switch (action.type) {
         case GET_TAGS:
-            return{
-                ...state,
-                ...action.tags,
-            };
+            return{ ...state, ...action.tags };
+        case GET_TAG:
+            return { ...state, ...action.tag };
         default:
             return state;
     }

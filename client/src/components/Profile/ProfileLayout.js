@@ -5,7 +5,7 @@ import profile_icon from '../../assets/qa.svg';
 
 const ProfileLayout = ({ username, points }) => (
     <>
-      <Segment size='small' padded='very' style={{ width: '80%', margin: 'auto', marginTop: '3em', marginBottom: '3em' }}>
+      <Segment size='small' padded='very' style={{ width: '60%', margin: 'auto', marginTop: '3em', marginBottom: '3em' }}>
           <Image src={profile_icon} size='mini' /> any questions ?
           <Divider />
           <Grid>

@@ -47,9 +47,9 @@
     height: 85.7%;
 
     .grid-layout {
-      display: grid;
-      grid-gap: 12px;
-      grid-template-columns: repeat(auto-fill, minmax(225px, 1fr));
+        display: grid;
+        grid-gap: 12px;
+        grid-template-columns: repeat(auto-fill, minmax(225px, 1fr));
     }
   }
 }

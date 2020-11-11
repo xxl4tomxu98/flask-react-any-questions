@@ -3,7 +3,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import moment from 'moment';
 import { getUser } from '../store/users';
 import { Link, useParams } from 'react-router-dom';
-import { ReactComponent as Logo } from '../assets/qa.svg';
+import { ReactComponent as Logo } from '../assets/quiz.svg';
 import SideBar from './HomePage/SideBar';
 import RightSideBar from './HomePage/RightSideBar';
 import './UserPage.css'
@@ -11,7 +11,8 @@ import Spinner from "./Spinner";
 
 
 const UserPage = () => {
-    const user = useSelector(state => state.users);
+    const user = useSelector(state => state.users.detail);
+
     const { userId } = useParams();
     const dispatch = useDispatch();
     useEffect(() => {
@@ -28,7 +29,7 @@ const UserPage = () => {
                             <Link to="#" className="s-navigation--item is-selected"
                                data-shortcut="P">Individual User</Link>
                             <Link to="#" className="s-navigation--item"
-                               data-shortcut="A">Activity</Link>
+                               data-shortcut="A"> Activity</Link>
                         </div>
                         <div className='grid'>
                             <div className='img-card'>

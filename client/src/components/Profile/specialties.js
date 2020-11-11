@@ -2,7 +2,7 @@ export const specialtyArr = [
   "algorithm", "data-structure",
    "linear-algebra",  "database",
    "frontend",  "backend",
-   "react",  "express",
+   "react",  "express", "java",
    "bash",  "flask", "node",
    "javascript",  "python",
    "big-data",  "oAuth", "json",

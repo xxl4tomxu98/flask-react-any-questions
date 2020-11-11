@@ -1,27 +1,32 @@
 .navbar {
-  display: flex;
-  height: 63px;
-  border-top: 3px solid #f48024;
-  padding: 3px 3px 0 3px;
-  box-shadow: 5px 2px rgba(0,0,0,0.1);
-  z-index: 1000;
-  background-color: #3d3d3d;
-  width: 100%
+    display: flex;
+    height: 63px;
+    border-top: 3px solid #f48024;
+    padding: 3px 3px 0 3px;
+    box-shadow: 5px 2px rgba(0,0,0,0.1);
+    z-index: 1000;
+    background-color: #3d3d3d;
+    width: 100%
 }
 
 .s-navigation {
-  padding: 2px 2px;
+    padding: 6px 6px;
+}
+
+.logo-text {
+    color: orange;
+    font-style: italic;
+    font-weight: 700;
 }
 
 .s-navigation .not-selected {
-  color: #c4c8cc;
-
-  &:hover {
-    background-color: #404345;
-    color: #f2f2f3;
-    text-decoration: none;
-    outline: none;
-  }
+    color: #c4c8cc;
+    &:hover {
+      background-color: #404345;
+      color: #f2f2f3;
+      text-decoration: none;
+      outline: none;
+    }
 }
 
 * {
@@ -79,11 +84,12 @@
 }
 
 .s-input.s-input__creditcard, .s-input.s-input__search {
-  padding-left: 32px;
+  padding-left: 40px;
   border-color: #697075;
   background-color: #2d2d2d;
   box-shadow: none;
   color: #cfd2d6;
+  width: 30%;
 }
 
 .s-input.s-input__creditcard, .s-input.s-input__search::placeholder {

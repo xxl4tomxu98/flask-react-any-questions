@@ -50,6 +50,12 @@ def get_tags():
     return {'list': [tag.to_dict() for tag in response]}
 
 
+@bp.route('/tags/<tagname>')
+def get_tag(tagname):
+    tag = Tag.query.filter_by(tagname=tagname).first()
+    return {'detail': tag.to_dict()}
+
+
 @bp.route('posts/tag/<tagname>')
 def get_tagPosts(tagname):
     tag = Tag.query.filter_by(tagname=tagname).first()

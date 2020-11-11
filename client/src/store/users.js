@@ -61,6 +61,7 @@ export const getUser = id => async dispatch => {
 
 const initialState = {
     list: [],
+    detail: {},
 }
 
 export default function reducer(state = initialState, action) {
@@ -68,7 +69,7 @@ export default function reducer(state = initialState, action) {
         case SET_USER:
             return { ...state, ...action.user }
         case SET_USERS:
-            return { ...state, ...action.users}
+            return { ...state, ...action.users }
         case ERROR_MSG:
             return { ...state, error: action.message }
         default:

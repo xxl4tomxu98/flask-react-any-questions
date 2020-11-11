@@ -27,7 +27,7 @@ const HomePage = () => {
           <div id="content">
               <div id='mainbar' className='homepage fc-black-800'>
                   <div className='questions-grid'>
-                      <h3 className='questions-headline'>Top Questions</h3>
+                      <h3 className='questions-headline'>Top Ranked Questions</h3>
                       <div className='questions-btn'>
                           <Link to='/add/question'>
                               <button className = 's-btn s-btn__primary'>Ask Question</button>

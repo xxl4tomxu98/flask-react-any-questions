@@ -104,6 +104,14 @@ with app.app_context():
              description='A data structure is a way of organizing data in a fashion that allows particular properties of that data to be queried and/or updated efficiently.'
             )
 
+    t8 = Tag(tagname='java', created_at=date(1992, 2, 15),
+             description="Java is a popular high-level programming language. Use this tag when you're having problems using or understanding the language itself. This tag is rarely used alone and is most often used in conjunction with [spring], [spring-boot], [jakarta-ee], [android], [javafx], [gradle] and [maven]."
+            )
+
+    t9 = Tag(tagname='node.js', created_at=date(2012, 10, 15),
+             description="Node.js is an event-based, non-blocking, asynchronous I/O runtime that uses Google's V8 JavaScript engine and libuv library. It is used for developing applications that make heavy use of the ability to run JavaScript both on the client, as well as on server side and therefore benefit from the re-usability of code and the lack of context switching."
+            )
+
     t2.tagged_questions.append(q2)
 
     db.session.add(t1)
@@ -113,7 +121,8 @@ with app.app_context():
     db.session.add(t5)
     db.session.add(t6)
     db.session.add(t7)
-
+    db.session.add(t8)
+    db.session.add(t9)
 
 
 

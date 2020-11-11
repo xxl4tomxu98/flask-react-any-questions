@@ -3,7 +3,7 @@ import { signup } from '../store/authentication';
 import { useDispatch, useSelector } from 'react-redux';
 import { Redirect } from 'react-router-dom';
 import styled from "styled-components";
-import signup_img from "../assets/signup-image.jpg";
+import signup_img from "../assets/signup.jpg";
 import {specialtyArr} from "./Profile/specialties"
 import './LoginPanel.css';
 
@@ -180,7 +180,7 @@ function SignUp() {
         <div  className="loginandsignup">
             <img className='login__image' src={signup_img} alt="" />
             <SignUpFormWrapper>
-            <h2>Seek Help from Peers!</h2>
+            <h2>Seek Advice from Peers!</h2>
             <form name='form' onSubmit={handleSubmit}>
                 <fieldset>
                      <div className="input-fields">

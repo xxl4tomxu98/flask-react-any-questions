@@ -137,7 +137,7 @@ const Post = () => {
                                                             title='Delete the post'
                                                             onClick={onSubmitDeletePost}
                                                             //onClick={e => deletePost(post.id)}
-                                                            //to='/questions'
+                                                            to='/questions'
                                                         >
                                                             delete
                                                         </Link>

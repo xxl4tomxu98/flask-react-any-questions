@@ -1,6 +1,7 @@
 import React, { useEffect, Fragment } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { getTagPosts } from '../store/posts';
+import { getTag } from '../store/tags';
 import { Link, useParams } from 'react-router-dom';
 import SideBar from './HomePage/SideBar';
 import PostItem from './PostItem';
@@ -9,9 +10,11 @@ import Spinner from "./Spinner";
 
 const TagPage = () => {
     const posts = useSelector(state => state.posts.tagPosts);
+    const tag = useSelector(state => state.tags.detail);
     const { tagname } = useParams();
     const dispatch = useDispatch();
     useEffect(() => {
+        dispatch(getTag(tagname));
         dispatch(getTagPosts(tagname));
     }, [dispatch, tagname]);
 
@@ -22,7 +25,8 @@ const TagPage = () => {
             <div id="content">
                 <div id='mainbar' className='questions-page fc-black-800'>
                     <div className='questions-grid'>
-                        <h3 className='questions-headline'>Questions tagged [{tagname}]</h3>
+                        <h4 className='questions-tags'>Questions tagged: [{tagname}]    Created: [{tag.created_at}]     Post count: [{tag.posts_count}]</h4>
+                        <h5 className='question-tags'>{tag.description}</h5>
                         <div className='questions-btn'>
                             <Link to='/add/question'>
                                 <button className = 's-btn s-btn__primary'>Ask Question</button>

@@ -31,7 +31,7 @@
   }
 
   .show-tags {
-    display: block;
+    display: inline-block;
     margin: 5px 0;
     color: #0077cc;
     text-decoration: none;
@@ -40,6 +40,7 @@
   }
 
   .side-bar-tags {
+    box-sizing: inherit;
     word-wrap: break-word;
     margin-bottom: 20px;
     color: #242729;

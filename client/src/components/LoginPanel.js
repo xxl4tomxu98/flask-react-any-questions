@@ -153,7 +153,7 @@ const Login = () => {
             <img className='login__image' src={login_img} alt='' />
             <LoginFormWrapper>
                 <div className="login">
-                    <h2>Give Expert Answers</h2>
+                    <h2>Help Community Members</h2>
                     <form onSubmit={handleLogIn}>
                         <fieldset>
                             <div className="input-fields">

@@ -48,7 +48,7 @@ def update(user_id):
 @bp.route('/<int:id>')
 def user_profile(id):
     user = User.query.get_or_404(id)
-    return {"user":  user.to_dict()}
+    return {"detail":  user.to_dict()}
 
 
 @bp.route("/<int:user_id>/bookmarks", methods=["GET", "POST"])

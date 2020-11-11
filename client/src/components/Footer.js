@@ -26,7 +26,7 @@ const Footer = () => {
                                 </List>
                             </Grid.Column>
                             <Grid.Column width={3}>
-                                <Header inverted as='h4' content='Products' />
+                                <Header inverted as='h4' content='Forums' />
                                 <List link inverted>
                                     {ProductFooterItems.map((footerItem, idx) =>
                                         <List.Item as='a' key={`${idx}-${footerItem}`}>{footerItem}</List.Item>
@@ -34,7 +34,7 @@ const Footer = () => {
                                 </List>
                             </Grid.Column>
                             <Grid.Column width={3}>
-                                <Header inverted as='h4' content='Company' />
+                                <Header inverted as='h4' content='Community' />
                                 <List link inverted>
                                     {CompanyFooterItems.map((footerItem, idx) =>
                                         <List.Item as='a' key={`${idx}-${footerItem}`}>{footerItem}</List.Item>
