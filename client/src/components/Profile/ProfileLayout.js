@@ -1,6 +1,6 @@
 import React from 'react'
 import { Divider, Header, Image, Grid, Segment } from 'semantic-ui-react'
-import profile_icon from '../../assets/qa.svg';
+import profile_icon from '../../assets/profile.jpg';
 
 
 const ProfileLayout = ({ username, points }) => (

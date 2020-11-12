@@ -45,6 +45,16 @@ class User(db.Model, UserMixin):
 
     questions = db.relationship("Question", backref='user', lazy=True)
     bookmarked_questions = db.relationship('Question', secondary='bookmarks')
+    # followed = db.relationship('Follow',
+    #                            db.ForeignKey('follows.follower_id'),
+    #                            backref=db.backref('follower', lazy='joined'),
+    #                            lazy='dynamic',
+    #                            cascade='all, delete-orphan')
+    # followers = db.relationship('Follow',
+    #                             db.ForeignKey('follows.followed_id'),
+    #                             backref=db.backref('followed', lazy='joined'),
+    #                             lazy='dynamic',
+    #                             cascade='all, delete-orphan')
     answers = db.relationship('Answer', backref='user', lazy=True)
     comments = db.relationship('Comment', backref='user', lazy=True)
     votes = db.relationship('Vote', lazy='dynamic',
@@ -73,6 +83,24 @@ class User(db.Model, UserMixin):
     def check_password(self, password):
         return check_password_hash(self.password, password)
 
+    # def follow(self, user):
+    #     if not self.is_following(user):
+    #         f = Follow(follower=self, followed=user)
+    #         db.session.add(f)
+
+    # def unfollow(self, user):
+    #     f = self.followed.filter_by(followed_id=user.id).first()
+    #     if f:
+    #         db.session.delete(f)
+
+    # def is_following(self, user):
+    #     return self.followed.filter_by(
+    #             followed_id=user.id).first() is not None
+
+    # def is_followed_by(self, user):
+    #     return self.followers.filter_by(
+    #             follower_id=user.id).first() is not None
+
     def to_dict(self):
         return {
           "id": self.id,
@@ -97,7 +125,7 @@ class Question(db.Model):
 
     id = db.Column(db.Integer, primary_key=True)
     tags = db.Column(db.ARRAY(db.String(100)), nullable=False)
-    title = db.Column(db.String(100), nullable=False)
+    title = db.Column(db.String(150), nullable=False)
     user_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
     username = db.Column(db.String(40), nullable=False,
                          default='demo')
@@ -241,6 +269,23 @@ class Tag(db.Model):
             "created_at": self.created_at,
             "description": self.description,
             "posts_count": self.posts_count,
+        }
+
+
+class Follow(db.Model):
+    __tablename__ = 'follows'
+    follower_id = db.Column(db.Integer, db.ForeignKey('users.id'),
+                            primary_key=True)
+    followed_id = db.Column(db.Integer, db.ForeignKey('users.id'),
+                            primary_key=True)
+    follow_time = db.Column(db.DateTime(timezone=True),
+                            default=datetime.utcnow)
+
+    def to_dict(self):
+        return {
+            "follower_id": self.follower_id,
+            "followed_id": self.followed_id,
+            "follow_time": self.follow_time,
         }
 
 

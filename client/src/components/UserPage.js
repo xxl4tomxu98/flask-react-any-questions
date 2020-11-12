@@ -142,7 +142,7 @@ const UserPage = () => {
                                         Top network posts
                                     </h3>
                                     <p className='fc-light'>
-                                        We respect a laser-like focus on one topic.
+                                        We respect a laser-like focus on one topic. User posted threads are presented in their logical order so that thoughts and ideas flows are traced.
                                     </p>
                                 </div>
                             </div>
