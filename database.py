@@ -62,6 +62,10 @@ with app.app_context():
     db.session.add(demo)
     db.session.commit()
 
+    demo.follow(alissa)
+    alissa.follow(angela)
+    demo.follow(angela)
+
     q1 = Question(title='want_to_ask_you', tags=['linear-algebra'],
                   user_id=1, ask_time=date(2019, 7, 20), body='balabala',
                   accepted_answer_id=0,
@@ -71,6 +75,7 @@ with app.app_context():
                   user_id=6, ask_time=date(2011, 7, 20), body='balabala',
                   accepted_answer_id=0,
                   upvote_count=0, downvote_count=0)
+
     db.session.add(q1)
     db.session.add(q2)
     alissa.bookmarked_questions.append(q1)

@@ -109,6 +109,26 @@ const UserPage = () => {
                                                         </div>
                                                     </div>
                                                 </div>
+                                                <div className='cells'>
+                                                    <div className='column-grid'>
+                                                        <div className='head fc-black-700'>
+                                                            {user.follower_count}
+                                                        </div>
+                                                        <div className='foot fc-black-500'>
+                                                            followers
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div className='cells'>
+                                                    <div className='column-grid'>
+                                                        <div className='head fc-black-700'>
+                                                            {user.following_count}
+                                                        </div>
+                                                        <div className='foot fc-black-500'>
+                                                            following
+                                                        </div>
+                                                    </div>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
@@ -142,7 +162,15 @@ const UserPage = () => {
                                         Top network posts
                                     </h3>
                                     <p className='fc-light'>
-                                        We respect a laser-like focus on one topic. User posted threads are presented in their logical order so that thoughts and ideas flows are traced.
+                                    We respect a laser-like focus on one topic. User posted threads are presented in their logical order so that thoughts and ideas flows are traced.
+                                    </p>
+                                </div>
+                                <div className='user-posts'>
+                                    <h3 className='fw-bold fc-dark bc-black-3'>
+                                        Followers
+                                    </h3>
+                                    <p className='fc-light'>
+                                        {user.list_followers}
                                     </p>
                                 </div>
                             </div>
@@ -213,8 +241,6 @@ const UserPage = () => {
             </div>
         </div>
     </Fragment>
-
-
 };
 
 

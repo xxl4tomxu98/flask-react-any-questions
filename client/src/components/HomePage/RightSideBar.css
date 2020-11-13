@@ -13,7 +13,6 @@ div.side-bar-tags {
     margin-bottom: 20px;
     color: #242729;
     margin-top: 24px;
-    padding-left: 16px;
 }
 
 .tag-headline {
@@ -39,10 +38,7 @@ span {
   color: #6a737c;
 }
 
-.tags {
-  margin-top: 20px;
-  margin-left: 30px;
-}
+
 
 .show-tags {
 

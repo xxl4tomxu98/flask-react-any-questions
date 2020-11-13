@@ -25,6 +25,16 @@ poststags = db.Table(
 )
 
 
+followers = db.Table(
+    'followers',
+    db.Model.metadata,
+    db.Column('follower_id', db.Integer, db.ForeignKey('users.id'),
+              primary_key=True),
+    db.Column('followed_id', db.Integer, db.ForeignKey('users.id'),
+              primary_key=True)
+)
+
+
 class User(db.Model, UserMixin):
     __tablename__ = 'users'
 
@@ -37,6 +47,9 @@ class User(db.Model, UserMixin):
     posts_count = db.Column(db.Integer, nullable=True, default=0)
     answer_count = db.Column(db.Integer, nullable=True, default=0)
     comment_count = db.Column(db.Integer, nullable=True, default=0)
+    tag_count = db.Column(db.Integer, nullable=True, default=0)
+    follower_count = db.Column(db.Integer, nullable=True, default=0)
+    following_count = db.Column(db.Integer, nullable=True, default=0)
     member_since = db.Column(db.DateTime(timezone=True),
                              default=datetime.utcnow)
     last_seen = db.Column(db.DateTime(timezone=True), default=datetime.utcnow)
@@ -45,16 +58,12 @@ class User(db.Model, UserMixin):
 
     questions = db.relationship("Question", backref='user', lazy=True)
     bookmarked_questions = db.relationship('Question', secondary='bookmarks')
-    # followed = db.relationship('Follow',
-    #                            db.ForeignKey('follows.follower_id'),
-    #                            backref=db.backref('follower', lazy='joined'),
-    #                            lazy='dynamic',
-    #                            cascade='all, delete-orphan')
-    # followers = db.relationship('Follow',
-    #                             db.ForeignKey('follows.followed_id'),
-    #                             backref=db.backref('followed', lazy='joined'),
-    #                             lazy='dynamic',
-    #                             cascade='all, delete-orphan')
+    followed = db.relationship(
+        'User', secondary=followers,
+        primaryjoin=(followers.c.follower_id == id),
+        secondaryjoin=(followers.c.followed_id == id),
+        backref=db.backref('followers', lazy='dynamic'),
+        lazy='dynamic')
     answers = db.relationship('Answer', backref='user', lazy=True)
     comments = db.relationship('Comment', backref='user', lazy=True)
     votes = db.relationship('Vote', lazy='dynamic',
@@ -73,6 +82,18 @@ class User(db.Model, UserMixin):
         return len(self.comments)
 
     @property
+    def tag_count(self):
+        return len(self.tags)
+
+    @property
+    def follower_count(self):
+        return len(self.list_followers())
+
+    @property
+    def following_count(self):
+        return len(self.list_following())
+
+    @property
     def password(self):
         return self.hashed_password
 
@@ -83,23 +104,29 @@ class User(db.Model, UserMixin):
     def check_password(self, password):
         return check_password_hash(self.password, password)
 
-    # def follow(self, user):
-    #     if not self.is_following(user):
-    #         f = Follow(follower=self, followed=user)
-    #         db.session.add(f)
+    def follow(self, user):
+        if not self.is_following(user):
+            self.followed.append(user)
 
-    # def unfollow(self, user):
-    #     f = self.followed.filter_by(followed_id=user.id).first()
-    #     if f:
-    #         db.session.delete(f)
+    def unfollow(self, user):
+        if self.is_following(user):
+            self.followed.remove(user)
 
-    # def is_following(self, user):
-    #     return self.followed.filter_by(
-    #             followed_id=user.id).first() is not None
+    def is_following(self, user):
+        return self.followed.filter(
+            followers.c.followed_id == user.id).count() > 0
 
-    # def is_followed_by(self, user):
-    #     return self.followers.filter_by(
-    #             follower_id=user.id).first() is not None
+    def list_following(self):
+        """
+        users that self follows
+        """
+        return self.followed.all()
+
+    def list_followers(self):
+        """
+        users that follow self
+        """
+        return self.followers.all()
 
     def to_dict(self):
         return {
@@ -112,6 +139,9 @@ class User(db.Model, UserMixin):
           "posts_count": self.posts_count,
           "answer_count": self.answer_count,
           "comment_count": self.comment_count,
+          "tag_count": self.tag_count,
+          "follower_count": self.follower_count,
+          "following_count": self.following_count,
           "member_since": self.member_since,
           "last_seen": self.last_seen,
           "reputation": self.reputation,
@@ -272,21 +302,15 @@ class Tag(db.Model):
         }
 
 
-class Follow(db.Model):
-    __tablename__ = 'follows'
-    follower_id = db.Column(db.Integer, db.ForeignKey('users.id'),
-                            primary_key=True)
-    followed_id = db.Column(db.Integer, db.ForeignKey('users.id'),
-                            primary_key=True)
-    follow_time = db.Column(db.DateTime(timezone=True),
-                            default=datetime.utcnow)
-
-    def to_dict(self):
-        return {
-            "follower_id": self.follower_id,
-            "followed_id": self.followed_id,
-            "follow_time": self.follow_time,
-        }
+# class Follow(db.Model):
+#     __tablename__ = 'follows'
+#     follower_id = db.Column(db.Integer, db.ForeignKey('users.id'),
+#                             primary_key=True)
+#     followed_id = db.Column(db.Integer, db.ForeignKey('users.id'),
+#                             primary_key=True)
+#     follow_time = db.Column(db.DateTime(timezone=True),
+#                             default=datetime.utcnow)
+#     db.UniqueConstraint(followed_id, follower_id)
 
 
 def generate_ranking(upvotes, downvotes):

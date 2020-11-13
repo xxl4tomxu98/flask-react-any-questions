@@ -202,63 +202,10 @@
             }
           }
 
-          ul {
-            list-style: none;
-            padding: 0;
-            margin-top: 8px;
-            display: flex;
-            flex-direction: column;
 
-            .item {
-              margin: 8px 0 8px 0;
-
-              a {
-                font-size: 13px;
-                margin-left: -2px;
-                margin-right: -2px;
-                display: flex;
-                align-items: center;
-                color: #0077cc;
-                text-decoration: none;
-                cursor: pointer;
-
-                &:hover {
-                  color: #0095ff;
-                  text-decoration: none;
-                }
-
-                span {
-                  margin: 0 2px 0 2px;
-                }
-
-                .logo {
-                  width: 18px;
-                  height: 18px;
-                }
-              }
-            }
-          }
         }
 
-        .user-posts {
-          margin: 16px 0 16px 0;
 
-          h3 {
-            font-weight: 700;
-            color: #0c0d0e;
-            padding-bottom: 8px;
-            border-bottom: 1px solid #d6d9dc;
-            font-size: 15px;
-            margin-bottom: 15px;
-          }
-          p {
-            color: #6a737c;
-            font-size: 12px;
-            padding-right: 16px;
-            margin-bottom: 12px;
-
-          }
-        }
       }
 
     }
@@ -335,6 +282,65 @@
             }
           }
         }
+      }
+    }
+  }
+}
+
+
+.user-posts {
+  margin: 16px 0 16px 0;
+
+  h3 {
+    font-weight: 700;
+    color: #0c0d0e;
+    padding-bottom: 8px;
+    border-bottom: 1px solid #d6d9dc;
+    font-size: 15px;
+    margin: 15px 0 15px 0;
+  }
+  p {
+    color: #6a737c;
+    font-size: 12px;
+    padding-right: 16px;
+    margin-bottom: 12px;
+
+  }
+}
+
+
+ul {
+  list-style: none;
+  padding: 0;
+  margin-top: 8px;
+  display: flex;
+  flex-direction: column;
+
+  .item {
+    margin: 8px 0 8px 0;
+
+    a {
+      font-size: 13px;
+      margin-left: -2px;
+      margin-right: -2px;
+      display: flex;
+      align-items: center;
+      color: #0077cc;
+      text-decoration: none;
+      cursor: pointer;
+
+      &:hover {
+        color: #0095ff;
+        text-decoration: none;
+      }
+
+      span {
+        margin: 0 2px 0 2px;
+      }
+
+      .logo {
+        width: 18px;
+        height: 18px;
       }
     }
   }

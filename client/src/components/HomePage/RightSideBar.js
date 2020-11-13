@@ -135,7 +135,7 @@ const RightSideBar = () => {
         </ul>
       </div>
 
-      <div className='side-bar-tags tags'>
+      <div className='side-bar-tags'>
           <h4 className='tag-headline'>Top Ten Tags</h4>
           {tags.slice(0, 9).map(tag => (
               <div key={tag.tagname} className='tag-content'>
