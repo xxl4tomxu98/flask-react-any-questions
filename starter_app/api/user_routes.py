@@ -104,7 +104,7 @@ def following(user_id):
         return 'followed added', 200
     else:
         response = user.list_following()
-        return {'followed': [resp.to_dict() for resp in response]}
+        return {'followings': [resp.to_dict() for resp in response]}
 
 
 @bp.route("/<int:user_id>/tags/<int:rest_id>", methods=["DELETE"])

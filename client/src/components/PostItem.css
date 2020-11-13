@@ -5,34 +5,7 @@
   display: flex;
   border-bottom: 1px solid #4a4e51;
 
-  .stats-container {
-    margin-right: 16px;
-    width: 58px;
-    color:#6a737c;
-    margin-left: 8px;
-    font-size: 11px;
 
-      .vote  {
-        padding: 0;
-        margin-bottom: 8px;
-        text-align: center;
-
-        .vote-count {
-          font-size: 20px;
-        }
-
-        .count-text {
-          font-size: 12px;
-        }
-      }
-
-    .answer {
-      color: #63b47c;
-      border: 1px solid #63b47c;
-      border-radius: 3px;
-    }
-
-  }
 
   .summary {
     flex: 1 auto;
@@ -122,4 +95,34 @@
       }
     }
   }
+}
+
+
+.stats-container {
+  margin-right: 16px;
+  width: 58px;
+  color:#6a737c;
+  margin-left: 8px;
+  font-size: 11px;
+
+    .vote  {
+      padding: 0;
+      margin-bottom: 8px;
+      text-align: center;
+
+      .vote-count {
+        font-size: 20px;
+      }
+
+      .count-text {
+        font-size: 12px;
+      }
+    }
+
+  .answer {
+    color: #63b47c;
+    border: 1px solid #63b47c;
+    border-radius: 3px;
+  }
+
 }

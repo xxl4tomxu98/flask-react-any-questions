@@ -1,6 +1,7 @@
 const SET_USER = 'ANYQUESTIONS/USER/SET_USER'
 const SET_USERS = 'ANYQUESTIONS/USER/SET_USERS'
 const SET_FOLLOWERS = 'ANYQUESTIONS/USER/SET_FOLLOWER'
+const SET_FOLLOWINGS = 'ANYQUESTIONS/USER/SET_FOLLOWING'
 const ERROR_MSG = 'ANYQUESTIONS/USER/ERROR_MSG'
 
 export const loadUser = (user) => {
@@ -23,6 +24,14 @@ export const loadFollowers = (followers) => {
       followers,
   }
 }
+
+export const loadFollowings = (followings) => {
+  return {
+      type: SET_FOLLOWINGS,
+      followings,
+  }
+}
+
 
 export const error = (message) => {
   return { type: ERROR_MSG, message };
@@ -84,12 +93,28 @@ export const getFollowers = id => {
     }
 }
 
-
+export const getFollowings = id => {
+  return async (dispatch) => {
+      const res = await fetch(`/api/users/${id}/following`);
+      if (res.status === 400) {
+          const { errors } = await res.json();
+          dispatch(error(errors))
+          return errors
+      }
+      if (res.ok) {
+          const followings= await res.json();
+          dispatch(loadFollowings(followings));
+          return followings;
+      }
+      throw res;
+  }
+}
 
 const initialState = {
     list: [],
     detail: {},
     followers: [],
+    followings: [],
 }
 
 export default function reducer(state = initialState, action) {
@@ -100,6 +125,8 @@ export default function reducer(state = initialState, action) {
             return { ...state, ...action.users }
         case SET_FOLLOWERS:
             return { ...state, ...action.followers }
+        case SET_FOLLOWINGS:
+          return { ...state, ...action.followings }
         case ERROR_MSG:
             return { ...state, error: action.message }
         default:
