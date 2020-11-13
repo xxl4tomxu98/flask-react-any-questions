@@ -1,22 +1,19 @@
-import React, { useEffect, useState, Fragment } from 'react'
-import { useSelector } from 'react-redux';
+import React, { useEffect, Fragment } from 'react'
+import { useSelector, useDispatch } from 'react-redux';
 import { Link } from 'react-router-dom';
 import '../HomePage/HomePage.css';
+import { getBookmarkedPosts } from '../../store/users';
 import Spinner from '../Spinner';
 import PostItem from '../PostItem.js';
 
 const ProfileTabFavorites = () => {
     const id = useSelector(state => state.authentication.id);
-    const [myFavorites, setMyFavorites] = useState([])
+    const myFavorites = useSelector(state => state.users.bookmarked);
+    const dispatch = useDispatch();
 
     useEffect(() => {
-        async function fetchFavorites() {
-            const res = await fetch(`/api/users/${id}/bookmarks`)
-            const data = await res.json()
-            return setMyFavorites(data.bookmarked)
-        }
-        fetchFavorites()
-    }, [id])
+          dispatch(getBookmarkedPosts(id));
+    }, [dispatch, id])
 
 
     return myFavorites === null ? <Spinner type='page' width='75px' height='200px'/> : <Fragment>

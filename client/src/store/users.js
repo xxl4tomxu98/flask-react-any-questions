@@ -2,6 +2,7 @@ const SET_USER = 'ANYQUESTIONS/USER/SET_USER'
 const SET_USERS = 'ANYQUESTIONS/USER/SET_USERS'
 const SET_FOLLOWERS = 'ANYQUESTIONS/USER/SET_FOLLOWER'
 const SET_FOLLOWINGS = 'ANYQUESTIONS/USER/SET_FOLLOWING'
+const SET_BOOKMARKS = 'ANYQUESTIONS/USER/SET_BOOKMARKS'
 const ERROR_MSG = 'ANYQUESTIONS/USER/ERROR_MSG'
 
 export const loadUser = (user) => {
@@ -17,6 +18,14 @@ export const loadUsers = (users) => {
         users
     }
 }
+
+export const loadBookmarkedPosts = (posts) => {
+    return {
+        type: SET_BOOKMARKS,
+        posts,
+    }
+}
+
 
 export const loadFollowers = (followers) => {
   return {
@@ -76,6 +85,16 @@ export const getUser = id => async dispatch => {
 };
 
 
+export const getBookmarkedPosts = id => {
+    return async (dispatch) => {
+        const res = await fetch(`/api/users/${id}/bookmarks`)
+        const posts = await res.json()
+        dispatch(loadBookmarkedPosts(posts));
+        return posts;
+    }
+}
+
+
 export const getFollowers = id => {
     return async (dispatch) => {
         const res = await fetch(`/api/users/${id}/followers`);
@@ -115,6 +134,7 @@ const initialState = {
     detail: {},
     followers: [],
     followings: [],
+    bookmarked: [],
 }
 
 export default function reducer(state = initialState, action) {
@@ -126,7 +146,9 @@ export default function reducer(state = initialState, action) {
         case SET_FOLLOWERS:
             return { ...state, ...action.followers }
         case SET_FOLLOWINGS:
-          return { ...state, ...action.followings }
+            return { ...state, ...action.followings }
+        case SET_BOOKMARKS:
+            return { ...state, ...action.posts }
         case ERROR_MSG:
             return { ...state, error: action.message }
         default:

@@ -165,10 +165,7 @@ export default function (state = initialState, action) {
       case GET_TAG_POSTS:
           return { ...state, ...action.tagPosts };
       case GET_POST:
-          return {
-              ...state,
-              ...action.post,
-          };
+          return { ...state, ...action.post };
       case DELETE_POST:
           const nextState = { ...state };
           nextState.list = nextState.list.filter(post => post.id !== action.postId);
