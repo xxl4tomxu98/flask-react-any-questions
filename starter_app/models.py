@@ -302,17 +302,6 @@ class Tag(db.Model):
         }
 
 
-# class Follow(db.Model):
-#     __tablename__ = 'follows'
-#     follower_id = db.Column(db.Integer, db.ForeignKey('users.id'),
-#                             primary_key=True)
-#     followed_id = db.Column(db.Integer, db.ForeignKey('users.id'),
-#                             primary_key=True)
-#     follow_time = db.Column(db.DateTime(timezone=True),
-#                             default=datetime.utcnow)
-#     db.UniqueConstraint(followed_id, follower_id)
-
-
 def generate_ranking(upvotes, downvotes):
     n = upvotes + downvotes
     if n == 0:

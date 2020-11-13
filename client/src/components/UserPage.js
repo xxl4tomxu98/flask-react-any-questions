@@ -1,7 +1,7 @@
 import React, {useEffect,Fragment} from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import moment from 'moment';
-import { getUser } from '../store/users';
+import { getUser, getFollowers } from '../store/users';
 import { Link, useParams } from 'react-router-dom';
 import { ReactComponent as Logo } from '../assets/quiz.svg';
 import SideBar from './HomePage/SideBar';
@@ -12,11 +12,12 @@ import Spinner from "./Spinner";
 
 const UserPage = () => {
     const user = useSelector(state => state.users.detail);
-
+    const followers = useSelector(state => state.users.followers);
     const { userId } = useParams();
     const dispatch = useDispatch();
     useEffect(() => {
         dispatch(getUser(userId));
+        dispatch(getFollowers(userId));
     }, [dispatch, userId]);
 
     return user === null ? <Spinner type='page' width='75px' height='200px'/> : <Fragment>
@@ -169,9 +170,14 @@ const UserPage = () => {
                                     <h3 className='fw-bold fc-dark bc-black-3'>
                                         Followers
                                     </h3>
-                                    <p className='fc-light'>
-                                        {user.list_followers}
-                                    </p>
+                                    <div className='fc-light'>
+                                    {followers.map(follower => (
+                                     <div key={follower.id}>
+                                        <a className='s-tag s-tag__md' href={`/users/${follower.id}`}>
+                                          {follower.user_name}
+                                        </a>
+                                     </div>  ))}
+                                    </div>
                                 </div>
                             </div>
                         </div>

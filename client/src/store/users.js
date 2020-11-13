@@ -1,5 +1,6 @@
 const SET_USER = 'ANYQUESTIONS/USER/SET_USER'
 const SET_USERS = 'ANYQUESTIONS/USER/SET_USERS'
+const SET_FOLLOWERS = 'ANYQUESTIONS/USER/SET_FOLLOWER'
 const ERROR_MSG = 'ANYQUESTIONS/USER/ERROR_MSG'
 
 export const loadUser = (user) => {
@@ -14,6 +15,13 @@ export const loadUsers = (users) => {
         type: SET_USERS,
         users
     }
+}
+
+export const loadFollowers = (followers) => {
+  return {
+      type: SET_FOLLOWERS,
+      followers,
+  }
 }
 
 export const error = (message) => {
@@ -59,9 +67,29 @@ export const getUser = id => async dispatch => {
 };
 
 
+export const getFollowers = id => {
+    return async (dispatch) => {
+        const res = await fetch(`/api/users/${id}/followers`);
+        if (res.status === 400) {
+            const { errors } = await res.json();
+            dispatch(error(errors))
+            return errors
+        }
+        if (res.ok) {
+            const followers= await res.json();
+            dispatch(loadFollowers(followers));
+            return followers;
+        }
+        throw res;
+    }
+}
+
+
+
 const initialState = {
     list: [],
     detail: {},
+    followers: [],
 }
 
 export default function reducer(state = initialState, action) {
@@ -70,6 +98,8 @@ export default function reducer(state = initialState, action) {
             return { ...state, ...action.user }
         case SET_USERS:
             return { ...state, ...action.users }
+        case SET_FOLLOWERS:
+            return { ...state, ...action.followers }
         case ERROR_MSG:
             return { ...state, error: action.message }
         default:

@@ -73,6 +73,40 @@ def bookmarks(user_id):
         return {'bookmarked': [resp.to_dict() for resp in response]}
 
 
+@bp.route("/<int:user_id>/followers", methods=["GET", "POST"])
+def followers(user_id):
+    user = User.query.get_or_404(user_id)
+    if request.method == "POST":
+        if not request.is_json:
+            return jsonify({"msg": "Missing JSON in request"}), 400
+        follower_id = request.json.get("user_id", None)
+        follower = User.query.get(follower_id)
+        follower.follow(user)
+        db.session.add(follower)
+        db.session.commit()
+        return 'follower added', 200
+    else:
+        response = user.list_followers()
+        return {'followers': [resp.to_dict() for resp in response]}
+
+
+@bp.route("/<int:user_id>/following", methods=["GET", "POST"])
+def following(user_id):
+    user = User.query.get_or_404(user_id)
+    if request.method == "POST":
+        if not request.is_json:
+            return jsonify({"msg": "Missing JSON in request"}), 400
+        new_followed_id = request.json.get("user_id", None)
+        new_followed = User.query.get(new_followed_id)
+        user.follow(new_followed)
+        db.session.add(user)
+        db.session.commit()
+        return 'followed added', 200
+    else:
+        response = user.list_following()
+        return {'followed': [resp.to_dict() for resp in response]}
+
+
 @bp.route("/<int:user_id>/tags/<int:rest_id>", methods=["DELETE"])
 @login_required
 def untag_favorite(rest_id, user_id):
