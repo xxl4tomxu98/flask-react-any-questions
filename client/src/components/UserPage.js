@@ -1,7 +1,7 @@
 import React, {useEffect,Fragment} from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import moment from 'moment';
-import { getUser, getFollowers, getFollowings } from '../store/users';
+import { getUser, getFollowers, getFollowings, followFollowed } from '../store/users';
 import { Link, useParams } from 'react-router-dom';
 import { ReactComponent as Logo } from '../assets/quiz.svg';
 import SideBar from './HomePage/SideBar';
@@ -11,6 +11,7 @@ import Spinner from "./Spinner";
 
 
 const UserPage = () => {
+    const currentUserId = useSelector(state => state.authentication.id);
     const user = useSelector(state => state.users.detail);
     const followers = useSelector(state => state.users.followers);
     const followings = useSelector(state => state.users.followings);
@@ -22,6 +23,11 @@ const UserPage = () => {
         dispatch(getFollowings(userId));
     }, [dispatch, userId]);
 
+    const onSubmitFollowfollowed = async e => {
+      e.preventDefault();
+      await dispatch(followFollowed(currentUserId, userId));
+    };
+
     return user === null ? <Spinner type='page' width='75px' height='200px'/> : <Fragment>
         <div className='page'>
             <SideBar/>
@@ -30,9 +36,13 @@ const UserPage = () => {
                     <div className='user-card'>
                         <div className="grid--cell s-navigation mb16">
                             <Link to="#" className="s-navigation--item is-selected"
-                               data-shortcut="P">Individual User</Link>
-                            <Link to="#" className="s-navigation--item"
-                               data-shortcut="A"> Activity</Link>
+                               data-shortcut="P">{user.user_name}</Link>
+                            <Link data-shortcut="A"
+                                  className="s-navigation--item"
+                                  style={{paddingLeft: '4px'}}
+                                  title='Follow this amazing user'
+                                  onClick={onSubmitFollowfollowed}
+                                > Follow</Link>
                         </div>
                         <div className='grid'>
                             <div className='img-card'>

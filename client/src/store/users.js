@@ -155,6 +155,31 @@ export const bookmarkPost = (id, postId) => async (dispatch, getState) => {
 };
 
 
+export const followFollowed = (followerId, followedId) => async (dispatch, getState) => {
+  const fetchWithCSRF = getState().authentication.csrf;
+  const res = await fetchWithCSRF(`/api/users/${followerId}/followed/${followedId}`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify(followedId)
+  });
+  if (res.status === 400) {
+      const { errors } = await res.json();
+      dispatch(error(errors))
+      return errors
+  }
+  if (res.ok) {
+      dispatch(getFollowers(followedId));
+      return res;
+  } else if (res.status === 401) {
+      dispatch(removeUser());
+      return res;
+  }
+  throw res;
+};
+
+
 const initialState = {
     list: [],
     detail: {},

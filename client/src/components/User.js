@@ -5,8 +5,8 @@ import { Link } from 'react-router-dom';
 
 import './User.css';
 
-const User = ({ user: { id, user_name, member_since, posts_count, tags } }) => {
-    const tags_count = tags.length;
+const User = ({ user: { id, user_name, member_since, posts_count, tag_count, answer_count, comment_count } }) => {
+
     return (
         <div className='user-panel-info s-card bs-sm h:bs-md fc-black-500'>
             <div className='user-gravatar'>
@@ -20,7 +20,9 @@ const User = ({ user: { id, user_name, member_since, posts_count, tags } }) => {
             <div className='user-details'>
                 <Link className='fc-blue-600' to={`/users/${id}`}>{user_name}</Link>
                 <span className='post-count'>questions - {posts_count}</span>
-                <span className='tag-count'>tags - {tags_count}</span>
+                <span className='post-count'>answers - {answer_count}</span>
+                <span className='tag-count'>tags - {tag_count}</span>
+                <span className='post-count'>comments - {comment_count}</span>
                 <span style={{fontSize:'11px', float:'right'}}>{ moment(member_since).fromNow(true) } ago</span>
             </div>
         </div>
