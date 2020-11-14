@@ -1,3 +1,4 @@
+import { removeUser } from './authentication';
 const SET_USER = 'ANYQUESTIONS/USER/SET_USER'
 const SET_USERS = 'ANYQUESTIONS/USER/SET_USERS'
 const SET_FOLLOWERS = 'ANYQUESTIONS/USER/SET_FOLLOWER'
@@ -128,6 +129,31 @@ export const getFollowings = id => {
       throw res;
   }
 }
+
+export const bookmarkPost = (id, postId) => async (dispatch, getState) => {
+    const fetchWithCSRF = getState().authentication.csrf;
+    const res = await fetchWithCSRF(`/api/users/${id}/bookmarks/${postId}`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify(postId)
+    });
+    if (res.status === 400) {
+      const { errors } = await res.json();
+      dispatch(error(errors))
+      return errors
+    }
+    if (res.ok) {
+        dispatch(getBookmarkedPosts(id));
+        return res;
+    } else if (res.status === 401) {
+        dispatch(removeUser());
+        return res;
+    }
+    throw res;
+};
+
 
 const initialState = {
     list: [],

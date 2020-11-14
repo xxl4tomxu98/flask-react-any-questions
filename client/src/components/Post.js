@@ -3,6 +3,7 @@ import moment from 'moment';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link, useParams, useHistory } from 'react-router-dom';
 import { getPost, deletePost } from '../store/posts';
+import { bookmarkPost } from '../store/users';
 import { getAnswers, deleteAnswer, addAnswer } from '../store/answers';
 import { getComments, deleteComment, addComment } from '../store/comments';
 import { ReactComponent as UpVote } from '../assets/ArrowUpLg.svg';
@@ -67,6 +68,12 @@ const Post = () => {
       await dispatch(deleteAnswer(id, e.target.id));
     };
 
+    const onSubmitBookmarkPost = async e => {
+      e.preventDefault();
+      await dispatch(bookmarkPost(auth.id, id));
+      history.push('/currentUser');
+    };
+
     return post === null ? <Spinner type='page' width='75px' height='200px'/> : <Fragment>
         <div className='page'>
             <SideBar/>
@@ -127,7 +134,12 @@ const Post = () => {
                                                     <Link className='post-links' title='short permalink to this question' to='/'>
                                                         share
                                                     </Link>
-                                                    <Link className='post-links' title='Follow this question to receive notifications' to='/'>
+                                                    <Link
+                                                        className='post-links'
+                                                        style={{paddingLeft: '4px'}}
+                                                        title='Follow this question to receive notifications'
+                                                        onClick={onSubmitBookmarkPost}
+                                                        to='/currentUser'>
                                                         follow
                                                     </Link>
                                                     {auth.id && parseInt(post.user_id) === auth.id && (
