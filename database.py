@@ -79,7 +79,9 @@ with app.app_context():
     db.session.add(q1)
     db.session.add(q2)
     alissa.bookmarked_questions.append(q1)
+    angela.bookmarked_questions.append(q2)
     db.session.add(alissa)
+    db.session.add(angela)
 
     t1 = Tag(tagname='javascript', created_at=date(2012, 8, 20),
              description='For questions regarding programming in ECMAScript (JavaScript/JS) and its various dialects/implementations (excluding ActionScript). This tag is rarely used alone but is most often associated with the tags [node.js], [jquery],[json], and [html].'
@@ -118,7 +120,7 @@ with app.app_context():
             )
 
     t2.tagged_questions.append(q2)
-
+    t8.tagged_questions.append(q1)
     db.session.add(t1)
     db.session.add(t2)
     db.session.add(t3)

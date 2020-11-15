@@ -6,6 +6,7 @@ const GET_TAG_POSTS = 'GET_TAG_POSTS';
 const POST_ERROR = 'POST_ERROR';
 const DELETE_POST = 'DELETE_POST';
 
+
 const load = posts => {
   return {
     type: GET_POSTS,
@@ -41,6 +42,9 @@ const removePost = (postId) => {
       postId
   }
 }
+
+
+
 
 const formErrors = (errors) => {
   return {
@@ -126,6 +130,8 @@ export const addPost = formData => async (dispatch, getState) => {
     }
     throw res;
 };
+
+
 
 // Delete post
 export const deletePost = id => async (dispatch, getState) => {

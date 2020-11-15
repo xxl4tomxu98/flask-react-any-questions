@@ -52,7 +52,9 @@ def get_tags():
 
 @bp.route('/tags/<tagname>')
 def get_tag(tagname):
-    tag = Tag.query.filter_by(tagname=tagname).first()
+    tag = Tag.query.filter(Tag.tagname == tagname).first()
+    if not tag:
+        return {"errors": ["Invalid tag requested"]}, 401
     return {'detail': tag.to_dict()}
 
 
@@ -61,6 +63,20 @@ def get_tagPosts(tagname):
     tag = Tag.query.filter_by(tagname=tagname).first()
     response = tag.tagged_questions
     return {'tagPosts': [post.to_dict() for post in response]}
+
+
+@bp.route("/tags/<int:tag_id>/posts/<int:post_id>")
+@login_required
+def tag_post(tag_id, post_id):
+
+    quest = Question.query.get_or_404(post_id)
+    tag = Tag.query.get_or_404(tag_id)
+    if not tag:
+        return {"errors": ["Invalid tag requested"]}, 401
+    tag.tagged_questions.append(quest)
+    db.session.add(tag)
+    db.session.commit()
+    return {'tagPosts': quest.to_dict()}, 200
 
 
 @bp.route('/posts/<int:id>')

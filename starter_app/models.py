@@ -87,11 +87,11 @@ class User(db.Model, UserMixin):
 
     @property
     def follower_count(self):
-        return len(self.list_followers())
+        return len(list(self.list_followers()))
 
     @property
     def following_count(self):
-        return len(self.list_following())
+        return len(list(self.list_following()))
 
     @property
     def password(self):
@@ -130,22 +130,22 @@ class User(db.Model, UserMixin):
 
     def to_dict(self):
         return {
-          "id": self.id,
-          "user_name": self.user_name,
-          "email": self.email,
-          "city": self.city,
-          "state": self.state,
-          "tags": self.tags,
-          "posts_count": self.posts_count,
-          "answer_count": self.answer_count,
-          "comment_count": self.comment_count,
-          "tag_count": self.tag_count,
-          "follower_count": self.follower_count,
-          "following_count": self.following_count,
-          "member_since": self.member_since,
-          "last_seen": self.last_seen,
-          "reputation": self.reputation,
-          "hashed_password": self.hashed_password,
+            "id": self.id,
+            "user_name": self.user_name,
+            "email": self.email,
+            "city": self.city,
+            "state": self.state,
+            "tags": self.tags,
+            "posts_count": self.posts_count,
+            "answer_count": self.answer_count,
+            "comment_count": self.comment_count,
+            "tag_count": self.tag_count,
+            "follower_count": self.follower_count,
+            "following_count": self.following_count,
+            "member_since": self.member_since,
+            "last_seen": self.last_seen,
+            "reputation": self.reputation,
+            "hashed_password": self.hashed_password,
         }
 
 
@@ -163,6 +163,7 @@ class Question(db.Model):
     body = db.Column(db.Text, nullable=False)
     answer_count = db.Column(db.Integer, nullable=True, default=0)
     comment_count = db.Column(db.Integer, nullable=True, default=0)
+    tag_count = db.Column(db.Integer, nullable=True, default=0)
     accepted_answer_id = db.Column(db.Integer, nullable=True)
     upvote_count = db.Column(db.Integer, nullable=True, default=0)
     downvote_count = db.Column(db.Integer, nullable=True, default=0)
@@ -170,7 +171,7 @@ class Question(db.Model):
     answers = db.relationship('Answer', backref='question', lazy=True)
     comments = db.relationship('Comment',
                                backref='question', lazy=True)
-    question_tags = db.relationship('Tag', back_populates="tagged_questions",
+    question_tags = db.relationship('Tag', back_populates='tagged_questions',
                                     secondary='poststags')
 
     @property
@@ -180,6 +181,16 @@ class Question(db.Model):
     @property
     def comment_count(self):
         return len(self.comments)
+
+    # @property
+    # def tags(self):
+    #     for tag in self.question_tags:
+    #         self.tags.append(tag.tagname)
+    #     return self.tags
+
+    @property
+    def tag_count(self):
+        return len(self.tags) + len(self.question_tags)
 
     def to_dict(self):
         return {
@@ -192,6 +203,7 @@ class Question(db.Model):
             "body": self.body,
             "answer_count": self.answer_count,
             "comment_count": self.comment_count,
+            "tag_count": self.tag_count,
             "accepted_answer_id": self.accepted_answer_id,
             "upvote_count": self.upvote_count,
             "downvote_count": self.downvote_count,

@@ -27,7 +27,7 @@ const UserPage = () => {
       e.preventDefault();
       await dispatch(followFollowed(currentUserId, userId));
     };
-
+    const tags = Array(user.tags);
     return user === null ? <Spinner type='page' width='75px' height='200px'/> : <Fragment>
         <div className='page'>
             <SideBar/>
@@ -249,14 +249,14 @@ const UserPage = () => {
                                     <div className='top-tags-cells'>
                                         <div className='top-cell'>
                                             <div className='tag-cell bg-black-025'>
-                                                <Link className='s-tag s-tag__md' to='/tags/react'>
-                                                    react
+                                                <Link className='s-tag s-tag__md' to='/tags/sequelize'>
+                                                    sequelize
                                                 </Link>
                                                 <div className='score'>
                                                     <div className='score-txt'>
                                                         <div className='score-tab'>
                                                             <span className='txt fc-light'>Posts</span>
-                                                            <span className='number fc-black-800'>0</span>
+                                                            <span className='number fc-black-800'>3</span>
                                                         </div>
                                                     </div>
                                                 </div>

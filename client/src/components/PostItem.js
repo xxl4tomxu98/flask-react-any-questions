@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 
 import './PostItem.css';
 
-const PostItem = ({ post: { id, title, body, tags, user_id, username, answer_count, comment_count, ask_time } }) => {
+const PostItem = ({ post: { id, title, body, tags, tag_count, user_id, username, answer_count, comment_count, ask_time } }) => {
 
     const answerVoteUp = (
         <div className='vote answer'>

@@ -3,6 +3,7 @@ import moment from 'moment';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link, useParams, useHistory } from 'react-router-dom';
 import { getPost, deletePost } from '../store/posts';
+import { tagPost, getTags, getTag } from '../store/tags';
 import { bookmarkPost } from '../store/users';
 import { getAnswers, deleteAnswer, addAnswer } from '../store/answers';
 import { getComments, deleteComment, addComment } from '../store/comments';
@@ -19,6 +20,8 @@ const Post = () => {
     const post = useSelector(state => state.posts.post);
     const comments = useSelector(state => state.comments.list);
     const answers = useSelector(state => state.answers.list);
+    const tags = useSelector(state => state.tags.list);
+
     const dispatch = useDispatch();
     const history = useHistory();
     const { id } = useParams();
@@ -26,6 +29,7 @@ const Post = () => {
         dispatch(getPost(id));
         dispatch(getAnswers(id));
         dispatch(getComments(id));
+        dispatch(getTags());
     }, [ dispatch, id ]);
 
     const onSubmitDeletePost = async e => {
@@ -69,10 +73,29 @@ const Post = () => {
     };
 
     const onSubmitBookmarkPost = async e => {
-      e.preventDefault();
-      await dispatch(bookmarkPost(auth.id, id));
-      history.push('/currentUser');
+        e.preventDefault();
+        await dispatch(bookmarkPost(auth.id, id));
+        history.push('/currentUser');
     };
+
+    const [ formDataTag, setFormDataTag ] = useState({
+        selection: ''
+    });
+
+    const { selection } = formDataTag;
+    const onChangeTag = e => setFormDataTag({ ...formDataTag, [e.target.name]: e.target.value });
+
+    const onSubmitTagPost = async e => {
+        e.preventDefault();
+        try {
+            const tagname = selection;
+            const found = tags.find(tag => tag.tagname === tagname);
+            const tagId = found.id;
+            await dispatch(tagPost(tagId, id));
+            await dispatch(getTag(tagname));
+            history.push(`/tags/${tagname}`);
+        } catch(e) {}
+    }
 
     return post === null ? <Spinner type='page' width='75px' height='200px'/> : <Fragment>
         <div className='page'>
@@ -126,6 +149,21 @@ const Post = () => {
                                             <Link className='s-tag' key={`${tag}-${idx}`} to={`/tags/${tag}`}>{tag}</Link>
                                           ))}
                                         </div>
+                                    </div>
+                                    <div>
+                                      <form className='dropdown' name='form'>
+                                        <select name='selection' id='drop-down-form__select' onChange={onChangeTag} className='drop-down' >
+                                          <option className='drop-down' name='selection'>add to tag</option>
+                                          {tags.map(tag => {
+                                              return (
+                                                <option key={`${tag.tagname}-${tag.id}`}            className='dropdown__option'>
+                                                  {tag.tagname}
+                                                </option>
+                                              );
+                                          })}
+                                        </select>
+                                        <button type='submit' className='button-light' onClick={onSubmitTagPost}>Add</button>
+                                      </form>
                                     </div>
                                     <div className='post-actions fc-black-800'>
                                         <div className='post-actions-extended'>
