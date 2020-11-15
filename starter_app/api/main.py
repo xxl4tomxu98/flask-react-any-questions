@@ -179,16 +179,8 @@ def vote_answer(post_id, answer_id, type):
     user_id = current_user.id
     user = User.query.get_or_404(user_id)
     answer = Answer.query.get_or_404(answer_id)
-    user.vote(answer, type)
-    return {}, 200
-
-
-@bp.route('/posts/<int:post_id>/answers/<int:answer_id>/<string:type>',
-          methods=["DELETE"])
-@login_required
-def unvote_answer(answer_id, type):
-    user_id = current_user.id
-    user = User.query.get_or_404(user_id)
-    answer = Answer.query.get_or_404(answer_id)
-    user.unvote(answer, type)
+    if not user.is_voted(answer):
+        user.vote(answer, type)
+    else:
+        user.unvote(answer, type)
     return {}, 200

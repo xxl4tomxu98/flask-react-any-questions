@@ -44,8 +44,7 @@ const PostItem = ({ post: { id, title, body, tags, tag_count, user_id, username,
                 </div>
                 <div className='question-tags'>
                     {tags.map((tag, idx) => (
-                        <Link className='s-tag' key={`${tag}-${idx}`} to={`/tags/${tag}`}>
-                            {tag}
+                        <Link className='s-tag' key={`${tag}-${idx}`} style={{paddingLeft: '4px'}} to={`/tags/${tag}`}>      {tag}
                         </Link>
                     ))}
                 </div>
