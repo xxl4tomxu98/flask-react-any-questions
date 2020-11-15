@@ -263,6 +263,13 @@ const UserPage = () => {
                                             </div>
                                         </div>
                                     </div>
+                                    <div className='post-tags fc-black-800'>
+                                        <div className='tag-cell'>
+                                          {tags.map((tag,idx) => (
+                                            <Link className='s-tag' key={`${tag}-${idx}`} to={`/tags/${tag}`}>{tag}</Link>
+                                          ))}
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>

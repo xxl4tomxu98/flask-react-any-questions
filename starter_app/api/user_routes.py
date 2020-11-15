@@ -95,12 +95,24 @@ def following(user_id):
     return {'followings': [resp.to_dict() for resp in response]}
 
 
-@bp.route("/<int:user_id>/tags/<int:rest_id>", methods=["DELETE"])
+@bp.route("/<int:user_id>/bookmarks/<int:post_id>", methods=["DELETE"])
 @login_required
-def untag_favorite(rest_id, user_id):
+def untag_favorite(user_id, post_id):
     user = User.query.get_or_404(user_id)
-    question = Question.query.filter_by(id=rest_id)
-    user.questions.clear(question)
+    question = Question.query.filter_by(id=post_id)
+    user.bookmarked_questions.delete(question)
     db.session.add(user)
     db.session.commit()
-    return 'Delete worked', 200
+    return 'Post Unbookmarked', 200
+
+
+@login_required
+@bp.route('/<int:user_id>/reputation', methods=["PATCH"])
+def earnpoint(user_id):
+    user = User.query.get_or_404(user_id)
+    set_point = request.json.get("set_point", None)
+    if user:
+        user.reputation = User.reputation + set_point
+        db.session.commit()
+        return {"user": user.to_dict()}, 200
+    return {}, 404

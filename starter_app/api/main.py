@@ -1,7 +1,7 @@
 from flask import Blueprint, request, jsonify
 from flask_login import current_user, login_required
 from sqlalchemy import or_
-from starter_app.models import db, User, Question, Tag, Comment, Answer
+from starter_app.models import db, User, Question, Tag, Comment, Answer, Vote
 from sqlalchemy.orm import joinedload
 
 bp = Blueprint("main", __name__)
@@ -172,20 +172,21 @@ def del_answer(postId, answerId):
     return {}, 404
 
 
+@bp.route('/answers/<int:answer_id>/<string:type>', methods=["POST"])
 @login_required
-@bp.route('/restaurant/setpoint/<int:user_id>', methods=["PATCH"])
-def earnpoint(user_id):
-    user = User.query.filter(User.id == user_id).first()
-    set_point = request.json.get("set_point", None)
-    if user:
-        user.points = User.points + set_point
-        db.session.commit()
-        return {"user": user.to_dict()}, 200
-    return {}, 404
+def vote_answer(answer_id, type):
+    user_id = current_user.id
+    user = User.query.get_or_404(user_id)
+    answer = Answer.query.get_or_404(answer_id)
+    user.vote(answer, type)
+    return {}, 200
 
 
-@bp.route('/reviews/<int:rev_id>')
-def rev(rev_id):
-
-    response = User.query.filter_by(id=rev_id).first()
-    return {'user': response.to_dict()}
+@bp.route('/answers/<int:answer_id>/<string:type>', methods=["DELETE"])
+@login_required
+def unvote_answer(answer_id, type):
+    user_id = current_user.id
+    user = User.query.get_or_404(user_id)
+    answer = Answer.query.get_or_404(answer_id)
+    user.unvote(answer, type)
+    return {}, 200

@@ -128,6 +128,54 @@ class User(db.Model, UserMixin):
         """
         return self.followers.all()
 
+    def vote(self, answer, type):
+        v = self.is_voted(answer)
+        if not v:
+            v = Vote(user_id=self.id, answer_id=answer.id,
+                     type=type)
+            db.session.add(v)
+            if type == 'up':
+                answer.upvotes += 1
+            else:
+                answer.downvotes += 1
+            answer.ranking = generate_ranking(answer.upvotes, answer.downvotes)
+            db.session.add(answer)
+            db.session.commit()
+        elif v.type != type:
+            v.type = type
+            db.session.add(v)
+            if type == 'up':
+                answer.upvotes += 1
+                answer.downvotes -= 1
+            else:
+                answer.downvotes += 1
+                answer.upvotes -= 1
+            answer.ranking = generate_ranking(answer.upvotes, answer.downvotes)
+            db.session.add(answer)
+            db.session.commit()
+
+    def unvote(self, answer, type):
+        v = self.votes.filter_by(answer_id=answer.id).first()
+        if v:
+            db.session.delete(v)
+            if type == 'up':
+                answer.upvotes -= 1
+            else:
+                answer.downvotes -= 1
+            answer.ranking = generate_ranking(answer.upvotes, answer.downvotes)
+            db.session.add(answer)
+            db.session.commit()
+
+    def is_voted(self, answer):
+        vote = self.votes.filter_by(answer_id=answer.id).first()
+        if vote is None:
+            return False
+        return vote
+
+    def is_answered(self, question):
+        return Answer.query.filter_by(question_id=question.id,
+                                      user_id=self.id).first()
+
     def to_dict(self):
         return {
             "id": self.id,
