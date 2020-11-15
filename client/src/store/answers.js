@@ -84,6 +84,52 @@ export const deleteAnswer = (postId, answerId) => async (dispatch, getState) => 
     throw res;
 };
 
+
+export const addVote = (postId, answerId, type) => async (dispatch, getState) => {
+  const fetchWithCSRF = getState().authentication.csrf;
+  const res = await fetchWithCSRF(`/api/posts/${postId}/answers/${answerId}/${type}`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify(answerId)
+  });
+
+  if (res.ok) {
+    dispatch(getAnswers(postId));
+    return res;
+  } else if (res.status === 401) {
+    dispatch(removeUser());
+    return res;
+  } else if (res.status === 422) {
+    const { errors } = await res.json();
+    dispatch(formErrors(errors));
+    return res;
+  }
+  throw res;
+};
+
+// unvote
+// export const deleteVote = (postId, answerId, type) => async (dispatch, getState) => {
+//     const fetchWithCSRF = getState().authentication.csrf;
+//     const res = await fetchWithCSRF(`/api/posts/${postId}/answers/${answerId}/${type}`, {
+//         method: 'delete'
+//     });
+//     if (res.ok) {
+//         dispatch(removeVote(answerId));
+//         dispatch(getVotes(postId));
+//         return res;
+//     } else if (res.status === 401) {
+//         dispatch(removeUser());
+//         return res;
+//     } else if (res.status === 422) {
+//         const { errors } = await res.json();
+//         dispatch(formErrors(errors));
+//         return res;
+//     }
+//     throw res;
+// };
+
 const initialState = {
   list: [],
   error: [],

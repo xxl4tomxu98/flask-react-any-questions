@@ -5,7 +5,7 @@ import { Link, useParams, useHistory } from 'react-router-dom';
 import { getPost, deletePost } from '../store/posts';
 import { tagPost, getTags, getTag } from '../store/tags';
 import { bookmarkPost } from '../store/users';
-import { getAnswers, deleteAnswer, addAnswer } from '../store/answers';
+import { getAnswers, deleteAnswer, addAnswer, addVote } from '../store/answers';
 import { getComments, deleteComment, addComment } from '../store/comments';
 import { ReactComponent as UpVote } from '../assets/ArrowUpLg.svg';
 import { ReactComponent as DownVote } from '../assets/ArrowDownLg.svg';
@@ -97,6 +97,17 @@ const Post = () => {
         } catch(e) {}
     }
 
+    const onSubmitUpvote = async e => {
+        e.preventDefault();
+        await dispatch(addVote(id, e.currentTarget.id, "up"));
+    };
+
+    const onSubmitDownvote = async e => {
+        e.preventDefault();
+        await dispatch(addVote(id, e.currentTarget.id, "down"));
+    };
+
+
     return post === null ? <Spinner type='page' width='75px' height='200px'/> : <Fragment>
         <div className='page'>
             <SideBar/>
@@ -146,24 +157,30 @@ const Post = () => {
                                     <div className='post-tags fc-black-800'>
                                         <div className='tag-cell'>
                                           {post.tags.map((tag,idx) => (
-                                            <Link className='s-tag' key={`${tag}-${idx}`} to={`/tags/${tag}`}>{tag}</Link>
+                                            <Link className='s-tag' key={`${tag}-${idx}`} style={{paddingLeft: '4px'}} to={`/tags/${tag}`}>{tag}</Link>
                                           ))}
                                         </div>
                                     </div>
                                     <div>
-                                      <form className='dropdown' name='form'>
-                                        <select name='selection' id='drop-down-form__select' onChange={onChangeTag} className='drop-down' >
-                                          <option className='drop-down' name='selection'>add to tag</option>
-                                          {tags.map(tag => {
-                                              return (
-                                                <option key={`${tag.tagname}-${tag.id}`}            className='dropdown__option'>
-                                                  {tag.tagname}
-                                                </option>
-                                              );
-                                          })}
-                                        </select>
-                                        <button type='submit' className='button-light' onClick={onSubmitTagPost}>Add</button>
-                                      </form>
+                                      {auth.id ? <Fragment>
+                                        <form className='dropdown' name='form'>
+                                          <select name='selection' id='drop-down-form__select' onChange={onChangeTag} className='drop-down' >
+                                            <option className='drop-down' name='selection'>add to tag</option>
+                                            {tags.map(tag => {
+                                                return (
+                                                  <option key={`${tag.tagname}-${tag.id}`}            className='dropdown__option'>
+                                                    {tag.tagname}
+                                                  </option>
+                                                );
+                                            })}
+                                          </select>
+                                          <button type='submit' className='button-light' onClick={onSubmitTagPost}>Add</button>
+                                        </form>
+                                      </Fragment> : <Fragment>
+                                          <Link to='/login'>
+                                              <button type='button' className="s-btn">You need to login to add the post to tag</button>
+                                          </Link>
+                                      </Fragment>}
                                     </div>
                                     <div className='post-actions fc-black-800'>
                                         <div className='post-actions-extended'>
@@ -290,12 +307,14 @@ const Post = () => {
                                             </Link>
                                             <Link className="s-btn s-btn__filled"
                                                to="#"
+                                               style={{paddingLeft: '4px'}}
                                                data-nav-xhref="" title="Answers in the order they were provided"
                                                data-value="oldest" data-shortcut="O">
                                                 Oldest
                                             </Link>
                                             <Link className="s-btn s-btn__filled"
                                                to="#"
+                                               style={{paddingLeft: '4px'}}
                                                data-nav-xhref="" title="Answers with the highest score first"
                                                data-value="votes" data-shortcut="V">
                                                 Votes
@@ -312,15 +331,20 @@ const Post = () => {
                                                 <button
                                                     className='vote-up'
                                                     title='This answer is useful (click again to undo)'
+                                                    onClick={onSubmitUpvote}
+                                                    id={answer.id}
                                                 >
-                                                    <UpVote className='icon'/>
+                                                    <UpVote className='icon'                                               />
                                                 </button>
-                                                <div className='vote-count fc-black-500'>0</div>
+                                                <div className='vote-count fc-black-500'>Answer Rank: {answer.ranking}</div>
                                                 <button
                                                     className='vote-down'
                                                     title='This answer is not useful (click again to undo)'
+                                                    onClick={onSubmitDownvote}
+                                                    id={answer.id}
                                                 >
-                                                    <DownVote className='icon'/>
+                                                    <DownVote className='icon'
+                                                    />
                                                 </button>
                                             </div>
                                         </div>
@@ -336,7 +360,7 @@ const Post = () => {
                                                         <Link className='answer-links' title='short permalink to this question' to='/'>
                                                             share
                                                         </Link>
-                                                        <Link className='answer-links' title='Follow this question to receive notifications' to='/'>
+                                                        <Link className='answer-links' style={{paddingLeft: '4px'}} title='Follow this question to receive notifications' to='/'>
                                                             follow
                                                         </Link>
                                                         {auth.id && parseInt(answer.user_id) === auth.id && (

@@ -172,9 +172,10 @@ def del_answer(postId, answerId):
     return {}, 404
 
 
-@bp.route('/answers/<int:answer_id>/<string:type>', methods=["POST"])
+@bp.route('/posts/<int:post_id>/answers/<int:answer_id>/<string:type>',
+          methods=["POST"])
 @login_required
-def vote_answer(answer_id, type):
+def vote_answer(post_id, answer_id, type):
     user_id = current_user.id
     user = User.query.get_or_404(user_id)
     answer = Answer.query.get_or_404(answer_id)
@@ -182,7 +183,8 @@ def vote_answer(answer_id, type):
     return {}, 200
 
 
-@bp.route('/answers/<int:answer_id>/<string:type>', methods=["DELETE"])
+@bp.route('/posts/<int:post_id>/answers/<int:answer_id>/<string:type>',
+          methods=["DELETE"])
 @login_required
 def unvote_answer(answer_id, type):
     user_id = current_user.id

@@ -2,6 +2,7 @@ from flask_sqlalchemy import SQLAlchemy
 from flask_login import UserMixin
 from werkzeug.security import generate_password_hash, check_password_hash
 from datetime import datetime
+import math
 
 db = SQLAlchemy()
 
@@ -135,22 +136,24 @@ class User(db.Model, UserMixin):
                      type=type)
             db.session.add(v)
             if type == 'up':
-                answer.upvotes += 1
+                answer.upvote_count += 1
             else:
-                answer.downvotes += 1
-            answer.ranking = generate_ranking(answer.upvotes, answer.downvotes)
+                answer.downvote_count += 1
+            answer.ranking = generate_ranking(answer.upvote_count,
+                                              answer.downvote_count)
             db.session.add(answer)
             db.session.commit()
         elif v.type != type:
             v.type = type
             db.session.add(v)
             if type == 'up':
-                answer.upvotes += 1
-                answer.downvotes -= 1
+                answer.upvote_count += 1
+                answer.downvote_count -= 1
             else:
-                answer.downvotes += 1
-                answer.upvotes -= 1
-            answer.ranking = generate_ranking(answer.upvotes, answer.downvotes)
+                answer.downvote_count += 1
+                answer.upvote_count -= 1
+            answer.ranking = generate_ranking(answer.upvote_count,
+                                              answer.downvote_count)
             db.session.add(answer)
             db.session.commit()
 
@@ -159,10 +162,11 @@ class User(db.Model, UserMixin):
         if v:
             db.session.delete(v)
             if type == 'up':
-                answer.upvotes -= 1
+                answer.upvote_count -= 1
             else:
-                answer.downvotes -= 1
-            answer.ranking = generate_ranking(answer.upvotes, answer.downvotes)
+                answer.downvote_count -= 1
+            answer.ranking = generate_ranking(answer.upvote_count,
+                                              answer.downvote_count)
             db.session.add(answer)
             db.session.commit()
 
@@ -298,7 +302,7 @@ class Vote(db.Model):
     user_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
     answer_id = db.Column(db.Integer,
                           db.ForeignKey('answers.id'), nullable=False)
-    type = db.Column(db.Boolean, nullable=False)
+    type = db.Column(db.Enum("up", "down", name="vote_type"))
 
     def to_dict(self):
         return {
