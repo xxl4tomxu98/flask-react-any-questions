@@ -48,6 +48,14 @@ def update(user_id):
 @bp.route('/<int:id>')
 def user_profile(id):
     user = User.query.get_or_404(id)
+    user.reputation = 30*user.tag_count \
+                        + 40*user.follower_count \
+                        + 20*user.following_count + 50*user.comment_count \
+                        + 60*user.answer_count + 100*user.posts_count  \
+                        + 200*sum(ans.ranking for ans in user.answers)  \
+                        + 300*len(list(user.bookmarked_questions))
+    db.session.add(user)
+    db.session.commit()
     return {"detail":  user.to_dict()}
 
 

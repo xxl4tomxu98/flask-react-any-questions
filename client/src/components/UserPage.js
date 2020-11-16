@@ -37,7 +37,8 @@ const UserPage = () => {
                         <div className="grid--cell s-navigation mb16">
                             <Link to="#" className="s-navigation--item is-selected"
                                data-shortcut="P">{user.user_name}</Link>
-                            <Link data-shortcut="A"
+                            <Link to="#"
+                                  data-shortcut="A"
                                   className="s-navigation--item"
                                   style={{paddingLeft: '4px'}}
                                   title='Follow this amazing user'
@@ -56,7 +57,7 @@ const UserPage = () => {
                                     </div>
                                     <div className='title'>
                                         <div className='grid fc-black-800'>
-                                            319
+                                            {user.reputation}
                                             &nbsp;
                                             <span className='fc-light'>
                                                 REPUTATION
