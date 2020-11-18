@@ -4,6 +4,7 @@ const SET_USERS = 'ANYQUESTIONS/USER/SET_USERS'
 const SET_FOLLOWERS = 'ANYQUESTIONS/USER/SET_FOLLOWER'
 const SET_FOLLOWINGS = 'ANYQUESTIONS/USER/SET_FOLLOWING'
 const SET_BOOKMARKS = 'ANYQUESTIONS/USER/SET_BOOKMARKS'
+const SET_FOLLOWEDUSERPOSTS = 'ANYQUESTIONS/USER/SET_FOLLOWEDUSERPOSTS'
 const ERROR_MSG = 'ANYQUESTIONS/USER/ERROR_MSG'
 
 export const loadUser = (user) => {
@@ -27,6 +28,12 @@ export const loadBookmarkedPosts = (posts) => {
     }
 }
 
+export const loadFollowedUserPosts = (posts) => {
+  return {
+      type: SET_FOLLOWEDUSERPOSTS,
+      posts,
+  }
+}
 
 export const loadFollowers = (followers) => {
   return {
@@ -180,12 +187,31 @@ export const followFollowed = (followerId, followedId) => async (dispatch, getSt
 };
 
 
+export const getFollowedUserPosts = (followerId, followedId) => {
+  return async (dispatch) => {
+      const res = await fetch(`/api/users/${followerId}/followed/${followedId}/posts`);
+      if (res.status === 400) {
+          const { errors } = await res.json();
+          dispatch(error(errors))
+          return errors
+      }
+      if (res.ok) {
+          const posts= await res.json();
+          dispatch(loadFollowedUserPosts(posts));
+          return posts;
+      }
+      throw res;
+  }
+}
+
+
 const initialState = {
     list: [],
     detail: {},
     followers: [],
     followings: [],
     bookmarked: [],
+    followeduserposts: [],
 }
 
 export default function reducer(state = initialState, action) {
@@ -200,6 +226,8 @@ export default function reducer(state = initialState, action) {
             return { ...state, ...action.followings }
         case SET_BOOKMARKS:
             return { ...state, ...action.posts }
+        case SET_FOLLOWEDUSERPOSTS:
+          return { ...state, ...action.posts }
         case ERROR_MSG:
             return { ...state, error: action.message }
         default:

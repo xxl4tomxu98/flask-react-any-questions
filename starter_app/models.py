@@ -180,6 +180,12 @@ class User(db.Model, UserMixin):
         return Answer.query.filter_by(question_id=question.id,
                                       user_id=self.id).first()
 
+    @property
+    def followed_userquestions(self):
+        return Question.query.filter(self.followed.id
+                                     == Question.user_id) \
+            .filter(self.followers.id == self.id)
+
     def to_dict(self):
         return {
             "id": self.id,

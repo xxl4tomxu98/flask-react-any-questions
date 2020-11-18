@@ -4,7 +4,7 @@ const SET_USER = 'ANYQUESTIONS/AUTH/SET_USER'
 const REMOVE_USER = 'ANYQUESTIONS/AUTH/REMOVE_USER'
 const SET_CSRF = 'ANYQUESTIONS/AUTH/SET_CSRF'
 const ERROR_MSG = 'ANYQUESTIONS/ERROR_MSG'
-const SET_POINTS = 'ANYQUESTIONS/SET_POINTS'
+
 
 export const setUser = (user) => {
     return {
@@ -31,9 +31,7 @@ export const error = (message) => {
   return { type: ERROR_MSG, message };
 }
 
-export const setPoints = (points) => {
-  return { type: SET_POINTS, points}
-}
+
 
 export const logout = () => (dispatch, getState) => {
     const fetchWithCSRF = getState().authentication.csrf;
@@ -140,8 +138,6 @@ export default function reducer(state = initialState, action) {
             return { csrf: state.csrf }
         case ERROR_MSG:
             return { ...state, error: action.message }
-        case SET_POINTS:
-            return { ...state, points: action.points}
         default:
             return state
     }

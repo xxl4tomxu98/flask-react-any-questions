@@ -95,6 +95,13 @@ def add_followed(follower_id, followed_id):
     db.session.commit()
     return 'followed added', 200
 
+@bp.route("/<int:follower_id>/followed/<int:followed_id>/posts")
+@login_required
+def get_followedposts(follower_id, followed_id):
+    follower = User.query.get_or_404(follower_id)
+    followed = User.query.get_or_404(followed_id)
+    response = follower.followed_userquestions
+    return {'followeduserposts': [resp.to_dict() for resp in response]}
 
 @bp.route("/<int:user_id>/following")
 def following(user_id):
@@ -112,15 +119,3 @@ def untag_favorite(user_id, post_id):
     db.session.add(user)
     db.session.commit()
     return 'Post Unbookmarked', 200
-
-
-@login_required
-@bp.route('/<int:user_id>/reputation', methods=["PATCH"])
-def earnpoint(user_id):
-    user = User.query.get_or_404(user_id)
-    set_point = request.json.get("set_point", None)
-    if user:
-        user.reputation = User.reputation + set_point
-        db.session.commit()
-        return {"user": user.to_dict()}, 200
-    return {}, 404
