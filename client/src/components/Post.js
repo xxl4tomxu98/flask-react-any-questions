@@ -145,7 +145,7 @@ const Post = () => {
                                             <div className='count-text'>comments</div>
                                         </div>
                                         <div className='vote'>
-                                            <span className='vote-count'>1</span>
+                                            <span className='vote-count'>{post.tag_count}</span>
                                             <div className='count-text'>tags</div>
                                         </div>
                                     </div>
@@ -178,7 +178,7 @@ const Post = () => {
                                         </form>
                                       </Fragment> : <Fragment>
                                           <Link to='/login'>
-                                              <button type='button' className="s-btn">You need to login to add the post to tag</button>
+                                              <button type='button' className="s-btn">You need to login to tag the post</button>
                                           </Link>
                                       </Fragment>}
                                     </div>

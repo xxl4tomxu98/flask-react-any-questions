@@ -30,7 +30,7 @@ const PostItem = ({ post: { id, title, body, tags, tag_count, user_id, username,
                     </div>
                     {answer_count > 0 ? answerVoteUp : answerVoteDown}
                     <div className='vote'>
-                        <span className='vote-count'>{tags ? 1 : 0}</span>
+                        <span className='vote-count'>{tag_count}</span>
                         <div className='count-text'>tags</div>
                     </div>
                 </div>

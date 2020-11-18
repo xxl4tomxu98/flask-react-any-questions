@@ -100,8 +100,8 @@ with app.app_context():
             )
 
     t2 = Tag(tagname='sequelize', created_at=date(2012, 1, 2),
-              description='The Sequelize library provides an ORM (Object-Relational-Mapper) for Node.js, written entirely in JavaScript. Provides easy mapping for MySQL, MariaDB, SQLite, PostgreSQL and SQL Server.'
-              )
+             description='The Sequelize library provides an ORM (Object-Relational-Mapper) for Node.js, written entirely in JavaScript. Provides easy mapping for MySQL, MariaDB, SQLite, PostgreSQL and SQL Server.'
+            )
 
     t3 = Tag(tagname='redux', created_at=date(2002, 3, 20),
              description='Redux is a predictable state container for JavaScript applications based on the Flux design pattern.'
