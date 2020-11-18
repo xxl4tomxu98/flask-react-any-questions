@@ -23,7 +23,7 @@ Note: Cooments are not private, so the comments should be honest and provide val
 Users who find a restaraunts they love or really want to go visit in the future, may bookmark them in the future.
 
 ## Bonus: Question Categories and Comment on Questions / Answers
-## Bonus: Polymorphic Up/Down Votes: Questions, Answers, Comments
+## Bonus: Polymorphic Up/Down Votes: Questions, Answers, Comments, Tags, Follows
 
 
 # Flask React Project
@@ -73,10 +73,13 @@ This is the backend for the Flask React project.
 
 
 ## Deploy to Heroku
-
+Approach A. Deploy via Dockerfile and heroku Docker container
 1. Create a new project on Heroku
+
 2. Under Resources click "Find more add-ons" and add the add on called "Heroku Postgres"
+
 3. Install the [Heroku CLI](https://devcenter.heroku.com/articles/heroku-command-line)
+
 4. Run
    ```bash
    heroku login
@@ -87,6 +90,7 @@ This is the backend for the Flask React project.
    ```
 6. Update the `REACT_APP_BASE_URL` variable in the Dockerfile.
    This should be the full URL of your Heroku app: i.e. "https://flask-react-aa.herokuapp.com"
+
 7. Push your docker container to heroku from the root directory of your project.
    This will build the dockerfile and push the image to your heroku container registry
    ```bash
@@ -102,3 +106,51 @@ This is the backend for the Flask React project.
    ```
 10. Under Settings find "Config Vars" and add any additional/secret .env variables.
 11. profit
+
+Approach B Deploy via Heroku's container Dyno
+1. Create a new project on Heroku
+
+2. Under Resources click "Find more add-ons" and add the add on called "Heroku Postgres"
+
+3. Install the [Heroku CLI](https://devcenter.heroku.com/articles/heroku-command-line)
+
+4. Run
+   ```bash
+   heroku login
+   ```
+5. Create in root directory Procfile and have this line in it:(since we are not using Dockerfile anymore)
+    web: gunicorn starter_app:app
+
+6. Add a package.json at the root level of the app with the following:
+    {
+      "name": "starter",
+      "version": "0.0.0",
+      "private": true,
+      "scripts": {
+        "heroku-prebuild": "npm install --prefix client && npm run build --prefix client"
+      }
+    }
+
+7. ```bash
+    heroku buildpacks:add --index 1 heroku/nodejs
+   ```
+8. update __init__.py in app_starter with the following:
+    app = Flask(__name__, static_folder='../client/build', static_url_path='/')
+
+9. delete Pipfile and Pipfile.lock in root directory
+
+10. Add the above two files in your root directory .gitignore file
+
+11. Add psycopg2-binary==2.8.6 from dev-requirements.txt into requirements.txt file
+
+12. ```bash
+    heroku git:remote -a flask-react-any-questions
+   ```
+
+13. ```bash
+      git push heroku
+    ```
+
+14. ```bash
+      heroku run -a flask-react-any-questions python -m database
+    ```

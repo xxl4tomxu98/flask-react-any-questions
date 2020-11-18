@@ -46,6 +46,12 @@ with app.app_context():
                   member_since=date(2000, 6, 28),
                   last_seen=date(2010, 6, 28),
                   password='password', reputation=600)
+    julie = User(user_name='Julie', email='julie@aa.io',
+                 tags=['javascript', 'heroku', 'rail'],
+                 city='Santa Babara', state="CA",
+                 member_since=date(2018, 1, 18),
+                 last_seen=date(2019, 6, 28),
+                 password='password', reputation=1200)
     demo = User(user_name='demo', email='demo@example.com',
                 tags=['redux', 'react', 'hooks', 'bootstrap'],
                 city='Boise', state="ID",
@@ -59,12 +65,18 @@ with app.app_context():
     db.session.add(angela)
     db.session.add(soonmi)
     db.session.add(alissa)
+    db.session.add(julie)
     db.session.add(demo)
     db.session.commit()
 
     demo.follow(alissa)
     alissa.follow(angela)
     demo.follow(angela)
+    javier.follow(soonmi)
+    soonmi.follow(dean)
+    soonmi.follow(ian)
+    ian.follow(julie)
+    julie.follow(javier)
 
     q1 = Question(title='want_to_ask_you', tags=['linear-algebra'],
                   user_id=1, ask_time=date(2019, 7, 20), body='balabala',
