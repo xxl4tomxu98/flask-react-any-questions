@@ -5,22 +5,21 @@ import '../HomePage/HomePage.css';
 import { getBookmarkedPosts, getFollowings, getFollowedUserPosts } from '../../store/users';
 import Spinner from '../Spinner';
 import PostItem from '../PostItem.js';
-import User from '../User.js';
+
 
 const ProfileTabFavorites = () => {
     const id = useSelector(state => state.authentication.id);
     const myFavorites = useSelector(state => state.users.bookmarked);
-    const followedUsers = useSelector(state => state.users.followings);
     const followedUserPosts = useSelector(state => state.users.followeduserposts);
     const dispatch = useDispatch();
 
     useEffect(() => {
-          dispatch(getBookmarkedPosts(id));
-          dispatch(getFollowings(id));
-
+        dispatch(getBookmarkedPosts(id));
+        dispatch(getFollowings(id));
+        dispatch(getFollowedUserPosts(id));
     }, [dispatch, id])
 
-    // followedUsers.map(followedUser => dispatch(getFollowedUserPosts(id, followedUser.id)));
+
 
     return myFavorites === null ? <Spinner type='page' width='75px' height='200px'/> : <Fragment>
       <div className='page'>
@@ -57,14 +56,8 @@ const ProfileTabFavorites = () => {
                       <span>10,401,360 questions</span>
                   </div>
                   <div className='questions'>
-                    {followedUsers.map(user =>
-                        (<User key={user.id} user={user} />)
-                        //  {followedUserPosts.map(post => (
-                        //   <PostItem key={post.id} post={post} />))}
-                    )}
-                    {/* {followedUserPosts.map(post => (
-                          <PostItem key={post.id} post={post} />))} */}
-
+                      {followedUserPosts.map(post => (
+                          <PostItem key={post.id} post={post} />))}
                   </div>
               </div>
           </div>

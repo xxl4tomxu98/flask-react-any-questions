@@ -187,9 +187,9 @@ export const followFollowed = (followerId, followedId) => async (dispatch, getSt
 };
 
 
-export const getFollowedUserPosts = (followerId, followedId) => {
+export const getFollowedUserPosts = followerId => {
   return async (dispatch) => {
-      const res = await fetch(`/api/users/${followerId}/followed/${followedId}/posts`);
+      const res = await fetch(`/api/users/${followerId}/followed/posts`);
       if (res.status === 400) {
           const { errors } = await res.json();
           dispatch(error(errors))

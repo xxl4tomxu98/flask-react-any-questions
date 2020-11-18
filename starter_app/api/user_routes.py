@@ -95,11 +95,10 @@ def add_followed(follower_id, followed_id):
     db.session.commit()
     return 'followed added', 200
 
-@bp.route("/<int:follower_id>/followed/<int:followed_id>/posts")
+@bp.route("/<int:follower_id>/followed/posts")
 @login_required
-def get_followedposts(follower_id, followed_id):
+def get_followedposts(follower_id):
     follower = User.query.get_or_404(follower_id)
-    followed = User.query.get_or_404(followed_id)
     response = follower.followed_userquestions
     return {'followeduserposts': [resp.to_dict() for resp in response]}
 

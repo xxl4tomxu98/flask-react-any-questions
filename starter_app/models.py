@@ -182,9 +182,12 @@ class User(db.Model, UserMixin):
 
     @property
     def followed_userquestions(self):
-        return Question.query.filter(self.followed.id
-                                     == Question.user_id) \
-            .filter(self.followers.id == self.id)
+        return Question.query.join(followers,
+                                   (followers.c.followed_id
+                                    == Question.user_id))  \
+                                   .filter(followers.c.follower_id
+                                           == self.id) \
+                                   .order_by(Question.ask_time.desc())
 
     def to_dict(self):
         return {
