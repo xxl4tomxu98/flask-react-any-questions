@@ -3,8 +3,25 @@ from flask_login import UserMixin
 from werkzeug.security import generate_password_hash, check_password_hash
 from datetime import datetime
 import math
+from sqlalchemy.ext.mutable import Mutable
 
 db = SQLAlchemy()
+
+
+class MutableList(Mutable, list):
+    def append(self, value):
+        list.append(self, value)
+        self.changed()
+
+    @classmethod
+    def coerce(cls, key, value):
+        if not isinstance(value, MutableList):
+            if isinstance(value, list):
+                return MutableList(value)
+            return Mutable.coerce(key, value)
+        else:
+            return value
+
 
 bookmarks = db.Table(
     'bookmarks',
@@ -215,7 +232,7 @@ class Question(db.Model):
     __tablename__ = 'questions'
 
     id = db.Column(db.Integer, primary_key=True)
-    tags = db.Column(db.ARRAY(db.String(100)), nullable=False)
+    tags = db.Column(MutableList.as_mutable(db.ARRAY(db.String(100))), nullable=False)
     title = db.Column(db.String(150), nullable=False)
     user_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
     username = db.Column(db.String(40), nullable=False,
@@ -243,15 +260,14 @@ class Question(db.Model):
     def comment_count(self):
         return len(self.comments)
 
-    # @property
-    # def tags(self):
-    #     for tag in self.question_tags:
-    #         self.tags.append(tag.tagname)
-    #     return self.tags
+    def update_tags(self):
+        for tag in self.question_tags:
+            self.tags.append(tag.tagname)
+        return self.tags
 
     @property
     def tag_count(self):
-        return len(self.tags) + len(self.question_tags)
+        return len(self.tags)
 
     def to_dict(self):
         return {

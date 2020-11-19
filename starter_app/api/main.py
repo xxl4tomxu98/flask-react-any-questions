@@ -74,7 +74,9 @@ def tag_post(tag_id, post_id):
     if not tag:
         return {"errors": ["Invalid tag requested"]}, 401
     tag.tagged_questions.append(quest)
+    quest.update_tags()
     db.session.add(tag)
+    db.session.add(quest)
     db.session.commit()
     return {'tagPosts': quest.to_dict()}, 200
 
