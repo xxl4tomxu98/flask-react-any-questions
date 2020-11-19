@@ -2,7 +2,7 @@
   padding: 12px;
   border: 1px solid #4a4e51;
   border-radius: 3px;
-  background-color: none;
+  background-color: rgb(255,255,255);
 
   .grid {
     display: flex;

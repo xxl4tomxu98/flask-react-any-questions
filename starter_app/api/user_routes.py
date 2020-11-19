@@ -48,12 +48,12 @@ def update(user_id):
 @bp.route('/<int:id>')
 def user_profile(id):
     user = User.query.get_or_404(id)
-    user.reputation = 30*user.tag_count \
-                        + 40*user.follower_count \
-                        + 20*user.following_count + 50*user.comment_count \
-                        + 60*user.answer_count + 100*user.posts_count  \
-                        + 200*sum(ans.ranking for ans in user.answers)  \
-                        + 300*len(list(user.bookmarked_questions))
+    user.reputation = 30*user.tag_count        \
+                       + 40*user.follower_count \
+                       + 20*user.following_count + 50*user.comment_count \
+                       + 60*user.answer_count + 100*user.posts_count  \
+                       + 300*sum(ans.ranking for ans in user.answers)  \
+                       + 200*len(list(user.bookmarked_questions))
     db.session.add(user)
     db.session.commit()
     return {"detail":  user.to_dict()}
@@ -95,12 +95,14 @@ def add_followed(follower_id, followed_id):
     db.session.commit()
     return 'followed added', 200
 
+
 @bp.route("/<int:follower_id>/followed/posts")
 @login_required
 def get_followedposts(follower_id):
     follower = User.query.get_or_404(follower_id)
     response = follower.followed_userquestions
     return {'followeduserposts': [resp.to_dict() for resp in response]}
+
 
 @bp.route("/<int:user_id>/following")
 def following(user_id):

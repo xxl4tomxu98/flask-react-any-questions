@@ -131,6 +131,15 @@ with app.app_context():
              description="Node.js is an event-based, non-blocking, asynchronous I/O runtime that uses Google's V8 JavaScript engine and libuv library. It is used for developing applications that make heavy use of the ability to run JavaScript both on the client, as well as on server side and therefore benefit from the re-usability of code and the lack of context switching."
             )
 
+    t10 = Tag(tagname='dev-ops', created_at=date(2020, 10, 15),
+              description="This tag is for programming questions about DevOps ('development' and 'operations'), which is a software development method that stresses communication, collaboration, integration, automation, and measurement of cooperation between software developers and other IT professionals."
+            )
+
+    t11 = Tag(tagname='ci-cd', created_at=date(2020, 11, 15),
+              description="Continuous integration (CI) is the building and automated testing of the full software product on a frequent schedule: at least once a day, often several times a day and sometimes as often as after every check in to the version control system. (CD) A software engineering approach in which teams keep producing software in short cycles and ensure that the software can be released to production at any time."
+            )
+
+
     t2.tagged_questions.append(q2)
     t8.tagged_questions.append(q1)
     db.session.add(t1)
@@ -142,6 +151,8 @@ with app.app_context():
     db.session.add(t7)
     db.session.add(t8)
     db.session.add(t9)
+    db.session.add(t10)
+    db.session.add(t11)
 
 
 

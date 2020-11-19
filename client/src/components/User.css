@@ -2,7 +2,7 @@
   padding: 6px 7px 8px 8px;
   border: 1px solid #4a4e51;
   border-radius: 3px;
-  background-color: none;
+  background-color: rgb(255,255,255);
   box-sizing: border-box;
   color: #6a737c;
   display: flex;

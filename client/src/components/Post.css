@@ -1,7 +1,7 @@
 .page {
   max-width: 1264px;
   width: 100%;
-  background: none;
+  background-color: rgb(255,255,255);
   display: flex;
   justify-content: space-between;
   margin: 14px auto 0 auto;
