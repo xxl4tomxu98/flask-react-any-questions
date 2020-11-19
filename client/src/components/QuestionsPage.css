@@ -1,8 +1,10 @@
 .page {
   display: flex;
+  background-color: rgb(255,255,255);
 }
 
 .questions-page {
+  background-color: rgb(255,255,255);
   width: calc(100% - 300px - 24px);
   padding: 24px 0 24px 0;
   float: left;

@@ -1,9 +1,11 @@
 #mainbar {
   height: 100%;
+  background-color: rgb(255,255,255);
 }
 
 .tags-page {
   display: inline-block;
+  background-color: rgb(255,255,255);
   width: 40%;
   margin-left: 10%;
   padding: 24px 0 24px 0;
