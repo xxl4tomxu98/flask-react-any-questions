@@ -232,7 +232,8 @@ class Question(db.Model):
     __tablename__ = 'questions'
 
     id = db.Column(db.Integer, primary_key=True)
-    tags = db.Column(MutableList.as_mutable(db.ARRAY(db.String(100))), nullable=False)
+    tags = db.Column(MutableList.as_mutable(db.ARRAY(db.String(100))),
+                     nullable=False)
     title = db.Column(db.String(150), nullable=False)
     user_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
     username = db.Column(db.String(40), nullable=False,

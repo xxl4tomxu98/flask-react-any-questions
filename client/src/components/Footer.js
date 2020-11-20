@@ -6,6 +6,7 @@ const Footer = () => {
     const ProductFooterItems = ["Teams", "Talent", "Advertising", "Enterprise"]
     const CompanyFooterItems = ["About", "Press", "Work Here", "Legal", "Privacy Policy", "Contact Us"]
     const NetworkFooterItems = ["Technology", "life/Arts", "Cultrual/Recreation", "Science", "Other"]
+    const FounderFooterItems = ["About Myself", "LinkedIn", "Github", "Angelist", "Website"]
     return (
         <>
             <Segment inverted vertical style={{
@@ -29,7 +30,7 @@ const Footer = () => {
                                 <Header inverted as='h4' content='Forums' />
                                 <List link inverted>
                                     {ProductFooterItems.map((footerItem, idx) =>
-                                        <List.Item as='a' key={`${idx}-${footerItem}`}>{footerItem}</List.Item>
+                                        <List.Item as='a' key={`${idx}-${footerItem}`} href='/users'>{footerItem}</List.Item>
                                     )}
                                 </List>
                             </Grid.Column>
@@ -37,7 +38,7 @@ const Footer = () => {
                                 <Header inverted as='h4' content='Community' />
                                 <List link inverted>
                                     {CompanyFooterItems.map((footerItem, idx) =>
-                                        <List.Item as='a' key={`${idx}-${footerItem}`}>{footerItem}</List.Item>
+                                        <List.Item as='a' key={`${idx}-${footerItem}`} href='/currentUser'>{footerItem}</List.Item>
                                     )}
                                 </List>
                             </Grid.Column>
@@ -45,7 +46,15 @@ const Footer = () => {
                                 <Header inverted as='h4' content='Any Questions Network' />
                                 <List link inverted>
                                     {NetworkFooterItems.map((footerItem, idx) =>
-                                        <List.Item as='a' key={`${idx}-${footerItem}`}>{footerItem}</List.Item>
+                                        <List.Item as='a' key={`${idx}-${footerItem}`} href='/tags'>{footerItem}</List.Item>
+                                    )}
+                                </List>
+                            </Grid.Column>
+                            <Grid.Column width={3}>
+                                <Header inverted as='h4' content="Founder's Bio" />
+                                <List link inverted>
+                                    {FounderFooterItems.map((footerItem, idx) =>
+                                        <List.Item as='a' key={`${idx}-${footerItem}`} href='/currentUser'>{footerItem}</List.Item>
                                     )}
                                 </List>
                             </Grid.Column>
