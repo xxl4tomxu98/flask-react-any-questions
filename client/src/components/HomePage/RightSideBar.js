@@ -139,9 +139,9 @@ const RightSideBar = () => {
           <h4 className='tag-headline'>Top Ten Tags</h4>
           {tags.slice(0, 9).map(tag => (
               <div key={tag.tagname} className='tag-content'>
-                  <a className='s-tag s-tag__md' href={`/tags/${tag.tagname}`}>
+                  <Link className='s-tag s-tag__md'  to={`/tags/${tag.tagname}`}>
                     {tag.tagname}
-                  </a>
+                  </Link>
                               &nbsp;
                   <span className='tag-mult'>
                     <span>&times;</span>
