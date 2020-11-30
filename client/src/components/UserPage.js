@@ -186,9 +186,9 @@ const UserPage = () => {
                                     <div className='fc-light'>
                                     {followers.map(follower => (
                                      <div key={follower.id}>
-                                        <a className='s-tag s-tag__md' href={`/users/${follower.id}`}>
+                                        <Link className='s-tag s-tag__md' to={`/users/${follower.id}`}>
                                           {follower.user_name}
-                                        </a>
+                                        </Link>
                                      </div>  ))}
                                     </div>
                                 </div>
@@ -199,9 +199,9 @@ const UserPage = () => {
                                     <div className='fc-light'>
                                     {followings.map(following => (
                                      <div key={following.id}>
-                                        <a className='s-tag s-tag__md' href={`/users/${following.id}`}>
+                                        <Link className='s-tag s-tag__md' to={`/users/${following.id}`}>
                                           {following.user_name}
-                                        </a>
+                                        </Link>
                                      </div>  ))}
                                     </div>
                                 </div>
