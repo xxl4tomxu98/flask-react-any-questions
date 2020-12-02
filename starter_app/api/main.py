@@ -11,10 +11,10 @@ bp = Blueprint("main", __name__)
 def search():
     key = request.get_json()["term"]
     search_args = [col.ilike('%%%s%%' % key) for col in
-                   [Restaurant.name, Restaurant.address,
-                    Restaurant.city, Restaurant.state]]
-    questions = Restaurant.query.filter(or_(*search_args)).order_by(
-                    Restaurant.avg_rating.desc()).all()
+                   [Question.name, Question.address,
+                    Question.city, Question.state]]
+    questions = Question.query.filter(or_(*search_args)).order_by(
+                    Question.avg_rating.desc()).all()
     return {'questions': [qust.to_dict() for qust in questions]}
 
 
@@ -40,7 +40,7 @@ def post_question():
 
 @bp.route('/posts')
 def get_questions():
-    response = Question.query.all()
+    response = Question.query.order_by(Question.ask_time.desc()).all()
     return {'list': [ques.to_dict() for ques in response]}
 
 

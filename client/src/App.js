@@ -12,7 +12,8 @@ import TagPage from './components/TagPage';
 import Profile from './components/Profile';
 import QuestionsPage from './components/QuestionsPage';
 import UsersList from './components/UsersList';
-import UserPage from './components/UserPage'
+import UserPage from './components/UserPage';
+import Footer from './components/Footer';
 import { setCsrfFunc } from './store/authentication';
 
 
@@ -89,6 +90,7 @@ function App() {
                 <Route exact path='/questions/:id' component={Post} />
                 <Route exact path='/add/question' component={PostForm} />
             </Switch>
+            <Footer/>
         </>
     );
 }

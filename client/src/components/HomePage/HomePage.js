@@ -1,7 +1,6 @@
 
 import React, { useEffect, Fragment } from 'react';
 import './HomePage.css'
-import Footer from '../Footer';
 import SideBar from './SideBar';
 import PostItem from '../PostItem';
 import RightSideBar from './RightSideBar';
@@ -45,7 +44,7 @@ const HomePage = () => {
               <RightSideBar/>
           </div>
       </div>
-      <Footer />
+
   </Fragment>
 };
 
