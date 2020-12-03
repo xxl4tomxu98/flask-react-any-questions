@@ -45,11 +45,11 @@ const PostForm = () => {
     return <Fragment>
         <div className='post-form-container'>
             <div className='post-form-content'>
-                <div className='post-form-header'>
+                {/* <div className='post-form-header'>
                     <div className='post-form-headline fc-black-800'>
                         Ask a public question
                     </div>
-                </div>
+                </div> */}
                 <div className='post-form-section'>
                     <div className='postform' style={{width: '100%'}}>
                         <form onSubmit={onSubmit}>
@@ -91,9 +91,9 @@ const PostForm = () => {
                                     </div>
                                     <div className='tag-grid'>
                                         <label className='form-label s-label'>
-                                            Question Tag Names
-                                            <p className='tag-desc fw-normal fs-caption'>
-                                                Add up to 5 tags to describe what your question is about
+                                            Question Tags
+                                            <p className='body-desc fw-normal fs-caption'>
+                                                Add up to 5 tags to describe your question catagories. Ctrl+Click to selelct multiple tags.
                                             </p>
                                         </label>
                                         <select multiple value={tags} name="tags" placeholder="e.g. (ajax flask string)" onChange={onChange} className='tag-input s-input'>
@@ -111,7 +111,7 @@ const PostForm = () => {
                         <div className='right-panel'>
                             <div className='widget'>
                                 <div className='s-sidebarwidget--header'>
-                                    Step 1: Draft your question
+                                    Steps to draft your question:
                                 </div>
                                 <div className='widget-content fc-black-800'>
                                     <div className='summary'>

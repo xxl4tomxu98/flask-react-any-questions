@@ -7,7 +7,7 @@ const Footer = () => {
     const ProductFooterItems = ["Teams", "Talent", "Advertising", "Enterprise"]
     const CompanyFooterItems = ["About", "Press", "Work Here", "Legal", "Privacy Policy", "Contact Us"]
     const NetworkFooterItems = ["Technology", "life/Arts", "Cultrual/Recreation", "Science", "Other"]
-    const FounderFooterItems = ["About Myself", "LinkedIn", "Github", "AngelList", "Website"]
+
     return (
         <>
             <Segment inverted vertical style={{
