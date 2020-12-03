@@ -11,7 +11,7 @@ const Footer = () => {
     return (
         <>
             <Segment inverted vertical style={{
-                padding: '5em 0em',
+                padding: '1.3em 0em',
                 bottom: 0,
                 width: '100%',
             }}>
@@ -54,9 +54,11 @@ const Footer = () => {
                             <Grid.Column width={3}>
                                 <Header inverted as='h4' content="Founder's Bio" />
                                 <List link inverted>
-                                    {FounderFooterItems.map((footerItem, idx) =>
-                                        <List.Item as={Link} key={`${idx}-${footerItem}`} to='/currentUser'>{footerItem}</List.Item>
-                                    )}
+                                    <List.Item as='a' href="https://angel.co/u/xxl4tomxu98">AngelList</List.Item>
+                                    <List.Item as='a' href="https://www.linkedin.com/in/tom-xu-dupont">LinkedIn</List.Item>
+                                    <List.Item as='a' href="https://github.com/xxl4tomxu98">Github</List.Item>
+                                    <List.Item as='a' href="https://xxl4tomxu98.github.io/">Website</List.Item>
+                                    <List.Item as='a' href="https://docs.google.com/document/d/1bgWyATi2whzZ-pqACXU2ctwvSCCd9KjFMGvdiCrq80Y">Resume</List.Item>
                                 </List>
                             </Grid.Column>
                         </Grid.Row>
