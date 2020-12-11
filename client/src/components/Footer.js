@@ -58,7 +58,7 @@ const Footer = () => {
                                     <List.Item as='a' href="https://www.linkedin.com/in/tom-xu-dupont">LinkedIn</List.Item>
                                     <List.Item as='a' href="https://github.com/xxl4tomxu98">Github</List.Item>
                                     <List.Item as='a' href="https://xxl4tomxu98.github.io/">Website</List.Item>
-                                    <List.Item as='a' href="https://app.luminpdf.com/viewer/5fd36892934ecb001971a871">Resume</List.Item>
+                                    <List.Item as='a' href="https://dochub.com/tomxu-vtgtez/Gd71aZOw4p3kZnAw2Q9AP3/tom-xu-resume-pdf">Resume</List.Item>
                                 </List>
                             </Grid.Column>
                         </Grid.Row>

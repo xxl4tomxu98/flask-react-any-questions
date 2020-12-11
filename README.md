@@ -17,13 +17,77 @@ This also benefit the restaraunt since it'll save time by already having the sea
 ## Votes/comments
 These are used to guage interaction between the users and the question and author. Ratings are tied to the answers but are created by the users.
 
-Note: Cooments are not private, so the comments should be honest and provide valid criticsm.
+Note: Comments are not private, so the comments should be honest and provide valid criticsm.
 
 ## Favorites and saved topics
-Users who find a restaraunts they love or really want to go visit in the future, may bookmark them in the future.
+Users who find a questions they concerned by key words, search algorithms to look for these questions semantically is important. User can also bookmark the questions for future reference.
 
 ## Bonus: Question Categories and Comment on Questions / Answers
 ## Bonus: Polymorphic Up/Down Votes: Questions, Answers, Comments, Tags, Follows
+
+While the backend Flask API is a fairly standard RESTful API, it requires authentication with a Cookie. Cross origin communication is protected by CSRF token that is facilitated also by React hooks API. The Flask server grabs the redux token for CSRF everytime it fetches to the Flask backend, which is used in all requests to the "any questions" server. Redux also stores and sets information about the activeRapper, whichever artist has been selected by the user. By managing this state in Redux, it provides easy access to the information across components without prop threading. This was particularly important because there were so many components in the application and could further increase in the future. If too many components were re-rendering constantly because of state change it would cause significant performance issues or crash the application completely. Redux provided a relatively simple way to manage this point of complexity.
+
+Redux also allows for a lot of extendibility if new features are to be implemented (additional feature wish-list discussed in conclusion).
+
+Code for "any questions" auth flow:
+
+function App() {
+
+    let location = useLocation();
+    let dispatch = useDispatch();
+    const [fetchWithCSRF, setFetchWithCSRF] = useState(() => fetch);
+
+    useEffect(() => {
+        async function restoreCSRF() {
+            const response = await fetch('/api/csrf/restore', {
+                method: 'GET',
+                credentials: 'include'
+            });
+            if (response.ok) {
+                const authData = await response.json();
+                setFetchWithCSRF(() => {
+                    return (resource, init) => {
+                        if (init.headers) {
+                            init.headers['X-CSRFToken'] = authData.csrf_token;
+                        } else {
+                            init.headers = {
+                                'X-CSRFToken': authData.csrf_token
+                            }
+                        }
+                        return fetch(resource, init);
+                    }
+                });
+            }
+        }
+        restoreCSRF();
+    }, []);
+
+
+    useEffect(() => {
+        dispatch(setCsrfFunc(fetchWithCSRF));
+    }, [fetchWithCSRF, dispatch]);
+}
+
+#Redux store:
+
+export const login = (email, password) => {
+    return async (dispatch, getState) => {
+        const fetchWithCSRF = getState().authentication.csrf;
+        const res = await fetchWithCSRF('/api/session/login', {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            credentials: 'include',
+            body: JSON.stringify({ email, password })
+        })
+        if (res.ok) {
+            const { user } = await res.json();
+            dispatch(setUser(user));
+        }
+
+    }
+}
 
 
 # Flask React Project
