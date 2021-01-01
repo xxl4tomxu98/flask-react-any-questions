@@ -61,7 +61,7 @@ export const error = (message) => {
 
 export const getUsers = () => {
     return async (dispatch) => {
-        const res = await fetch('/api/users')
+        const res = await fetch('/api/users/')
         if (res.status === 400) {
             const { errors } = await res.json();
             dispatch(error(errors))

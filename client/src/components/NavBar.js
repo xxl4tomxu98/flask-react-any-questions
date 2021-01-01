@@ -3,7 +3,7 @@ import { useSelector, useDispatch } from 'react-redux'
 import { logout } from '../store/authentication';
 import { Link } from 'react-router-dom';
 import { ReactComponent as Logo } from '../assets/quiz.svg';
-import { ReactComponent as Search } from '../assets/Search.svg';
+import SearchBar from './SearchBar';
 import './NavBar.css';
 
 
@@ -39,7 +39,7 @@ const NavBar = () => {
 
     const guestTabs = (
         <div className="s-navigation">
-            <Link to='/' className="s-navigation--item is-selected">  Topics  </Link>
+            <Link to='/' className="s-navigation--item is-selected">   Topics  </Link>
             <Link to='/' className="s-navigation--item not-selected">  Statistics  </Link>
             <Link to='/' className="s-navigation--item not-selected">  Catagories  </Link>
             <Link to='/' className="s-navigation--item not-selected">  Notifications  </Link>
@@ -60,6 +60,7 @@ const NavBar = () => {
     );
 
 
+
     return (
         <nav className='navbar fixed-top navbar-expand-lg navbar-light bs-md'>
             <Link className='navbar-brand' to='/'>
@@ -67,17 +68,7 @@ const NavBar = () => {
             </Link>
             <br></br>
             <Fragment>{isAuthenticated ? authTabs : guestTabs}</Fragment>
-            <form id="search" role="search" method="get"
-                  className="grid--cell fl-grow1 searchbar px12 js-searchbar " autoComplete="off">
-                <div className="ps-relative">
-                    <input name="q"
-                          type="text"
-                          placeholder="Search&#x2026;"
-                          maxLength="240"
-                          className="s-input s-input__search js-search-field "/>
-                          <Search/>
-                </div>
-            </form>
+            <SearchBar/>
             <Fragment>{isAuthenticated ? authLinks : guestLinks}</Fragment>
         </nav>
     )

@@ -7,14 +7,14 @@ from sqlalchemy.orm import joinedload
 bp = Blueprint("main", __name__)
 
 
-@bp.route('/', methods=["POST"])
-def search():
-    key = request.get_json()["term"]
-    search_args = [col.ilike('%%%s%%' % key) for col in
-                   [Question.name, Question.address,
-                    Question.city, Question.state]]
+@bp.route('/search/<term>')
+def search(term):
+    #key = request.get_json()["term"]
+    search_args = [col.ilike('%%%s%%' % term) for col in
+                   [Question.title, Question.body]]
     questions = Question.query.filter(or_(*search_args)).order_by(
-                    Question.avg_rating.desc()).all()
+                    Question.ask_time.desc()).all()
+    print(questions)
     return {'questions': [qust.to_dict() for qust in questions]}
 
 

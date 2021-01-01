@@ -14,6 +14,7 @@ import QuestionsPage from './components/QuestionsPage';
 import UsersList from './components/UsersList';
 import UserPage from './components/UserPage';
 import Footer from './components/Footer';
+import SearchPage from './components/SearchPage';
 import { setCsrfFunc } from './store/authentication';
 
 
@@ -81,7 +82,10 @@ function App() {
                     exact={true}
                     component={UsersList}
                 />
-
+                <Route path="/search"
+                    exact={true}
+                    component={SearchPage}
+                />
                 <Route exact path='/' component={HomePage} />
                 <Route exact path='/tags' component={TagsPage} />
                 <Route exact path='/tags/:tagname' component={TagPage} />
