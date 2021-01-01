@@ -4,6 +4,8 @@ from werkzeug.security import generate_password_hash, check_password_hash
 from datetime import datetime
 import math
 from sqlalchemy.ext.mutable import Mutable
+from sqlalchemy.dialects.postgresql import ARRAY
+
 
 db = SQLAlchemy()
 
@@ -61,7 +63,7 @@ class User(db.Model, UserMixin):
     email = db.Column(db.String(255), nullable=False, unique=True)
     city = db.Column(db.String(40), nullable=False)
     state = db.Column(db.String(40), nullable=False)
-    tags = db.Column(db.ARRAY(db.String(100)), nullable=False)
+    tags = db.Column(ARRAY(db.String(100)), nullable=False)
     posts_count = db.Column(db.Integer, nullable=True, default=0)
     answer_count = db.Column(db.Integer, nullable=True, default=0)
     comment_count = db.Column(db.Integer, nullable=True, default=0)
@@ -232,7 +234,7 @@ class Question(db.Model):
     __tablename__ = 'questions'
 
     id = db.Column(db.Integer, primary_key=True)
-    tags = db.Column(MutableList.as_mutable(db.ARRAY(db.String(100))),
+    tags = db.Column(MutableList.as_mutable(ARRAY(db.String(100))),
                      nullable=False)
     title = db.Column(db.String(150), nullable=False)
     user_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)

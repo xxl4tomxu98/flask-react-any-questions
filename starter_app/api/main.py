@@ -12,7 +12,9 @@ def search(term):
     #key = request.get_json()["term"]
     search_args = [col.ilike('%%%s%%' % term) for col in
                    [Question.title, Question.body]]
-    questions = Question.query.filter(or_(*search_args)).order_by(
+
+    questions = Question.query.filter(or_(*search_args,
+                    Question.tags.any(term))).order_by(
                     Question.ask_time.desc()).all()
     print(questions)
     return {'questions': [qust.to_dict() for qust in questions]}
