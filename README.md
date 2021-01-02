@@ -30,7 +30,7 @@ While the backend Flask API is a fairly standard RESTful API, it requires authen
 Redux also allows for a lot of extendibility if new features are to be implemented (additional feature wish-list discussed in conclusion).
 
 Code for "any questions" auth flow:
-
+```.js
 function App() {
 
     let location = useLocation();
@@ -67,9 +67,9 @@ function App() {
         dispatch(setCsrfFunc(fetchWithCSRF));
     }, [fetchWithCSRF, dispatch]);
 }
-
+```
 #Redux store:
-
+```.js
 export const login = (email, password) => {
     return async (dispatch, getState) => {
         const fetchWithCSRF = getState().authentication.csrf;
@@ -88,7 +88,7 @@ export const login = (email, password) => {
 
     }
 }
-
+```
 
 # Flask React Project
 
@@ -186,6 +186,7 @@ Approach B Deploy via Heroku's container Dyno
     web: gunicorn starter_app:app
 
 6. Add a package.json at the root level of the app with the following:
+    ```.json
     {
       "name": "starter",
       "version": "0.0.0",
@@ -194,6 +195,7 @@ Approach B Deploy via Heroku's container Dyno
         "heroku-prebuild": "npm install --prefix client && npm run build --prefix client"
       }
     }
+    ```
 
 7. ```bash
     heroku buildpacks:add --index 1 heroku/nodejs
