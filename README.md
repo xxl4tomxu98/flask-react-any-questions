@@ -209,14 +209,20 @@ Approach B Deploy via Heroku's container Dyno
 
 11. Add psycopg2-binary==2.8.6 from dev-requirements.txt into requirements.txt file
 
-12. ```bash
+12. Connect to remote heroku
+
+   ```bash
     heroku git:remote -a flask-react-any-questions
    ```
 
-13. ```bash
+13. Push to heroku
+
+    ```bash
       git push heroku
     ```
 
-14. ```bash
+14. Setup database in remote herokuy and run app
+
+    ```bash
       heroku run -a flask-react-any-questions python -m database
     ```
