@@ -63,7 +63,8 @@ def user_profile(id):
 @login_required
 def bookmarks(user_id):
     user = User.query.get_or_404(user_id)
-    response = user.bookmarked_questions.order_by(Question.ask_time.desc())
+    response = user.bookmarked_questions
+    response.sort(key=lambda x: x.ask_time, reverse=True)
     return {'bookmarked': [resp.to_dict() for resp in response]}
 
 
@@ -100,7 +101,8 @@ def add_followed(follower_id, followed_id):
 @login_required
 def get_followedposts(follower_id):
     follower = User.query.get_or_404(follower_id)
-    response = follower.followed_userquestions.order_by(Question.ask_time.desc())
+    response = follower.followed_userquestions
+    response.sort(key=lambda x: x.ask_time, reverse=True)
     return {'followeduserposts': [resp.to_dict() for resp in response]}
 
 
