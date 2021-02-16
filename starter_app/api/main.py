@@ -16,7 +16,7 @@ def search(term):
     questions = Question.query.filter(or_(*search_args,
                     Question.tags.any(term))).order_by(
                     Question.ask_time.desc()).all()
-    print(questions)
+
     return {'questions': [qust.to_dict() for qust in questions]}
 
 
