@@ -102,7 +102,6 @@ def add_followed(follower_id, followed_id):
 def get_followedposts(follower_id):
     follower = User.query.get_or_404(follower_id)
     response = follower.followed_userquestions
-    response.sort(key=lambda x: x.ask_time, reverse=True)
     return {'followeduserposts': [resp.to_dict() for resp in response]}
 
 
