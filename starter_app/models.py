@@ -265,7 +265,7 @@ class Question(db.Model):
 
     def update_tags(self):
         for tag in self.question_tags:
-            self.tags = list(set(self.tags.append(tag.tagname)))
+            list(set(self.tags.append(tag.tagname)))
         return self.tags
 
     @property
