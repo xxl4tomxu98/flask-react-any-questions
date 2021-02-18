@@ -25,7 +25,7 @@ Users who find a questions they concerned by key words, search algorithms to loo
 ## Bonus: Question Categories and Comment on Questions / Answers
 ## Bonus: Polymorphic Up/Down Votes: Questions, Answers, Comments, Tags, Follows
 
-While the backend Flask API is a fairly standard RESTful API, it requires authentication with a Cookie. Cross origin communication is protected by CSRF token that is facilitated also by React hooks API. The Flask server grabs the redux token for CSRF everytime it fetches to the Flask backend, which is used in all requests to the "any questions" server. Redux also stores and sets information about the activeRapper, whichever artist has been selected by the user. By managing this state in Redux, it provides easy access to the information across components without prop threading. This was particularly important because there were so many components in the application and could further increase in the future. If too many components were re-rendering constantly because of state change it would cause significant performance issues or crash the application completely. Redux provided a relatively simple way to manage this point of complexity.
+While the backend Flask API is a fairly standard RESTful API, it requires authentication with a Cookie. Cross origin communication is protected by CSRF token that is facilitated also by React hooks API. The Flask server grabs the redux token for CSRF everytime it fetches to the Flask backend, which is used in all requests to the "any questions" server. Redux also stores and sets information about the active posts, whichever that has been selected by the user. By managing this state in Redux, it provides easy access to the information across components without prop threading. This was particularly important because there were so many components in the application and could further increase in the future. If too many components were re-rendering constantly because of state change it would cause significant performance issues or crash the application completely. Redux provided a relatively simple way to manage this point of complexity.
 
 Redux also allows for a lot of extendibility if new features are to be implemented (additional feature wish-list discussed in conclusion).
 
@@ -92,7 +92,7 @@ export const login = (email, password) => {
 
 # Flask React Project
 
-This is the backend for the Flask React project.
+This is the backend for the Flask React project using SqlAlchemy and Psycopg-2.
 
 ## Getting started
 
