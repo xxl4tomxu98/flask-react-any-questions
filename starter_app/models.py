@@ -265,8 +265,8 @@ class Question(db.Model):
 
     def update_tags(self):
         for tag in self.question_tags:
-            list(set(self.tags.append(tag.tagname)))
-        return self.tags
+            self.tags.append(tag.tagname)
+        return list(set(self.tags))
 
     @property
     def tag_count(self):
