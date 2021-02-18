@@ -92,8 +92,8 @@ export const signup = (user_name, email, password, city, state, tags, reputation
         }
 
         if (res.ok) {
-            const { user } = await res.json();
-            dispatch(setUser(user))
+            //const { user } = await res.json();
+            dispatch(login(email, password));
         }
 
     }

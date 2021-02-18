@@ -80,12 +80,12 @@ with app.app_context():
 
     q1 = Question(title='want_to_ask_you', tags=['linear-algebra'],
                   user_id=1, ask_time=date(2019, 7, 20), body='balabala',
-                  accepted_answer_id=0,
+                  accepted_answer_id=0, username="ian",
                   upvote_count=0, downvote_count=0)
 
     q2 = Question(title='do_you_know_how', tags=['sequelize', "express"],
                   user_id=6, ask_time=date(2011, 7, 20), body='balabala',
-                  accepted_answer_id=0,
+                  accepted_answer_id=0, username="alissa",
                   upvote_count=0, downvote_count=0)
 
     db.session.add(q1)

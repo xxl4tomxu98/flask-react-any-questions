@@ -141,6 +141,7 @@ export const deletePost = id => async (dispatch, getState) => {
     });
     if (res.ok) {
         dispatch(removePost(id));
+        dispatch(getPosts());
         return res;
     } else if (res.status === 401) {
         dispatch(removeUser());
