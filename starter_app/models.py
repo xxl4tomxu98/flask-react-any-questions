@@ -265,12 +265,12 @@ class Question(db.Model):
 
     def update_tags(self):
         for tag in self.question_tags:
-            self.tags.append(tag.tagname)
+            self.tags = list(set(self.tags.append(tag.tagname)))
         return self.tags
 
     @property
     def tag_count(self):
-        return len(self.tags)
+        return len(set(self.tags))
 
     def to_dict(self):
         return {
