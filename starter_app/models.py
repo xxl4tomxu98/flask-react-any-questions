@@ -265,12 +265,13 @@ class Question(db.Model):
 
     def update_tags(self):
         for tag in self.question_tags:
-            self.tags.append(tag.tagname)
-        return list(set(self.tags))
+            if tag.tagname not in self.tags:
+                self.tags.append(tag.tagname)
+        return self.tags
 
     @property
     def tag_count(self):
-        return len(set(self.tags))
+        return len(self.tags)
 
     def to_dict(self):
         return {
