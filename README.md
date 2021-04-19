@@ -14,7 +14,7 @@ Puzzled users looking for the right question and answers may search and find thr
 
 This also benefit the restaraunt since it'll save time by already having the seats reserved and so they can use the extra time to provide quicker, high quality service.
 
-## Votes/comments
+## Votes/comments/answers
 These are used to guage interaction between the users and the question and author. Ratings are tied to the answers but are created by the users.
 
 Note: Comments are not private, so the comments should be honest and provide valid criticsm.
@@ -22,8 +22,8 @@ Note: Comments are not private, so the comments should be honest and provide val
 ## Favorites and saved topics
 Users who find a questions they concerned by key words, search algorithms to look for these questions semantically is important. User can also bookmark the questions for future reference.
 
-## Bonus: Question Categories and Comment on Questions / Answers
-## Bonus: Polymorphic Up/Down Votes: Questions, Answers, Comments, Tags, Follows
+## User authorities and specialties, follow and following other users
+## Polymorphic Up/Down Votes: Questions, Answers, Comments, Tags
 
 While the backend Flask API is a fairly standard RESTful API, it requires authentication with a Cookie. Cross origin communication is protected by CSRF token that is facilitated also by React hooks API. The Flask server grabs the redux token for CSRF everytime it fetches to the Flask backend, which is used in all requests to the "any questions" server. Redux also stores and sets information about the active posts, whichever that has been selected by the user. By managing this state in Redux, it provides easy access to the information across components without prop threading. This was particularly important because there were so many components in the application and could further increase in the future. If too many components were re-rendering constantly because of state change it would cause significant performance issues or crash the application completely. Redux provided a relatively simple way to manage this point of complexity.
 
@@ -171,7 +171,7 @@ Approach A. Deploy via Dockerfile and heroku Docker container
 10. Under Settings find "Config Vars" and add any additional/secret .env variables.
 11. profit
 
-Approach B Deploy via Heroku's container Dyno
+Approach B Deploy via Heroku's container "Dyno"
 1. Create a new project on Heroku
 
 2. Under Resources click "Find more add-ons" and add the add on called "Heroku Postgres"
@@ -197,7 +197,7 @@ Approach B Deploy via Heroku's container Dyno
     }
     ```
 
-7. ```bash
+7. ```bash (note here instead of Dockerfile, we use heroku "Buildpack")
     heroku buildpacks:add --index 1 heroku/nodejs
    ```
 8. update __init__.py in app_starter with the following:
