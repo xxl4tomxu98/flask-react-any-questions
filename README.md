@@ -3,19 +3,18 @@ Clone based off https://www.stackoverflow.com/.
 
 # Features
 ## Create and search questions
-Account holders are able to ask their questions on this site to get others to answer them. Bystanders may search questions and their answers, make comments etc.
+Account holders are able to ask their questions on this site to get others to answer them. Bystanders may search questions and their answers, make comments, up or down votes etc.
 
 Whether or not they have an account, people are allowed to search for topics and question, answers around their interest based on database or API data.
 
-People ask questions, others vote on the answers, and the top is answer is featured.
+People ask questions, others vote on the answers, and the top is answer is featured and reputations established.
 
 ## Ask or delete questions
 Puzzled users looking for the right question and answers may search and find threads leading to their questions. Answers which have been voted high are pulled ahead for others to view. Users with higher points will have better reputation so their next answers will be pulled ahead as well.
 
-This also benefit the restaraunt since it'll save time by already having the seats reserved and so they can use the extra time to provide quicker, high quality service.
 
 ## Votes/comments/answers
-These are used to guage interaction between the users and the question and author. Ratings are tied to the answers but are created by the users.
+These are used to guage interactions between the users and the question and author. Ratings are tied to the answers but are created by the users.
 
 Note: Comments are not private, so the comments should be honest and provide valid criticsm.
 
@@ -23,8 +22,12 @@ Note: Comments are not private, so the comments should be honest and provide val
 Users who find a questions they concerned by key words, search algorithms to look for these questions semantically is important. User can also bookmark the questions for future reference.
 
 ## User authorities and specialties, follow and following other users
-## Polymorphic Up/Down Votes: Questions, Answers, Comments, Tags
+Features such as moderators or experts who has many followers are possible in this App
 
+## Polymorphic Up/Down Votes: Questions, Answers, Comments, Tags
+Extensive taggings are possible in this App so that questions along with all thier answwers, comments, ratings, etc. can be catagoried and searched.
+
+## Redux and CSRF
 While the backend Flask API is a fairly standard RESTful API, it requires authentication with a Cookie. Cross origin communication is protected by CSRF token that is facilitated also by React hooks API. The Flask server grabs the redux token for CSRF everytime it fetches to the Flask backend, which is used in all requests to the "any questions" server. Redux also stores and sets information about the active posts, whichever that has been selected by the user. By managing this state in Redux, it provides easy access to the information across components without prop threading. This was particularly important because there were so many components in the application and could further increase in the future. If too many components were re-rendering constantly because of state change it would cause significant performance issues or crash the application completely. Redux provided a relatively simple way to manage this point of complexity.
 
 Redux also allows for a lot of extendibility if new features are to be implemented (additional feature wish-list discussed in conclusion).
@@ -171,7 +174,8 @@ Approach A. Deploy via Dockerfile and heroku Docker container
 10. Under Settings find "Config Vars" and add any additional/secret .env variables.
 11. profit
 
-Approach B Deploy via Heroku's container "Dyno"
+
+## Approach B Deploy via Heroku's container "Dyno"
 1. Create a new project on Heroku
 
 2. Under Resources click "Find more add-ons" and add the add on called "Heroku Postgres"
